@@ -1,3 +1,3 @@
 # 3AD
-pip install -r requirements.txt \n
+pip install -r requirements.txt
 py triad.py
