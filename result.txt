@@ -1,0 +1,47 @@
+[][
+ {
+  "Checklist ": "Minimum password age (days):                          0"
+ },
+ {
+  "Checklist ": "Maximum password age (days):                          42"
+ },
+ {
+  "Checklist ": "Minimum password length:                              0"
+ },
+ {
+  "Checklist ": "Length of password history maintained:                None"
+ }
+][][
+ {
+  "Checklist ": "Lockout threshold:                                    Never"
+ },
+ {
+  "Checklist ": "Lockout duration (minutes):                           30"
+ },
+ {
+  "Checklist ": "Lockout observation window (minutes):                 30"
+ }
+][][
+ {
+  "Checklist ": "Minimum password age (days):                          0"
+ },
+ {
+  "Checklist ": "Maximum password age (days):                          42"
+ },
+ {
+  "Checklist ": "Minimum password length:                              0"
+ },
+ {
+  "Checklist ": "Length of password history maintained:                None"
+ }
+][][
+ {
+  "Checklist ": "Lockout threshold:                                    Never"
+ },
+ {
+  "Checklist ": "Lockout duration (minutes):                           30"
+ },
+ {
+  "Checklist ": "Lockout observation window (minutes):                 30"
+ }
+]

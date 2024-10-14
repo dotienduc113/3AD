@@ -1,0 +1,2 @@
+LET output = SELECT * FROM execve(argv=['cmd.exe', '/c', 'echo Checklist && net accounts | findstr /i password']) SELECT * FROM foreach(row = output, query={SELECT * FROM parse_csv(filename=Stdout, accessor='data')})
+LET output = SELECT * FROM execve(argv=['cmd.exe', '/c', 'echo Checklist && net accounts | findstr /i lockout']) SELECT * FROM foreach(row=output, query={SELECT * FROM parse_csv(filename=Stdout, accessor='data')})
