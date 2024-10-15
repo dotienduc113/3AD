@@ -28,8 +28,21 @@ def display_banner():
 
 def menu():
     print("0. Install requirements")
+    ''''
+    print("1. Password Policy and Account Lockout Policy")
+    print("2. User Rights Assignment")
+    print("3. Security Options")
+    print("4. Windows Defender Firewall with Advanced Security")
+    print("5. Audit Policy")
+    print("6. MS Security Guide")
+    print("7. Network Provider")
+    print("8. Credentials Delegation")
+    '''
     print("1. Auto Audit")
     print("2. Exit")
+    new_path = ".\\logs"
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
     while True:
         user_input = input("\nInput (0-2): ")
         if user_input.isdigit():
@@ -76,17 +89,27 @@ def install_requirements():
             print("Both curl and certutil failed. Require manual install velociraptor.")
     return
 
+
 #########################################################################################################################
+
+def getcwd():
+    path = os.getcwd() + "\\logs"
+    return path
 
 
 def run_velo():
     f = open("velo_query.txt", "r")
+    count = 0
     for line in f:
-        cmd = ('velociraptor query "{0}" >> result.txt'.format(line.strip()))
+        count = count + 1
+        if count == 1 or count == 2:
+            cmd = 'velociraptor query "{0}" >> .\\logs\\result1.txt'.format(line.strip())
+        else:
+            cmd = 'velociraptor query "{0}" > .\\logs\\result"{1}".txt'.format(line.strip(), format(count))
         # print(cmd)
         try:
             result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-            print(result.stdout)  # Output the command result
+            # print(result.stdout)  # Output the command result
             print(result.stderr)  # Print any errors
         except Exception as e:
             print(f"Error running command: {e}")
@@ -98,14 +121,44 @@ def remove_extra_spaces(text):
 
 
 def filter_info():
-    file = open("result.txt", "r")
+    file = open(".\\logs\\result1.txt", "r")
     checklist = {}
     for line in file:
-        if line.strip().startswith("\"Checklist \":"):
+        if line.strip().startswith("\"Checklist\":"):
             line = remove_extra_spaces(line)
-            array_line = line[15:-1].split(": ")
+            line = line.replace("\"Checklist\":", "").replace("\"", "").strip()  # .replace("\"Checklist\":","")
+            array_line = line.split(": ")
             checklist[array_line[0]] = array_line[1]
     return checklist
+
+
+def filer_info_5():
+    file = open(".\\logs\\result3.txt", "r")
+    profiles = {}  # Dictionary to store settings for each profile
+    current_profile = None
+    settings = []
+    for line in file:
+        if line.strip().startswith("\"Checklist\":"):
+            line = remove_extra_spaces(line)
+            line = line.replace("\"Checklist\":", "").replace("\"", "").strip()  # .replace("\"Checklist\":","")
+            if line.endswith("Profile Settings:"):
+                print(line)
+                if current_profile:
+                    profiles[current_profile] = settings
+                    settings = []
+                current_profile = line
+            else:
+                # Split the setting and value based on multiple spaces
+                parts = line.rsplit(maxsplit=1)
+                if len(parts) == 2:
+                    setting_name = parts[0].strip()
+                    setting_value = parts[1].strip()
+                    settings.append((setting_name, setting_value))
+
+    if current_profile:
+        profiles[current_profile] = settings
+
+    return profiles
 
 
 # add value to passed and failed array
@@ -114,10 +167,7 @@ def append_array(array, key, value):
     return
 
 
-def compare_checklist():
-    checklist = filter_info()  # Assuming this returns a dictionary
-    passed = []
-    failed = []
+def checklist_1_2(passed, failed, checklist):
     for key in checklist:
         try:
             value = int(checklist.get(key))
@@ -160,6 +210,40 @@ def compare_checklist():
                 append_array(passed, key, checklist.get(key))
             else:
                 append_array(failed, key, checklist.get(key))
+
+
+def checklist_5(passed, failed, checklist5):
+    for profile, settings in checklist5.items():
+        for obj, value in settings:
+            if obj == "State" and value == "ON":
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            elif obj == "Firewall Policy" and value == "BlockInbound":
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            elif obj == "InboundUserNotification" and value == "Enable":
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            elif obj == "LogAllowedConnections" and value == "Enable":
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            elif obj == "LogDroppedConnections" and value == "Enable":
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            elif obj == "MaxFileSize" and int(value) >= 16384:
+                append_array(passed, f"{profile[:-18]} {obj}", value)
+            else:
+                append_array(failed, f"{profile[:-18]} {obj}", value)
+
+
+def compare_checklist():
+    clist = filter_info()
+    clist5 = filer_info_5()
+    '''
+    for profile, settings in checklist2.items():
+        print(f"\n{profile}")
+        for setting, value in settings:
+            print(f"{profile[:-18]} {setting}, Value: {value}")
+    '''
+    passed = []
+    failed = []
+    checklist_1_2(passed, failed, clist)
+    checklist_5(passed, failed, clist5)
     return passed, failed
 
 
@@ -186,7 +270,7 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        run_velo()  # - nho xoa cai nay
+        run_velo()  # nho xoa comment cai nay
         result = compare_checklist()
         result_table(result[0], result[1])
         return
