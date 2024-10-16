@@ -156,90 +156,141 @@ def filer_info_5():
     return profiles
 
 
+def filter_info_6():
+    file = open(".\\logs\\result3.txt", "r")
+    lines = file.read().split('\n')
+    # Initialize dictionaries to store settings
+    settings = {}
+
+    # Iterate over the lines and extract settings
+    for line in lines:
+        if line.strip():
+            match = re.match(r'(.+?)\s{2,}(.+)', line)
+            if match:
+                category, setting = match.groups()
+                settings[category] = setting
+    return settings
+
+
 # add value to passed and failed array
 def append_array(array, key, value):
     array.append(key + ": " + value)
     return
 
 
-def checklist_1(passed, failed, checklist):  # checklist 1 va 2 lay du lieu va so sanh
-    for key in checklist:
+def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
+    passed = []
+    failed = []
+    for key in clist1:
         try:
-            value = int(checklist.get(key))
+            value = int(clist1.get(key))
         except ValueError:
             value = -1
         if key == "Minimum password age (days)":
             if value >= 1:
-                append_array(passed, key, checklist.get(key))
-                # passed.append(key + ": " + checklist.get(key))
+                append_array(passed, f"1.3 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
-                # failed.append(key + ": " + checklist.get(key))
+                append_array(failed, f"1.3 {key}", clist1.get(key))
         elif key == "Maximum password age (days)":
             if 30 <= value <= 90:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"1.2 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"1.2 {key}", clist1.get(key))
         elif key == "Minimum password length":
             if value >= 14:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"1.4 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"1.4 {key}", clist1.get(key))
         elif key == "Length of password history maintained":
             if value >= 14:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"1.1 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"1.1 {key}", clist1.get(key))
         elif key == "Lockout threshold":
             if 0 < value <= 5:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"2.2 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"2.2 {key}", clist1.get(key))
         elif key == "Lockout duration (minutes)":
             if value >= 15:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"2.1 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"2.1 {key}", clist1.get(key))
         elif key == "Lockout observation window (minutes)":
             if value >= 15:
-                append_array(passed, key, checklist.get(key))
+                append_array(passed, f"2.2 {key}", clist1.get(key))
             else:
-                append_array(failed, key, checklist.get(key))
+                append_array(failed, f"2.2 {key}", clist1.get(key))
+    print("\n1+2. Password Policy and Account Lockout Policy result: \n")
+    result_table(passed,failed)
 
 
-def checklist_5(passed, failed, checklist5):  # checklist 5 lay du lieu va so sanh
-    for profile, settings in checklist5.items():
+def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
+    passed = []
+    failed = []
+    for profile, settings in clist5.items():
         for obj, value in settings:
             if obj == "State" and value == "ON":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
+                append_array(passed, f"5.1 {profile[:-18]} {obj}", value)
             elif obj == "Firewall Policy" and "BlockInbound" in value:
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            #elif obj == "InboundUserNotification" and value == "Enable":
-            #append_array(passed, f"{profile[:-18]} {obj}", value)
+                append_array(passed, f"5.2 {profile[:-18]} {obj}", value)
             elif obj == "LogAllowedConnections" and value == "Enable":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
+                append_array(passed, f"5.5 {profile[:-18]} {obj}", value)
             elif obj == "LogDroppedConnections" and value == "Enable":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
+                append_array(passed, f"5.4 {profile[:-18]} {obj}", value)
             elif obj == "MaxFileSize" and int(value) >= 16384:
-                append_array(passed, f"{profile[:-18]} {obj}", value)
+                append_array(passed, f"5.3 {profile[:-18]} {obj}", value)
             else:
                 append_array(failed, f"{profile[:-18]} {obj}", value)
+    print("\n5. Windows Defender Firewall with Advanced Security result: \n")
+    result_table(passed, failed)
+
+
+def checklist_6(clist6):
+    passed = []
+    failed = []
+    for category, setting in clist6.items():
+        category = category.strip()
+        setting = setting.strip()
+        if (category == "Credential Validation" or category == "Kerberos Service Ticket Operations" or category == "Kerberos Authentication Service") and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Distribution Group Management" or category == "Other Account Management Events") and setting == "Success":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Application Group Management" or category == "User account management") and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        elif category == "Process Creation" and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Directory Service Access" or category == "Directory Service Changes" or category == "Directory Service Replication" or category == "Detailed Directory Service Replication") and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Logon" or category == "Logoff" or category == "Account Lockout" or category == "IPsec Main Mode"  or category == "IPsec Quick Mode" or category == "IPsec Extended Mode" or category == "Special Logon" or category == "Other Logon/Logoff Events" or category == "Network Policy Server") and setting == "Success and Failure" :
+            append_array(passed, f"{category}", setting)
+        elif (category == "Audit Policy Change" or category == "MPSSVC Rule-Level Policy Change" or category == "Other Policy Change Events") and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Authentication Policy Change" or category == "Authorization Policy Change" or category == "Filtering Platform Policy Change") and setting == "Success":
+            append_array(passed, f"{category}", setting)
+        elif (category == "Non Sensitive Privilege Use " or category == "Other Privilege Use Events" or category == "Sensitive Privilege Use") and setting == "Success and Failure":
+            append_array(passed, f"{category}", setting)
+        else:
+            append_array(failed, f"{category}", setting)
+    print("\n6. Audit Policy: \n")
+    result_table(passed, failed)
 
 
 def compare_checklist():
-    clist = filter_info_1()
+    clist1 = filter_info_1()
     clist5 = filer_info_5()
+    clist6 = filter_info_6()
+
     '''
     for profile, settings in checklist2.items():
         print(f"\n{profile}")
         for setting, value in settings:
             print(f"{profile[:-18]} {setting}, Value: {value}")
     '''
-    passed = []
-    failed = []
-    checklist_1(passed, failed, clist)
-    checklist_5(passed, failed, clist5)
-    return passed, failed
+
+    checklist_1(clist1)
+    checklist_5(clist5)
+    checklist_6(clist6)
 
 
 # dung de cho vao bang passed va failed
@@ -266,16 +317,14 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        run_query()
-        result = compare_checklist()
-        result_table(result[0], result[1])
+        # run_query()
+        compare_checklist()
         return
 
 
 if __name__ == "__main__":
     display_banner()
     # install_requirements()
-    # run_velo()
     # checklist = filter_info()
     # compare_checklist()
     menu()
