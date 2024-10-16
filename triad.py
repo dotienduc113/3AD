@@ -212,7 +212,7 @@ def checklist_5(passed, failed, checklist5):  # checklist 5 lay du lieu va so sa
         for obj, value in settings:
             if obj == "State" and value == "ON":
                 append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "Firewall Policy" and value == "BlockInbound":
+            elif obj == "Firewall Policy" and "BlockInbound" in value:
                 append_array(passed, f"{profile[:-18]} {obj}", value)
             #elif obj == "InboundUserNotification" and value == "Enable":
             #append_array(passed, f"{profile[:-18]} {obj}", value)
@@ -227,7 +227,7 @@ def checklist_5(passed, failed, checklist5):  # checklist 5 lay du lieu va so sa
 
 
 def compare_checklist():
-    clist = filter_info()
+    clist = filter_info_1()
     clist5 = filer_info_5()
     '''
     for profile, settings in checklist2.items():
