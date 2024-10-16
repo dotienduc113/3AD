@@ -1,0 +1,2 @@
+net accounts | findstr /i "password lockout"
+netsh advfirewall show allprofiles | findstr /i "domain private public state outbound maxfilesize LogDroppedConnections LogAllowedConnections"

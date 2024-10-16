@@ -57,6 +57,7 @@ def menu():
             print("Invalid input! Try again.")
 
 
+# doan nay ko can
 # download velociraptor function
 def download_with_curl():
     try:
@@ -92,20 +93,14 @@ def install_requirements():
 
 #########################################################################################################################
 
-def getcwd():
-    path = os.getcwd() + "\\logs"
-    return path
 
-
-def run_velo():
-    f = open("velo_query.txt", "r")
+# chay lenh cmd bang cach doc file query.txt va output ra 1 file result.txt o thu muc logs
+def run_query():
+    f = open("query.txt", "r")
     count = 0
     for line in f:
         count = count + 1
-        if count == 1 or count == 2:
-            cmd = 'velociraptor query "{0}" >> .\\logs\\result1.txt'.format(line.strip())
-        else:
-            cmd = 'velociraptor query "{0}" > .\\logs\\result"{1}".txt'.format(line.strip(), format(count))
+        cmd = '{0} > .\\logs\\result"{1}".txt'.format(line.strip(), format(count))
         # print(cmd)
         try:
             result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -115,45 +110,45 @@ def run_velo():
             print(f"Error running command: {e}")
 
 
+# xoa khoang trang thua
 def remove_extra_spaces(text):
     # Replace multiple spaces with a single space
     return re.sub(r'\s+', ' ', text).strip()
 
 
-def filter_info():
+# loc du lieu trong trong query checklist 1 va 2
+def filter_info_1():
     file = open(".\\logs\\result1.txt", "r")
     checklist = {}
     for line in file:
-        if line.strip().startswith("\"Checklist\":"):
-            line = remove_extra_spaces(line)
-            line = line.replace("\"Checklist\":", "").replace("\"", "").strip()  # .replace("\"Checklist\":","")
-            array_line = line.split(": ")
-            checklist[array_line[0]] = array_line[1]
+        line = remove_extra_spaces(line)
+        line = line.strip()
+        array_line = line.split(": ")
+        checklist[array_line[0]] = array_line[1]
     return checklist
 
 
+# loc du lieu trong trong query checklist 5
 def filer_info_5():
-    file = open(".\\logs\\result3.txt", "r")
+    file = open(".\\logs\\result2.txt", "r")
     profiles = {}  # Dictionary to store settings for each profile
     current_profile = None
     settings = []
     for line in file:
-        if line.strip().startswith("\"Checklist\":"):
-            line = remove_extra_spaces(line)
-            line = line.replace("\"Checklist\":", "").replace("\"", "").strip()  # .replace("\"Checklist\":","")
-            if line.endswith("Profile Settings:"):
-                print(line)
-                if current_profile:
-                    profiles[current_profile] = settings
-                    settings = []
-                current_profile = line
-            else:
-                # Split the setting and value based on multiple spaces
-                parts = line.rsplit(maxsplit=1)
-                if len(parts) == 2:
-                    setting_name = parts[0].strip()
-                    setting_value = parts[1].strip()
-                    settings.append((setting_name, setting_value))
+        line = remove_extra_spaces(line)
+        line = line.strip()
+        if line.endswith("Profile Settings:"):
+            if current_profile:
+                profiles[current_profile] = settings
+                settings = []
+            current_profile = line
+        else:
+            # Split the setting and value based on multiple spaces
+            parts = line.rsplit(maxsplit=1)
+            if len(parts) == 2:
+                setting_name = parts[0].strip()
+                setting_value = parts[1].strip()
+                settings.append((setting_name, setting_value))
 
     if current_profile:
         profiles[current_profile] = settings
@@ -167,7 +162,7 @@ def append_array(array, key, value):
     return
 
 
-def checklist_1_2(passed, failed, checklist):
+def checklist_1(passed, failed, checklist):  # checklist 1 va 2 lay du lieu va so sanh
     for key in checklist:
         try:
             value = int(checklist.get(key))
@@ -212,15 +207,15 @@ def checklist_1_2(passed, failed, checklist):
                 append_array(failed, key, checklist.get(key))
 
 
-def checklist_5(passed, failed, checklist5):
+def checklist_5(passed, failed, checklist5):  # checklist 5 lay du lieu va so sanh
     for profile, settings in checklist5.items():
         for obj, value in settings:
             if obj == "State" and value == "ON":
                 append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "Firewall Policy" and value == "BlockInbound":
                 append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "InboundUserNotification" and value == "Enable":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
+            #elif obj == "InboundUserNotification" and value == "Enable":
+            #append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "LogAllowedConnections" and value == "Enable":
                 append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "LogDroppedConnections" and value == "Enable":
@@ -242,11 +237,12 @@ def compare_checklist():
     '''
     passed = []
     failed = []
-    checklist_1_2(passed, failed, clist)
+    checklist_1(passed, failed, clist)
     checklist_5(passed, failed, clist5)
     return passed, failed
 
 
+# dung de cho vao bang passed va failed
 def result_table(passed, failed):
     # Create the table with two columns
     table = PrettyTable()
@@ -270,7 +266,7 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        run_velo()  # nho xoa comment cai nay
+        run_query()
         result = compare_checklist()
         result_table(result[0], result[1])
         return
