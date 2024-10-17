@@ -175,8 +175,6 @@ def filter_info_6():
 def filter_info_7():
     file = open(".\\logs\\result7.txt", "r")
     # Initialize dictionaries to store settings
-    i = 0
-    count = 0
     settings = {}
     for line in file:
         line = remove_extra_spaces(line.strip().replace(":", ""))
@@ -185,6 +183,19 @@ def filter_info_7():
         settings[key] = parts[-1]
     # Iterate over the lines and extract settings
     return settings
+
+
+def filter_info_9():
+    file = open(".\\logs\\result9.txt", "r")
+    settings = {}
+    for line in file:
+        line = remove_extra_spaces(line.strip())
+        parts = line.split()
+        key = " ".join(parts[:-1])
+        settings[key] = parts[-1]
+    return settings
+
+    # Iterate over the lines and extract settings
 
 
 # add value to passed and failed array
@@ -320,7 +331,24 @@ def checklist_7(clist7):
                 append_array(failed, "WDigest Authentication", "Enable")
     print("\n7. MS Security Guide: \n")
     if len(clist7) < 3:
-        print("WARNING: Query result are missing REQUIRE MANUAL CHECK")
+        print("WARNING: Query results are missing REQUIRE MANUAL CHECK")
+    result_table(passed, failed)
+
+
+def checklist_9(clist9):
+    passed = []
+    failed = []
+    if len(clist9) == 0:
+        append_array(failed, "Encryption Oracle Remediation", "Default: Not configured")
+    for category, settings in clist9.items():
+        if category == "AllowEncryptionOracle REG_DWORD":
+            if settings == "0x0":
+                append_array(passed, "Encryption Oracle Remediation", "'Enabled Force Updated Clients")
+            elif settings == "0x1":
+                append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
+            elif settings == "0x2":
+                append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
+    print("\n9. Credentials Delegation: \n")
     result_table(passed, failed)
 
 
@@ -329,6 +357,7 @@ def compare_checklist():
     clist5 = filer_info_5()
     clist6 = filter_info_6()
     clist7 = filter_info_7()
+    clist9 = filter_info_9()
     '''
     for profile, settings in checklist2.items():
         print(f"\n{profile}")
@@ -340,6 +369,7 @@ def compare_checklist():
     checklist_5(clist5)
     checklist_6(clist6)
     checklist_7(clist7)
+    checklist_9(clist9)
 
 
 # dung de cho vao bang passed va failed
