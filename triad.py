@@ -100,7 +100,7 @@ def run_query():
     count = 0
     for line in f:
         count = count + 1
-        cmd = '{0} > .\\logs\\result"{1}".txt'.format(line.strip(), format(count))
+        cmd = '{0}'.format(line.strip())
         # print(cmd)
         try:
             result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -119,18 +119,18 @@ def remove_extra_spaces(text):
 # loc du lieu trong trong query checklist 1 va 2
 def filter_info_1():
     file = open(".\\logs\\result1.txt", "r")
-    checklist = {}
+    settings = {}
     for line in file:
         line = remove_extra_spaces(line)
         line = line.strip()
         array_line = line.split(": ")
-        checklist[array_line[0]] = array_line[1]
-    return checklist
+        settings[array_line[0]] = array_line[1]
+    return settings
 
 
 # loc du lieu trong trong query checklist 5
 def filer_info_5():
-    file = open(".\\logs\\result2.txt", "r")
+    file = open(".\\logs\\result5.txt", "r")
     profiles = {}  # Dictionary to store settings for each profile
     current_profile = None
     settings = []
@@ -157,7 +157,7 @@ def filer_info_5():
 
 
 def filter_info_6():
-    file = open(".\\logs\\result3.txt", "r")
+    file = open(".\\logs\\result6.txt", "r")
     lines = file.read().split('\n')
     # Initialize dictionaries to store settings
     settings = {}
@@ -169,6 +169,21 @@ def filter_info_6():
             if match:
                 category, setting = match.groups()
                 settings[category] = setting
+    return settings
+
+
+def filter_info_7():
+    file = open(".\\logs\\result7.txt", "r")
+    # Initialize dictionaries to store settings
+    i = 0
+    count = 0
+    settings = {}
+    for line in file:
+        line = remove_extra_spaces(line.strip().replace(":", ""))
+        parts = line.split()
+        key = " ".join(parts[:-1])
+        settings[key] = parts[-1]
+    # Iterate over the lines and extract settings
     return settings
 
 
@@ -221,8 +236,8 @@ def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
                 append_array(passed, f"2.2 {key}", clist1.get(key))
             else:
                 append_array(failed, f"2.2 {key}", clist1.get(key))
-    print("\n1+2. Password Policy and Account Lockout Policy result: \n")
-    result_table(passed,failed)
+    print("\n1&2. Password Policy and Account Lockout Policy result: \n")
+    result_table(passed, failed)
 
 
 def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
@@ -252,23 +267,31 @@ def checklist_6(clist6):
     for category, setting in clist6.items():
         category = category.strip()
         setting = setting.strip()
-        if (category == "Credential Validation" or category == "Kerberos Service Ticket Operations" or category == "Kerberos Authentication Service") and setting == "Success and Failure":
+        if (
+                category == "Credential Validation" or category == "Kerberos Service Ticket Operations" or category == "Kerberos Authentication Service") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
-        elif (category == "Distribution Group Management" or category == "Other Account Management Events") and setting == "Success":
+        elif (
+                category == "Distribution Group Management" or category == "Other Account Management Events") and setting == "Success":
             append_array(passed, f"{category}", setting)
-        elif (category == "Application Group Management" or category == "User account management") and setting == "Success and Failure":
+        elif (
+                category == "Application Group Management" or category == "User account management") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
         elif category == "Process Creation" and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
-        elif (category == "Directory Service Access" or category == "Directory Service Changes" or category == "Directory Service Replication" or category == "Detailed Directory Service Replication") and setting == "Success and Failure":
+        elif (
+                category == "Directory Service Access" or category == "Directory Service Changes" or category == "Directory Service Replication" or category == "Detailed Directory Service Replication") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
-        elif (category == "Logon" or category == "Logoff" or category == "Account Lockout" or category == "IPsec Main Mode"  or category == "IPsec Quick Mode" or category == "IPsec Extended Mode" or category == "Special Logon" or category == "Other Logon/Logoff Events" or category == "Network Policy Server") and setting == "Success and Failure" :
+        elif (
+                category == "Logon" or category == "Logoff" or category == "Account Lockout" or category == "IPsec Main Mode" or category == "IPsec Quick Mode" or category == "IPsec Extended Mode" or category == "Special Logon" or category == "Other Logon/Logoff Events" or category == "Network Policy Server") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
-        elif (category == "Audit Policy Change" or category == "MPSSVC Rule-Level Policy Change" or category == "Other Policy Change Events") and setting == "Success and Failure":
+        elif (
+                category == "Audit Policy Change" or category == "MPSSVC Rule-Level Policy Change" or category == "Other Policy Change Events") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
-        elif (category == "Authentication Policy Change" or category == "Authorization Policy Change" or category == "Filtering Platform Policy Change") and setting == "Success":
+        elif (
+                category == "Authentication Policy Change" or category == "Authorization Policy Change" or category == "Filtering Platform Policy Change") and setting == "Success":
             append_array(passed, f"{category}", setting)
-        elif (category == "Non Sensitive Privilege Use " or category == "Other Privilege Use Events" or category == "Sensitive Privilege Use") and setting == "Success and Failure":
+        elif (
+                category == "Non Sensitive Privilege Use " or category == "Other Privilege Use Events" or category == "Sensitive Privilege Use") and setting == "Success and Failure":
             append_array(passed, f"{category}", setting)
         else:
             append_array(failed, f"{category}", setting)
@@ -276,11 +299,36 @@ def checklist_6(clist6):
     result_table(passed, failed)
 
 
+def checklist_7(clist7):
+    passed = []
+    failed = []
+    for category, settings in clist7.items():
+        if category == "EnableSMB1Protocol":
+            if settings == "False":
+                append_array(passed, f"Configure SMB v1 server", settings)
+            else:
+                append_array(failed, f"Configure SMB v1 server", settings)
+        elif category == "Start REG_DWORD":
+            if settings == "0x0":
+                append_array(passed, "Configure SMB v1 client driver", "Disable")
+            else:
+                append_array(failed, "Configure SMB v1 client driver", "Manual start or Automatic start")
+        elif category == "UseLogonCredential REG_DWORD":
+            if settings == "0x0":
+                append_array(passed, "WDigest Authentication", "Disable")
+            else:
+                append_array(failed, "WDigest Authentication", "Enable")
+    print("\n7. MS Security Guide: \n")
+    if len(clist7) < 3:
+        print("WARNING: Query result are missing REQUIRE MANUAL CHECK")
+    result_table(passed, failed)
+
+
 def compare_checklist():
     clist1 = filter_info_1()
     clist5 = filer_info_5()
     clist6 = filter_info_6()
-
+    clist7 = filter_info_7()
     '''
     for profile, settings in checklist2.items():
         print(f"\n{profile}")
@@ -291,6 +339,7 @@ def compare_checklist():
     checklist_1(clist1)
     checklist_5(clist5)
     checklist_6(clist6)
+    checklist_7(clist7)
 
 
 # dung de cho vao bang passed va failed
@@ -317,7 +366,7 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        # run_query()
+        run_query()
         compare_checklist()
         return
 
