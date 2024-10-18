@@ -179,7 +179,7 @@ def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
                 append_array(passed, f"2.2 {key}", clist1.get(key))
             else:
                 append_array(failed, f"2.2 {key}", clist1.get(key))
-    print("\n1-2. Password Policy and Account Lockout Policy result: \n")
+    print("\n1-2. Password Policy and Account Lockout Policy result:")
     result_table(passed, failed)
 
 
@@ -228,7 +228,7 @@ def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
                 append_array(passed, f"5.3 {profile[:-18]} {obj}", value)
             else:
                 append_array(failed, f"{profile[:-18]} {obj}", value)
-    print("\n5. Windows Defender Firewall with Advanced Security result: \n")
+    print("\n5. Windows Defender Firewall with Advanced Security result:")
     result_table(passed, failed)
 
 
@@ -282,7 +282,7 @@ def checklist_6(clist6):
             append_array(passed, f"{category}", setting)
         else:
             append_array(failed, f"{category}", setting)
-    print("\n6. Audit Policy: \n")
+    print("\n6. Audit Policy:")
     result_table(passed, failed)
 
 
@@ -318,7 +318,7 @@ def checklist_7(clist7):
                 append_array(passed, "WDigest Authentication", "Disable")
             else:
                 append_array(failed, "WDigest Authentication", "Enable")
-    print("\n7. MS Security Guide: \n")
+    print("\n7. MS Security Guide:")
     if len(clist7) < 3:
         print("WARNING: Query results are missing REQUIRE MANUAL CHECK")
     result_table(passed, failed)
@@ -332,7 +332,7 @@ def filter_info_8():
             line = remove_extra_spaces(line.strip())
             parts = line.split()
             key = parts[0]
-            value = ' '.join(parts[2:]).replace(" ","")
+            value = ' '.join(parts[2:]).replace(" ", "")
             settings[key] = value
     except:
         pass
@@ -371,7 +371,7 @@ def checklist_8(clist8):
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - NETLOGON", value)
-    print("\n8. Network Provider: \n")
+    print("\n8. Network Provider:")
     result_table(passed, failed)
 
 
@@ -402,7 +402,7 @@ def checklist_9(clist9):
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
             elif value == "0x2":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
-    print("\n9. Credentials Delegation: \n")
+    print("\n9. Credentials Delegation:")
     result_table(passed, failed)
 
 
@@ -473,7 +473,113 @@ def checklist_10(clist10):
             append_array(failed, "Scan removable drives", "Disable")
     else:
         append_array(failed, "Scan removable drives", "Default - Not configured")
-    print("\n10. Windows Defender: \n")
+    print("\n10. Windows Defender:")
+    result_table(passed, failed)
+
+
+def filer_info_11():
+    file = open(".\\logs\\result11.txt", "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = parts[0]
+            settings[key] = parts[-1]
+    except:
+        pass
+    return settings
+
+
+def checklist_11(clist11):
+    passed = []
+    failed = []
+    if len(clist11) == 0:
+        append_array(failed, "Remote Desktop Services", "Default - Not configured")
+    for key, value in clist11.items():
+        if key == "fSingleSessionPerUser":
+            s = "Restrict Remote Desktop Services users to a single Remote Desktop Services session"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "fDisableClip":
+            s = "Do not allow Clipboard redirection"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "fDisableCdm":
+            s = "Do not allow drive redirection"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "MinEncryptionLevel":
+            s = "Set client connection encryption level"
+            if value == "0x3":
+                append_array(passed, s, "High Level")
+            elif value == "0x2":
+                append_array(failed, s, "Client Compatible")
+            elif value == "0x1":
+                append_array(failed, s, "Low Level")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "fPromptForPassword":
+            s = "Always prompt for password upon connection"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "fEncryptRPCTraffic":
+            s = "Require secure RPC communication"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "SecurityLayer":
+            s = "Require use of specific security layer for remote (RDP) connections"
+            if value == "0x2":
+                append_array(passed, s, "SSL")
+            elif value == "0x1":
+                append_array(failed, s, "Negotiate")
+            elif value == "0x0":
+                append_array(failed, s, "RDP")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "UserAuthentication":
+            s = "Require user authentication for remote connections by using Network Level Authentication"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "MaxDisconnectionTime":
+            s = "Require secure RPC communication"
+            if value == "0xea60":
+                append_array(passed, s, "'Enabled 1 minute")
+            else:
+                append_array(failed, s, "Disabled or wrong configuration")
+        elif key == "MaxIdleTime":
+            s = "Set time limit for active but idle Remote Desktop Services sessions"
+            if value == "0xdbba0":
+                append_array(passed, s, "Enabled <= 15 minute(s) (>0)")
+            else:
+                append_array(failed, s, "Disabled or wrong configuration")
+        elif key == "exitDeleteTempDirsOnExit":
+            s = "Do not delete temp folders upon"
+            if value == "0x1":
+                append_array(passed, s, "Disabled")
+            else:
+                append_array(failed, s, "Enabled")
+    if "fSingleSessionPerUser" not in clist11:
+        s = "Restrict Remote Desktop Services users to a single Remote Desktop Services session"
+        append_array(passed, s, "Default - Not configured/Enable")
+    if "MinEncryptionLevel" not in clist11:
+        s = "Set client connection encryption level"
+        append_array(passed, s, "Default - Not configured/High Level")
+    print("\n11. Remote Desktop Services:")
+    if len(clist11) < 12:
+        print("WARNING: Query results are missing REQUIRE MANUAL CHECK")
     result_table(passed, failed)
 
 
@@ -485,6 +591,7 @@ def compare_checklist():
     clist8 = filter_info_8()
     clist9 = filter_info_9()
     clist10 = filter_info_10()
+    clist11 = filer_info_11()
     '''
     checklist_1(clist1)
     checklist_5(clist5)
@@ -494,7 +601,7 @@ def compare_checklist():
     checklist_9(clist9)
 '''
     checklist_10(clist10)
-
+    checklist_11(clist11)
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
