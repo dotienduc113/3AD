@@ -115,6 +115,14 @@ def remove_extra_spaces(text):
     # Replace multiple spaces with a single space
     return re.sub(r'\s+', ' ', text).strip()
 
+    # Iterate over the lines and extract settings
+
+
+# add value to passed and failed array
+def append_array(array, key, value):
+    array.append(key + ": " + value)
+    return
+
 
 # loc du lieu trong trong query checklist 1 va 2
 def filter_info_1():
@@ -126,82 +134,6 @@ def filter_info_1():
         array_line = line.split(": ")
         settings[array_line[0]] = array_line[1]
     return settings
-
-
-# loc du lieu trong trong query checklist 5
-def filer_info_5():
-    file = open(".\\logs\\result5.txt", "r")
-    profiles = {}  # Dictionary to store settings for each profile
-    current_profile = None
-    settings = []
-    for line in file:
-        line = remove_extra_spaces(line)
-        line = line.strip()
-        if line.endswith("Profile Settings:"):
-            if current_profile:
-                profiles[current_profile] = settings
-                settings = []
-            current_profile = line
-        else:
-            # Split the setting and value based on multiple spaces
-            parts = line.rsplit(maxsplit=1)
-            if len(parts) == 2:
-                setting_name = parts[0].strip()
-                setting_value = parts[1].strip()
-                settings.append((setting_name, setting_value))
-
-    if current_profile:
-        profiles[current_profile] = settings
-
-    return profiles
-
-
-def filter_info_6():
-    file = open(".\\logs\\result6.txt", "r")
-    lines = file.read().split('\n')
-    # Initialize dictionaries to store settings
-    settings = {}
-
-    # Iterate over the lines and extract settings
-    for line in lines:
-        if line.strip():
-            match = re.match(r'(.+?)\s{2,}(.+)', line)
-            if match:
-                category, setting = match.groups()
-                settings[category] = setting
-    return settings
-
-
-def filter_info_7():
-    file = open(".\\logs\\result7.txt", "r")
-    # Initialize dictionaries to store settings
-    settings = {}
-    for line in file:
-        line = remove_extra_spaces(line.strip().replace(":", ""))
-        parts = line.split()
-        key = " ".join(parts[:-1])
-        settings[key] = parts[-1]
-    # Iterate over the lines and extract settings
-    return settings
-
-
-def filter_info_9():
-    file = open(".\\logs\\result9.txt", "r")
-    settings = {}
-    for line in file:
-        line = remove_extra_spaces(line.strip())
-        parts = line.split()
-        key = " ".join(parts[:-1])
-        settings[key] = parts[-1]
-    return settings
-
-    # Iterate over the lines and extract settings
-
-
-# add value to passed and failed array
-def append_array(array, key, value):
-    array.append(key + ": " + value)
-    return
 
 
 def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
@@ -247,8 +179,36 @@ def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
                 append_array(passed, f"2.2 {key}", clist1.get(key))
             else:
                 append_array(failed, f"2.2 {key}", clist1.get(key))
-    print("\n1&2. Password Policy and Account Lockout Policy result: \n")
+    print("\n1-2. Password Policy and Account Lockout Policy result: \n")
     result_table(passed, failed)
+
+
+# loc du lieu trong trong query checklist 5
+def filer_info_5():
+    file = open(".\\logs\\result5.txt", "r")
+    profiles = {}  # Dictionary to store settings for each profile
+    current_profile = None
+    settings = []
+    for line in file:
+        line = remove_extra_spaces(line)
+        line = line.strip()
+        if line.endswith("Profile Settings:"):
+            if current_profile:
+                profiles[current_profile] = settings
+                settings = []
+            current_profile = line
+        else:
+            # Split the setting and value based on multiple spaces
+            parts = line.rsplit(maxsplit=1)
+            if len(parts) == 2:
+                setting_name = parts[0].strip()
+                setting_value = parts[1].strip()
+                settings.append((setting_name, setting_value))
+
+    if current_profile:
+        profiles[current_profile] = settings
+
+    return profiles
 
 
 def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
@@ -270,6 +230,22 @@ def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
                 append_array(failed, f"{profile[:-18]} {obj}", value)
     print("\n5. Windows Defender Firewall with Advanced Security result: \n")
     result_table(passed, failed)
+
+
+def filter_info_6():
+    file = open(".\\logs\\result6.txt", "r")
+    lines = file.read().split('\n')
+    # Initialize dictionaries to store settings
+    settings = {}
+
+    # Iterate over the lines and extract settings
+    for line in lines:
+        if line.strip():
+            match = re.match(r'(.+?)\s{2,}(.+)', line)
+            if match:
+                category, setting = match.groups()
+                settings[category] = setting
+    return settings
 
 
 def checklist_6(clist6):
@@ -310,22 +286,35 @@ def checklist_6(clist6):
     result_table(passed, failed)
 
 
+def filter_info_7():
+    file = open(".\\logs\\result7.txt", "r")
+    # Initialize dictionaries to store settings
+    settings = {}
+    for line in file:
+        line = remove_extra_spaces(line.strip().replace(":", ""))
+        parts = line.split()
+        key = " ".join(parts[:-1])
+        settings[key] = parts[-1]
+    # Iterate over the lines and extract settings
+    return settings
+
+
 def checklist_7(clist7):
     passed = []
     failed = []
-    for category, settings in clist7.items():
+    for category, value in clist7.items():
         if category == "EnableSMB1Protocol":
-            if settings == "False":
-                append_array(passed, f"Configure SMB v1 server", settings)
+            if value == "False":
+                append_array(passed, f"Configure SMB v1 server", value)
             else:
-                append_array(failed, f"Configure SMB v1 server", settings)
+                append_array(failed, f"Configure SMB v1 server", value)
         elif category == "Start REG_DWORD":
-            if settings == "0x0":
+            if value == "0x0":
                 append_array(passed, "Configure SMB v1 client driver", "Disable")
             else:
                 append_array(failed, "Configure SMB v1 client driver", "Manual start or Automatic start")
         elif category == "UseLogonCredential REG_DWORD":
-            if settings == "0x0":
+            if value == "0x0":
                 append_array(passed, "WDigest Authentication", "Disable")
             else:
                 append_array(failed, "WDigest Authentication", "Enable")
@@ -335,18 +324,85 @@ def checklist_7(clist7):
     result_table(passed, failed)
 
 
+def filter_info_8():
+    file = open(".\\logs\\result8.txt", "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            print(parts)
+            key = parts[0]
+            value = ' '.join(parts[2:])
+            settings[key] = value
+    except:
+        pass
+    return settings
+
+
+def checklist_8(clist8):
+    passed = []
+    failed = []
+    if len(clist8) == 0:
+        append_array(failed, "Hardened UNC Paths - NETLOGON, SYSVOL", "Default - Not configured")
+    for key, value in clist8.items():
+        if len(clist8) == 1:
+            if key == r"\\*\SYSVOL":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                    append_array(passed, "Hardened UNC Paths - SYSVOL", value)
+                    append_array(failed, "Hardened UNC Paths - NETLOGON", "Not configured")
+                else:
+                    append_array(failed, "Hardened UNC Paths - SYSVOL", value)
+                    append_array(failed, "Hardened UNC Paths - NETLOGON", "Not configured")
+            elif key == r"\\*\NETLOGON":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                    append_array(passed, "Hardened UNC Paths - NETLOGON", value)
+                    append_array(failed, "Hardened UNC Paths - SYSVOL", "Not configured")
+                else:
+                    append_array(failed, "Hardened UNC Paths - NETLOGON", value)
+                    append_array(failed, "Hardened UNC Paths - SYSVOL", "Not configured")
+        elif len(clist8) == 2:
+            if key == r"\\*\SYSVOL":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                    append_array(passed, "Hardened UNC Paths - SYSVOL", value)
+                else:
+                    append_array(failed, "Hardened UNC Paths - SYSVOL", value)
+            elif key == r"\\*\NETLOGON" and len(clist8) == 2:
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                    append_array(passed, "Hardened UNC Paths - NETLOGON", value)
+                else:
+                    append_array(failed, "Hardened UNC Paths - NETLOGON", value)
+    print("\n8. Network Provider: \n")
+    result_table(passed, failed)
+
+
+def filter_info_9():
+    file = open(".\\logs\\result9.txt", "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = " ".join(parts[:-1])
+            print(key)
+            settings[key] = parts[-1]
+    except:
+        pass
+    return settings
+
+
 def checklist_9(clist9):
     passed = []
     failed = []
     if len(clist9) == 0:
-        append_array(failed, "Encryption Oracle Remediation", "Default: Not configured")
-    for category, settings in clist9.items():
-        if category == "AllowEncryptionOracle REG_DWORD":
-            if settings == "0x0":
-                append_array(passed, "Encryption Oracle Remediation", "'Enabled Force Updated Clients")
-            elif settings == "0x1":
+        append_array(failed, "Encryption Oracle Remediation", "Default - Not configured")
+    for key, value in clist9.items():
+        if key == "AllowEncryptionOracle REG_DWORD":
+            if value == "0x0":
+                append_array(passed, "Encryption Oracle Remediation", "Enabled Force Updated Clients")
+            elif value == "0x1":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
-            elif settings == "0x2":
+            elif value == "0x2":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
     print("\n9. Credentials Delegation: \n")
     result_table(passed, failed)
@@ -357,18 +413,16 @@ def compare_checklist():
     clist5 = filer_info_5()
     clist6 = filter_info_6()
     clist7 = filter_info_7()
+    clist8 = filter_info_8()
     clist9 = filter_info_9()
-    '''
-    for profile, settings in checklist2.items():
-        print(f"\n{profile}")
-        for setting, value in settings:
-            print(f"{profile[:-18]} {setting}, Value: {value}")
-    '''
 
+    '''
     checklist_1(clist1)
     checklist_5(clist5)
     checklist_6(clist6)
     checklist_7(clist7)
+    '''
+    checklist_8(clist8)
     checklist_9(clist9)
 
 
@@ -396,7 +450,7 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        run_query()
+        #run_query()
         compare_checklist()
         return
 
