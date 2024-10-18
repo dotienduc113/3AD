@@ -4,3 +4,4 @@ auditpol /get /category:* | findstr /i /c:"Credential Validation" /c:"Kerberos A
 (powershell.exe Get-SmbServerConfiguration | findstr EnableSMB1Protocol & sc query mrxsmb10 | find "STATE" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest" | find "UseLogonCredential") > .\logs\result7.txt
 reg query "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" | findstr AllowEncryptionOracle > .\logs\result9.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" | findstr /i "netlogon sysvol" > .\logs\result8.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows Defender" /s | findstr "DisableAntiSpyware DisableBehaviorMonitoring DisableRealtimeMonitoring DisableScanOnRealtimeEnable DisableOnAccessProtection DisableIOAVProtection DisableArchiveScanning DisablePackedExeScanning DisableRemovableDriveScanning" > .\logs\result10.txt

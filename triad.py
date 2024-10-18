@@ -331,9 +331,8 @@ def filter_info_8():
         for line in file:
             line = remove_extra_spaces(line.strip())
             parts = line.split()
-            print(parts)
             key = parts[0]
-            value = ' '.join(parts[2:])
+            value = ' '.join(parts[2:]).replace(" ","")
             settings[key] = value
     except:
         pass
@@ -348,14 +347,14 @@ def checklist_8(clist8):
     for key, value in clist8.items():
         if len(clist8) == 1:
             if key == r"\\*\SYSVOL":
-                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1":
                     append_array(passed, "Hardened UNC Paths - SYSVOL", value)
                     append_array(failed, "Hardened UNC Paths - NETLOGON", "Not configured")
                 else:
                     append_array(failed, "Hardened UNC Paths - SYSVOL", value)
                     append_array(failed, "Hardened UNC Paths - NETLOGON", "Not configured")
             elif key == r"\\*\NETLOGON":
-                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1":
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                     append_array(failed, "Hardened UNC Paths - SYSVOL", "Not configured")
                 else:
@@ -363,12 +362,12 @@ def checklist_8(clist8):
                     append_array(failed, "Hardened UNC Paths - SYSVOL", "Not configured")
         elif len(clist8) == 2:
             if key == r"\\*\SYSVOL":
-                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1":
                     append_array(passed, "Hardened UNC Paths - SYSVOL", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - SYSVOL", value)
             elif key == r"\\*\NETLOGON" and len(clist8) == 2:
-                if value == "RequireMutualAuthentication=1,RequireIntegrity=1" or value == "RequireMutualAuthentication=1, RequireIntegrity=1":
+                if value == "RequireMutualAuthentication=1,RequireIntegrity=1":
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - NETLOGON", value)
@@ -383,8 +382,7 @@ def filter_info_9():
         for line in file:
             line = remove_extra_spaces(line.strip())
             parts = line.split()
-            key = " ".join(parts[:-1])
-            print(key)
+            key = parts[0]
             settings[key] = parts[-1]
     except:
         pass
@@ -397,7 +395,7 @@ def checklist_9(clist9):
     if len(clist9) == 0:
         append_array(failed, "Encryption Oracle Remediation", "Default - Not configured")
     for key, value in clist9.items():
-        if key == "AllowEncryptionOracle REG_DWORD":
+        if key == "AllowEncryptionOracle":
             if value == "0x0":
                 append_array(passed, "Encryption Oracle Remediation", "Enabled Force Updated Clients")
             elif value == "0x1":
@@ -408,6 +406,77 @@ def checklist_9(clist9):
     result_table(passed, failed)
 
 
+def filter_info_10():
+    file = open(".\\logs\\result10.txt", "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = parts[0]
+            settings[key] = parts[-1]
+    except:
+        pass
+    return settings
+
+
+def checklist_10(clist10):
+    passed = []
+    failed = []
+    if len(clist10) == 0:
+        append_array(passed, "Windows Defender Policy 10.1 -> 10.8", "Default - Not configured")
+    for key, value in clist10.items():
+        if key == "DisableAntiSpyware":
+            if value == "0x0":
+                append_array(passed, "Turn off Windows Defender", "Disabled")
+            else:
+                append_array(failed, "Turn off Windows Defender", "Enabled")
+        elif key == "DisableRealtimeMonitoring":
+            if value == "0x0":
+                append_array(passed, "Turn off real-time protection", "Disabled")
+            else:
+                append_array(failed, "Turn off real-time protection", "Enabled")
+        elif key == "DisableBehaviorMonitoring":
+            if value == "0x0":
+                append_array(passed, "Turn on behavior monitoring", "Enabled")
+            else:
+                append_array(failed, "Turn on behavior monitoring", "Disable")
+        elif key == "DisableIOAVProtection":
+            if value == "0x0":
+                append_array(passed, "Scan all downloaded files and attachments", "Enabled")
+            else:
+                append_array(failed, "Scan all downloaded files and attachments", "Disable")
+        elif key == "DisableScanOnRealtimeEnable":
+            if value == "0x0":
+                append_array(passed, "Turn on process scanning whenever real-time protection is enabled", "Enabled")
+            else:
+                append_array(failed, "Turn on process scanning whenever real-time protection is enabled", "Disable")
+        elif key == "DisableOnAccessProtection":
+            if value == "0x0":
+                append_array(passed, "Monitor file and program activity on your computer", "Enabled")
+            else:
+                append_array(failed, "Monitor file and program activity on your computer", "Disable")
+        elif key == "DisableArchiveScanning":
+            if value == "0x0":
+                append_array(passed, "Scan archive files", "Enabled")
+            else:
+                append_array(failed, "Scan archive files", "Disable")
+        elif key == "DisablePackedExeScanning":
+            if value == "0x0":
+                append_array(passed, "Scan packed executables", "Enabled")
+            else:
+                append_array(failed, "Scan packed executables", "Disable")
+    if "DisableRemovableDriveScanning" in clist10:
+        if clist10["DisableRemovableDriveScanning"] == "0x0":
+            append_array(passed, "Scan removable drives", "Enabled")
+        else:
+            append_array(failed, "Scan removable drives", "Disable")
+    else:
+        append_array(failed, "Scan removable drives", "Default - Not configured")
+    print("\n10. Windows Defender: \n")
+    result_table(passed, failed)
+
+
 def compare_checklist():
     clist1 = filter_info_1()
     clist5 = filer_info_5()
@@ -415,15 +484,16 @@ def compare_checklist():
     clist7 = filter_info_7()
     clist8 = filter_info_8()
     clist9 = filter_info_9()
-
+    clist10 = filter_info_10()
     '''
     checklist_1(clist1)
     checklist_5(clist5)
     checklist_6(clist6)
     checklist_7(clist7)
-    '''
     checklist_8(clist8)
     checklist_9(clist9)
+'''
+    checklist_10(clist10)
 
 
 # dung de cho vao bang passed va failed
