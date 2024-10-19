@@ -597,6 +597,7 @@ def filer_info_registry(filename):
         pass
     return settings
 
+
 def checklist_12(clist12):
     passed = []
     failed = []
@@ -640,6 +641,101 @@ def checklist_12(clist12):
     result_table(passed, failed)
 
 
+def filter_info_13():
+    file = open(".\\logs\\result13.txt", "r")
+    client_settings = []
+    service_settings = []
+    parts = file.read().strip().split("HKEY_LOCAL_MACHINE")
+
+    # Process the first part (Client)
+    client_part = parts[1].strip().split("\n")
+    for line in client_part[1:]:
+        client_settings.append(line.strip())
+
+    # Process the second part (Service)
+    service_part = parts[2].strip().split("\n")
+    for line in service_part[1:]:
+        service_settings.append(line.strip())
+
+    settings = {}
+    try:
+        for line in client_settings:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = "Client " + parts[0]
+            settings[key] = parts[-1]
+        for line in service_settings:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = "Service " + parts[0]
+            settings[key] = parts[-1]
+    except:
+        pass
+    return settings
+
+
+def checklist_13(clist13):
+    passed = []
+    failed = []
+    if "Client AllowBasic" in clist13:
+        s = "Client Allow Basic authentication"
+        if clist13.get("Client AllowBasic") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Client Allow Basic authentication", "Not configured")
+    if "Client AllowUnencryptedTraffic" in clist13:
+        s = "Client Allow unencrypted traffic"
+        if clist13.get("Client AllowUnencryptedTraffic") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Client Allow unencrypted traffic", "Not configured")
+    if "Client AllowDigest" in clist13:
+        s = "Client Disallow Digest authentication"
+        if clist13.get("Client AllowDigest") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Client Disallow Digest authentication", "Not configured")
+    if "Service AllowBasic" in clist13:
+        s = "Service Allow Basic authentication"
+        if clist13.get("Service AllowBasic") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Service Allow Basic authentication", "Not configured")
+    if "Service AllowUnencryptedTraffic" in clist13:
+        s = "Service Allow unencrypted traffic"
+        if clist13.get("Service AllowUnencryptedTraffic") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Service Allow unencrypted traffic", "Not configured")
+    if "Service DisableRunAs" in clist13:
+        s = "Service Disallow WinRM from storing RunAs credentials"
+        if clist13.get("Service DisableRunAs") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Service Disallow WinRM from storing RunAs credentials", "Not configured")
+    if "Service AllowAutoConfig" in clist13:
+        s = "Service Allow remote server management through WinRM"
+        if clist13.get("Service AllowAutoConfig") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Service Allow remote server management through WinRM", "Not configured")
+    print("\n13. WinRM:")
+    result_table(passed, failed)
+
 
 def compare_checklist():
     clist1 = filter_info_1()
@@ -651,6 +747,7 @@ def compare_checklist():
     clist10 = filer_info_registry(".\\logs\\result10.txt")
     clist11 = filer_info_registry(".\\logs\\result11.txt")
     clist12 = filer_info_registry(".\\logs\\result12.txt")
+    clist13 = filter_info_13()
     '''
     checklist_1(clist1)
     checklist_5(clist5)
@@ -661,7 +758,8 @@ def compare_checklist():
 '''
     #checklist_10(clist10)
     #checklist_11(clist11)
-    checklist_12(clist12)
+    #checklist_12(clist12)
+    checklist_13(clist13)
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
