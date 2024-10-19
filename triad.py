@@ -737,6 +737,53 @@ def checklist_13(clist13):
     result_table(passed, failed)
 
 
+def checklist_14(clist14):
+    passed = []
+    failed = []
+    s = "Allow Remote Shell Access"
+    if "AllowRemoteShellAccess" in clist14:
+        if clist14.get("AllowRemoteShellAccess") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, s, "Not configured")
+    print("\n14. Windows Remote Shell:")
+    result_table(passed, failed)
+
+
+def checklist_15(clist15):
+    passed = []
+    failed = []
+    s = "Print Spooler"
+    if "Start" in clist15:
+        if clist15.get("Start") == "0x4":
+            append_array(passed, s, "Disabled")
+        elif clist15.get("Start") == "0x3":
+            append_array(failed, s, "Manual")
+        elif clist15.get("Start") == "0x2":
+            append_array(failed, s, "Automatic")
+    else:
+        append_array(failed, s, "Not configured")
+    print("\n15. System Services:")
+    result_table(passed, failed)
+
+
+def checklist_16(clist16):
+    passed = []
+    failed = []
+    s = "Turn off Local Group Policy Objects processing"
+    if "DisableLGPOProcessing" in clist16:
+
+        if clist16.get("DisableLGPOProcessing") == "0x1":
+            append_array(passed, s, "Enabled")
+        elif clist16.get("DisableLGPOProcessing") == "0x2":
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, s, "Not configured")
+    print("\n16. Group Policy:")
+    result_table(passed, failed)
+
 def compare_checklist():
     clist1 = filter_info_1()
     clist5 = filer_info_5()
@@ -748,6 +795,9 @@ def compare_checklist():
     clist11 = filer_info_registry(".\\logs\\result11.txt")
     clist12 = filer_info_registry(".\\logs\\result12.txt")
     clist13 = filter_info_13()
+    clist14 = filer_info_registry(".\\logs\\result14.txt")
+    clist15 = filer_info_registry(".\\logs\\result15.txt")
+    clist16 = filer_info_registry(".\\logs\\result16.txt")
     '''
     checklist_1(clist1)
     checklist_5(clist5)
@@ -760,6 +810,9 @@ def compare_checklist():
     #checklist_11(clist11)
     #checklist_12(clist12)
     checklist_13(clist13)
+    checklist_14(clist14)
+    checklist_15(clist15)
+    checklist_16(clist16)
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):

@@ -8,3 +8,6 @@ reg query "HKLM\Software\Policies\Microsoft\Windows Defender" /s | findstr "Disa
 reg query "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" | findstr "fSingleSessionPerUser fDisableClip fDisableCdm MinEncryptionLevel fPromptForPassword fEncryptRPCTraffic fEncryptRPCTraffic SecurityLayer UserAuthentication MaxDisconnectionTime MaxIdleTime PerSessionTempDir DeleteTempDirsOnExit" > .\logs\result11.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\PowerShell" /s | findstr /i "EnableScripts ExecutionPolicy EnableScriptBlockLogging EnableTranscripting" > .\logs\result12.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM" /s | findstr "AllowBasic AllowUnencryptedTraffic AllowDigest  DisableRunAs AllowAutoConfig WinRM\Client WinRM\Service" > .\logs\result13.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS" | findstr AllowRemoteShellAccess > .\logs\result14.txt
+reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler" | findstr Start > .\logs\results15.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGPOProcessing > .\logs\results16.txt
