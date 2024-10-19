@@ -343,7 +343,8 @@ def checklist_8(clist8):
     passed = []
     failed = []
     if len(clist8) == 0:
-        append_array(failed, "Hardened UNC Paths - NETLOGON, SYSVOL", "Default - Not configured")
+        append_array(failed, "Hardened UNC Paths - SYSVOL", "Default - Not configured")
+        append_array(failed, "Hardened UNC Paths - NETLOGON", "Default - Not configured")
     for key, value in clist8.items():
         if len(clist8) == 1:
             if key == r"\\*\SYSVOL":
@@ -583,6 +584,63 @@ def checklist_11(clist11):
     result_table(passed, failed)
 
 
+def filer_info_registry(filename):
+    file = open(filename, "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            key = parts[0]
+            settings[key] = parts[-1]
+    except:
+        pass
+    return settings
+
+def checklist_12(clist12):
+    passed = []
+    failed = []
+    for key, value in clist12.items():
+        if key == "EnableScriptBlockLogging":
+            s = "Turn on PowerShell Script Block Logging"
+            if value == "0x1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
+        elif key == "EnableTranscripting":
+            s = "Turn on PowerShell Transcription"
+            if value == "0x0":
+                append_array(passed, s, "Disabled")
+            else:
+                append_array(failed, s, "Enabled")
+        elif key == "EnableScripts":
+            s = "Turn on Script Execution"
+            if value == "0x0":
+                append_array(failed, s, "Disabled")
+        elif key == "ExecutionPolicy":
+            s = "Turn on Script Execution"
+            if value == "AllSigned":
+                append_array(passed, s, "Enabled Allow only signed scripts")
+            elif value == "RemoteSigned":
+                append_array(failed, s, "Enabled Allow local scripts and remote signed scripts")
+            elif value == "Unrestricted":
+                append_array(failed, s, "Enabled Allow all scripts")
+            else:
+                append_array(failed, s, f"Enabled {value}")
+    if "EnableScriptBlockLogging" not in clist12:
+        s = "Turn on PowerShell Script Block Execution Logging"
+        append_array(passed, s, "Default - Not configured/Enable")
+    if "EnableTranscripting" not in clist12:
+        s = "Turn on PowerShell Transcription"
+        append_array(failed, s, "Default - Not configured")
+    if "EnableScripts" not in clist12:
+        s = "Turn on Script Execution"
+        append_array(failed, s, "Default - Not configured/Disable")
+    print("\n12. Windows PowerShell:")
+    result_table(passed, failed)
+
+
+
 def compare_checklist():
     clist1 = filter_info_1()
     clist5 = filer_info_5()
@@ -590,8 +648,9 @@ def compare_checklist():
     clist7 = filter_info_7()
     clist8 = filter_info_8()
     clist9 = filter_info_9()
-    clist10 = filter_info_10()
-    clist11 = filer_info_11()
+    clist10 = filer_info_registry(".\\logs\\result10.txt")
+    clist11 = filer_info_registry(".\\logs\\result11.txt")
+    clist12 = filer_info_registry(".\\logs\\result12.txt")
     '''
     checklist_1(clist1)
     checklist_5(clist5)
@@ -600,8 +659,9 @@ def compare_checklist():
     checklist_8(clist8)
     checklist_9(clist9)
 '''
-    checklist_10(clist10)
-    checklist_11(clist11)
+    #checklist_10(clist10)
+    #checklist_11(clist11)
+    checklist_12(clist12)
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
