@@ -319,8 +319,6 @@ def checklist_7(clist7):
             else:
                 append_array(failed, "WDigest Authentication", "Enable")
     print("\n7. MS Security Guide:")
-    if len(clist7) < 3:
-        print("WARNING: Query results are missing REQUIRE MANUAL CHECK")
     result_table(passed, failed)
 
 
@@ -645,20 +643,21 @@ def filter_info_13():
     file = open(".\\logs\\result13.txt", "r")
     client_settings = []
     service_settings = []
-    parts = file.read().strip().split("HKEY_LOCAL_MACHINE")
-
-    # Process the first part (Client)
-    client_part = parts[1].strip().split("\n")
-    for line in client_part[1:]:
-        client_settings.append(line.strip())
-
-    # Process the second part (Service)
-    service_part = parts[2].strip().split("\n")
-    for line in service_part[1:]:
-        service_settings.append(line.strip())
 
     settings = {}
     try:
+        parts = file.read().strip().split("HKEY_LOCAL_MACHINE")
+
+        # Process the first part (Client)
+        client_part = parts[1].strip().split("\n")
+        for line in client_part[1:]:
+            client_settings.append(line.strip())
+
+        # Process the second part (Service)
+        service_part = parts[2].strip().split("\n")
+        for line in service_part[1:]:
+            service_settings.append(line.strip())
+
         for line in client_settings:
             line = remove_extra_spaces(line.strip())
             parts = line.split()
