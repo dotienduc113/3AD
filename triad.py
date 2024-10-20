@@ -1027,12 +1027,12 @@ def compare_checklist():
     clist4 = filter_info_4()
 
     checklist_1(clist1)
+    checklist_4(clist4)
     checklist_5(clist5)
     checklist_6(clist6)
     checklist_7(clist7)
     checklist_8(clist8)
     checklist_9(clist9)
-
     checklist_10(clist10)
     checklist_11(clist11)
     checklist_12(clist12)
@@ -1040,8 +1040,6 @@ def compare_checklist():
     checklist_14(clist14)
     checklist_15(clist15)
     checklist_16(clist16)
-    checklist_4(clist4)
-
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
