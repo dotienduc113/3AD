@@ -784,6 +784,61 @@ def checklist_16(clist16):
     print("\n16. Group Policy:")
     result_table(passed, failed)
 
+def filter_info_4():
+    file = open(".\\logs\\result4.txt", "r")
+    settings = {}
+    try:
+        for line in file:
+            line = remove_extra_spaces(line.strip())
+            parts = line.split()
+            if parts[0].startswith("Account"):
+                key = parts[0] + " " + parts[1]
+            else:
+                key = parts[0]
+            settings[key] = parts[2]
+    except:
+        pass
+    return settings
+
+def checklist_4(clist4):
+    passed = []
+    failed = []
+    if "Account active" in clist4:
+        s = "Accounts: Administrator account status"
+        if clist4.get("Account active") == "No":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    if "RequireSignOrSeal" in clist4:
+        s = "Domain member: Digitally encrypt or sign secure channel data (always)"
+        if clist4.get("RequireSignOrSeal") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    if "SealSecureChannel" in clist4:
+        s = "Domain member: Digitally encrypt secure channel data (when possible)"
+        if clist4.get("SealSecureChannel") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    if "SignSecureChannel" in clist4:
+        s = "Domain member: Digitally sign secure channel data (when possible)"
+        if clist4.get("SignSecureChannel") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    if "DisablePasswordChange" in clist4:
+        s = "Domain member: Disable machine account password changes"
+        if clist4.get("DisablePasswordChange") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+
+
+    print("\n4. PowerShell:")
+    result_table(passed, failed)
+
+
 def compare_checklist():
     clist1 = filter_info_1()
     clist5 = filer_info_5()
@@ -798,6 +853,7 @@ def compare_checklist():
     clist14 = filer_info_registry(".\\logs\\result14.txt")
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
+    clist4 = filter_info_4()
     '''
     checklist_1(clist1)
     checklist_5(clist5)
@@ -809,10 +865,11 @@ def compare_checklist():
     #checklist_10(clist10)
     #checklist_11(clist11)
     #checklist_12(clist12)
-    checklist_13(clist13)
-    checklist_14(clist14)
-    checklist_15(clist15)
-    checklist_16(clist16)
+    #checklist_13(clist13)
+    #checklist_14(clist14)
+    #checklist_15(clist15)
+    #checklist_16(clist16)
+    checklist_4(clist4)
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
