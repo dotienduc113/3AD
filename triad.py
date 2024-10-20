@@ -784,6 +784,7 @@ def checklist_16(clist16):
     print("\n16. Group Policy:")
     result_table(passed, failed)
 
+
 def filter_info_4():
     file = open(".\\logs\\result4.txt", "r")
     settings = {}
@@ -800,6 +801,7 @@ def filter_info_4():
         pass
     return settings
 
+
 def checklist_4(clist4):
     passed = []
     failed = []
@@ -815,27 +817,197 @@ def checklist_4(clist4):
             append_array(passed, s, "Enabled")
         else:
             append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Domain member: Digitally encrypt or sign secure channel data (always)", "Default/Enabled")
     if "SealSecureChannel" in clist4:
         s = "Domain member: Digitally encrypt secure channel data (when possible)"
         if clist4.get("SealSecureChannel") == "0x1":
             append_array(passed, s, "Enabled")
         else:
             append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Domain member: Digitally encrypt secure channel data (when possible)", "Default/Enabled")
     if "SignSecureChannel" in clist4:
         s = "Domain member: Digitally sign secure channel data (when possible)"
         if clist4.get("SignSecureChannel") == "0x1":
             append_array(passed, s, "Enabled")
         else:
             append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Domain member: Digitally sign secure channel data (when possible)", "Default/Enabled")
     if "DisablePasswordChange" in clist4:
         s = "Domain member: Disable machine account password changes"
         if clist4.get("DisablePasswordChange") == "0x0":
             append_array(passed, s, "Disabled")
         else:
             append_array(failed, s, "Enabled")
-
-
-    print("\n4. PowerShell:")
+    else:
+        append_array(passed, "Domain member: Disable machine account password changes", "Default/Disabled")
+    if "MaximumPasswordAge" in clist4:
+        s = "Domain member: Maximum machine account password age"
+        if 0 < int(clist4.get("MaximumPasswordAge"), 16) <= 30:
+            append_array(passed, s, f"{int(clist4.get("MaximumPasswordAge"), 16)} days")
+        else:
+            append_array(failed, s, f"{int(clist4.get("MaximumPasswordAge"), 16)} days")
+    else:
+        append_array(passed, "Domain member: Maximum machine account password age", "Default/30 days")
+    if "RequireStrongKey" in clist4:
+        s = "Domain member: Require strong (Windows 2000 or later) session key"
+        if clist4.get("RequireStrongKey") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Domain member: Require strong (Windows 2000 or later) session key", "Default/Enabled")
+    if "InactivityTimeoutSecs" in clist4:
+        s = "Interactive logon: Machine inactivity limit Inactivity"
+        if 0 < int(clist4.get("InactivityTimeoutSecs"), 16) <= 900:
+            append_array(passed, s, f"{int(clist4.get("InactivityTimeoutSecs"), 16)} seconds")
+        else:
+            append_array(failed, s, f"{int(clist4.get("InactivityTimeoutSecs"), 16)} seconds")
+    else:
+        append_array(failed, "Interactive logon: Machine inactivity limit Inactivity", "Default/not enforced")
+    if "CachedLogonsCount" in clist4:
+        s = "Interactive logon: Number of previous logons to cache"
+        if int(clist4.get("CachedLogonsCount")) <= 4:
+            append_array(passed, s, f"{int(clist4.get("CachedLogonsCount"))} logon(s)")
+        else:
+            append_array(failed, s, f"{int(clist4.get("CachedLogonsCount"))} logon(s)")
+    else:
+        append_array(failed, "Interactive logon: Number of previous logons to cache", "Default/10 logon(s)")
+    if "PasswordExpiryWarning" in clist4:
+        s = "Interactive logon: Prompt user to change password before expiration"
+        if 5 <= int(clist4.get("PasswordExpiryWarning"), 16) <= 14:
+            append_array(passed, s, f"{int(clist4.get("PasswordExpiryWarning"), 16)} days")
+        else:
+            append_array(failed, s, f"{int(clist4.get("PasswordExpiryWarning"), 16)} days")
+    else:
+        append_array(failed, "Interactive logon: Prompt user to change password before expiration", "Default/5 days")
+    if "RequireSecuritySignature" in clist4:
+        s = "Microsoft network client: Digitally sign communications (always)"
+        if clist4.get("RequireSecuritySignature") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Microsoft network client: Digitally sign communications (always)", "Default/Disabled")
+    if "EnableSecuritySignature" in clist4:
+        s = "Microsoft network client: Digitally sign communications (if server agrees)"
+        if clist4.get("EnableSecuritySignature") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Microsoft network client: Digitally sign communications (if server agrees)", "Default/Enabled")
+    if "EnablePlainTextPassword" in clist4:
+        s = "Microsoft network client: Send unencrypted password to third-party SMB servers"
+        if clist4.get("EnablePlainTextPassword") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(passed, "Microsoft network client: Send unencrypted password to third-party SMB servers", "Default/Disabled")
+    if "autodisconnect" in clist4:
+        s = "Microsoft network server: Amount of idle time required before suspending session"
+        if 0 < int(clist4.get("autodisconnect"), 16) <= 15:
+            append_array(passed, s, f"{int(clist4.get('autodisconnect'), 16)} minute(s)")
+        else:
+            append_array(failed, s, f"{int(clist4.get('autodisconnect'), 16)} minute(s)")
+    else:
+        append_array(passed, "Microsoft network server: Amount of idle time required before suspending session", "Default/Not defined")
+    if "requiresecuritysignature" in clist4:
+        s = "Microsoft network server: Digitally sign communications (always)"
+        if clist4.get("requiresecuritysignature") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Microsoft network server: Digitally sign communications (always)", "Default")
+    if "enablesecuritysignature" in clist4:
+        s = "Microsoft network server: Digitally sign communications (if client agrees)"
+        if clist4.get("enablesecuritysignature") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Microsoft network server: Digitally sign communications (if client agrees)", "Default/Enabled on domain controllers only.")
+    if "enableforcedlogoff" in clist4:
+        s = "Microsoft network server: Disconnect clients when logon hours expire"
+        if clist4.get("enableforcedlogoff") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Microsoft network server: Disconnect clients when logon hours expire", "Default/Enabled")
+    if "SmbServerNameHardeningLevel" in clist4:
+        s = "Microsoft network server: Server SPN target name validation level"
+        if clist4.get("SmbServerNameHardeningLevel") == "0x1":
+            append_array(passed, s, "Accept if provided by client or higher")
+        elif clist4.get("SmbServerNameHardeningLevel") == "0x2":
+            append_array(passed, s, "Required from client")
+        else:
+            append_array(failed, s, "Off")
+    else:
+        append_array(failed, "Microsoft network server: Server SPN target name validation level", "Default/Off")
+    if "UseMachineId" in clist4:
+        s = "Network security: Allow Local System to use computer identity for NTLM"
+        if clist4.get("UseMachineId") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Network security: Allow Local System to use computer identity for NTLM", "Default/Enabled")
+    if "SupportedEncryptionTypes" in clist4:
+        s = "Network security: Configure encryption types allowed for Kerberos"
+        if clist4.get("SupportedEncryptionTypes") == "0x7ffffff8":
+            append_array(passed, s, "AES128_HMAC_SHA/ES256_HMAC_SHA1/Future encryption types")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Network security: Configure encryption types allowed for Kerberos", "Default/Not defined")
+    if "NoLmHash" in clist4:
+        s = "Network security: Do not store LAN Manager hash value on next password change"
+        if clist4.get("NoLmHash") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Network security: Do not store LAN Manager hash value on next password change", "Default/Enabled")
+    if "LmCompatibilityLevel" in clist4:
+        s = "Network security: LAN Manager authentication level"
+        if clist4.get("LmCompatibilityLevel") == "0x5":
+            append_array(passed, s, "Send NTLMv2 response only. Refuse LM & NTLM")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Network security: LAN Manager authentication level", "Default/Depends on OS")
+    if "ldapclientintegrity" in clist4:
+        s = "Network security: LDAP client signing requirements"
+        if clist4.get("ldapclientintegrity") == "0x1":
+            append_array(passed, s, "Negotiate signing")
+        elif clist4.get("ldapclientintegrity") == "0x2":
+            append_array(passed, s, "Require signing")
+        else:
+            append_array(failed, s, "None")
+    else:
+        append_array(passed, "Network security: LDAP client signing requirements", "Default/Negotiate signing")
+    if "NtlmMinClientSec" in clist4:
+        s = "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients"
+        if clist4.get("NtlmMinClientSec") == "0x20080000":
+            append_array(passed, s, "Require NTLMv2 session security/Require 128-bit encryption")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients", "Default/Depends on OS")
+    if "NtlmMinServerSec" in clist4:
+        s = "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers"
+        if clist4.get("NtlmMinServerSec") == "0x20080000":
+            append_array(passed, s, "Require NTLMv2 session security/Require 128-bit encryption")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers", "Default/Depends on OS")
+    print("\n4. Security Options:")
     result_table(passed, failed)
 
 
@@ -870,6 +1042,7 @@ def compare_checklist():
     #checklist_15(clist15)
     #checklist_16(clist16)
     checklist_4(clist4)
+
 
 # dung de cho vao bang passed va failed
 def result_table(passed, failed):
