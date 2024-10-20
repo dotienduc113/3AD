@@ -1026,21 +1026,21 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
     clist4 = filter_info_4()
-    '''
+
     checklist_1(clist1)
     checklist_5(clist5)
     checklist_6(clist6)
     checklist_7(clist7)
     checklist_8(clist8)
     checklist_9(clist9)
-'''
-    #checklist_10(clist10)
-    #checklist_11(clist11)
-    #checklist_12(clist12)
-    #checklist_13(clist13)
-    #checklist_14(clist14)
-    #checklist_15(clist15)
-    #checklist_16(clist16)
+
+    checklist_10(clist10)
+    checklist_11(clist11)
+    checklist_12(clist12)
+    checklist_13(clist13)
+    checklist_14(clist14)
+    checklist_15(clist15)
+    checklist_16(clist16)
     checklist_4(clist4)
 
 
@@ -1068,7 +1068,7 @@ def execute(choice):
     if choice == 0:
         install_requirements()
     elif choice == 1:
-        #run_query()
+        run_query()
         compare_checklist()
         return
 
