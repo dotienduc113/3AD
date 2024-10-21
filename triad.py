@@ -245,15 +245,15 @@ def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
     for profile, settings in clist5.items():
         for obj, value in settings:
             if obj == "State" and value == "ON":
-                append_array(passed, f"5.1 {profile[:-18]} {obj}", value)
+                append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "Firewall Policy" and "BlockInbound" in value:
-                append_array(passed, f"5.2 {profile[:-18]} {obj}", value)
+                append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "LogAllowedConnections" and value == "Enable":
-                append_array(passed, f"5.5 {profile[:-18]} {obj}", value)
+                append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "LogDroppedConnections" and value == "Enable":
-                append_array(passed, f"5.4 {profile[:-18]} {obj}", value)
+                append_array(passed, f"{profile[:-18]} {obj}", value)
             elif obj == "MaxFileSize" and int(value) >= 16384:
-                append_array(passed, f"5.3 {profile[:-18]} {obj}", value)
+                append_array(passed, f"{profile[:-18]} {obj}", value)
             else:
                 append_array(failed, f"{profile[:-18]} {obj}", value)
     print("\n5. Windows Defender Firewall with Advanced Security result:")
@@ -624,7 +624,7 @@ def checklist_11(clist11):
     else:
         append_array(failed, "Set time limit for disconnected sessions", "Not configured/Disabled")
     if "MaxIdleTime" in clist11:
-        s = 0 < "Set time limit for active but idle Remote Desktop Services sessions"
+        s = "Set time limit for active but idle Remote Desktop Services sessions"
         if int(clist11.get("MaxIdleTime"), 16) <= 900000:
             append_array(passed, s, "<= 15 minutes")
         else:
