@@ -1240,20 +1240,20 @@ def compare_checklist():
 
 
     checklist_1(clist1)
-    #checklist_3(clist3)
+    checklist_3(clist3)
     checklist_4(clist4)
-    #checklist_5(clist5)
-    #checklist_6(clist6)
-    #checklist_7(clist7)
-    #checklist_8(clist8)
-    #checklist_9(clist9)
-    #checklist_10(clist10)
-    #checklist_11(clist11)
-    #checklist_12(clist12)
-    #checklist_13(clist13)
-    #checklist_14(clist14)
-    #checklist_15(clist15)
-    #checklist_16(clist16)
+    checklist_5(clist5)
+    checklist_6(clist6)
+    checklist_7(clist7)
+    checklist_8(clist8)
+    checklist_9(clist9)
+    checklist_10(clist10)
+    checklist_11(clist11)
+    checklist_12(clist12)
+    checklist_13(clist13)
+    checklist_14(clist14)
+    checklist_15(clist15)
+    checklist_16(clist16)
 
 
 
@@ -1295,7 +1295,7 @@ def execute(choice):
     #if choice == 0:
     #    install_requirements()
     if choice == 1:
-        #run_query()
+        run_query()
         compare_checklist()
         return
 
