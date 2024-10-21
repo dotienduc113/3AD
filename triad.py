@@ -1,15 +1,16 @@
 import pyfiglet
-import sys
+import pyfiglet.fonts
 import os
 import random
 import subprocess
 import re
 from prettytable import PrettyTable
-
+import textwrap
+from tabulate import tabulate
+from itertools import zip_longest
 
 # gui function
-def display_banner():
-    # Create random font
+def display_banner():  # Create random font
     fonts = pyfiglet.FigletFont.getFonts()
     rd = random.randint(0, len(fonts) - 1)
 
@@ -27,17 +28,7 @@ def display_banner():
 
 
 def menu():
-    print("0. Install requirements")
-    ''''
-    print("1. Password Policy and Account Lockout Policy")
-    print("2. User Rights Assignment")
-    print("3. Security Options")
-    print("4. Windows Defender Firewall with Advanced Security")
-    print("5. Audit Policy")
-    print("6. MS Security Guide")
-    print("7. Network Provider")
-    print("8. Credentials Delegation")
-    '''
+    # print("0. Install requirements")
     print("1. Auto Audit")
     print("2. Exit")
     new_path = ".\\logs"
@@ -47,7 +38,7 @@ def menu():
         user_input = input("\nInput (0-2): ")
         if user_input.isdigit():
             choice = int(user_input)
-            if 1 >= choice >= 0:
+            if choice == 1:
                 execute(choice)
             elif choice == 2:
                 exit()
@@ -57,6 +48,7 @@ def menu():
             print("Invalid input! Try again.")
 
 
+'''
 # doan nay ko can
 # download velociraptor function
 def download_with_curl():
@@ -89,13 +81,44 @@ def install_requirements():
         if not download_with_certutil():
             print("Both curl and certutil failed. Require manual install velociraptor.")
     return
+'''
 
-
-#########################################################################################################################
+query = r"""
+net accounts | findstr /i "password lockout" > .\logs\result1.txt
+netsh advfirewall show allprofiles | findstr /i "domain private public state outbound maxfilesize LogDroppedConnections LogAllowedConnections" > .\logs\result5.txt
+auditpol /get /category:* | findstr /i /c:"Credential Validation" /c:"Kerberos Authentication Service" /c:"Kerberos Service Ticket Operations" /c:"Distribution Group Management" /c:"Other Account Management Events" /c:"Application Group Management" /c:"User account management" /c:"Process Creation" /c:"Directory Service Access" /c:"Directory Service Changes" /c:"Directory Service Replication" /c:"Detailed Directory Service Replication" /c:"Logon" /c:"Logoff" /c:"Account Lockout" /c:"IPsec Main Mode" /c:"IPsec Quick Mode" /c:"IPsec Extended Mode" /c:"Special Logon" /c:"Other Logon/Logoff Events" /c:"Network Policy Server" /c:"Audit Policy Change" /c:"Authentication Policy Change" /c:"Authorization Policy Change" /c:"MPSSVC Rule-Level Policy Change" /c:"Filtering Platform Policy Change" /c:"Other Policy Change Events" /c:"Non Sensitive Privilege Use" /c:"Other Privilege Use Events" /c:"Sensitive Privilege Use" > .\logs\result6.txt
+(powershell.exe Get-SmbServerConfiguration | findstr EnableSMB1Protocol & sc query mrxsmb10 | find "STATE" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest" | find "UseLogonCredential") > .\logs\result7.txt
+reg query "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" | findstr AllowEncryptionOracle > .\logs\result9.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" | findstr /i "netlogon sysvol" > .\logs\result8.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows Defender" /s | findstr "DisableAntiSpyware DisableBehaviorMonitoring DisableRealtimeMonitoring DisableScanOnRealtimeEnable DisableOnAccessProtection DisableIOAVProtection DisableArchiveScanning DisablePackedExeScanning DisableRemovableDriveScanning" > .\logs\result10.txt
+reg query "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" | findstr "fSingleSessionPerUser fDisableClip fDisableCdm MinEncryptionLevel fPromptForPassword fEncryptRPCTraffic fEncryptRPCTraffic SecurityLayer UserAuthentication MaxDisconnectionTime MaxIdleTime PerSessionTempDir DeleteTempDirsOnExit" > .\logs\result11.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\PowerShell" /s | findstr /i "EnableScripts ExecutionPolicy EnableScriptBlockLogging EnableTranscripting" > .\logs\result12.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM" /s | findstr "AllowBasic AllowUnencryptedTraffic AllowDigest  DisableRunAs AllowAutoConfig WinRM\Client WinRM\Service" > .\logs\result13.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS" | findstr AllowRemoteShellAccess > .\logs\result14.txt
+reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler" | findstr Start > .\logs\result15.txt
+reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGPOProcessing > .\logs\result16.txt
+(net user Administrator | findstr /c:"Account active" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" | findstr /i "RequireSignOrSeal SealSecureChannel SignSecureChannel DisablePasswordChange MaximumPasswordAge RequireStrongKey" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | findstr /i InactivityTimeoutSecs & reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" | findstr /i "CachedLogonsCount PasswordExpiryWarning" &  reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" | findstr /i "RequireSecuritySignature EnableSecuritySignature EnablePlainTextPassword"  & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" | findstr /i "autodisconnect requiresecuritysignature enablesecuritysignature enableforcedlogoff SmbServerNameHardeningLevel"  & reg query "HKLM\System\CurrentControlSet\Control\LSA" | findstr /i "UseMachineId" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" | findstr /i "SupportedEncryptionTypes" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" | findstr /i "NoLMHash LmCompatibilityLevel" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" | findstr /i LDAPClientIntegrity & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" | findstr /i "NtlmMinClientSec NtlmMinServerSec") > .\logs\result4.txt
+"""
 
 
 # chay lenh cmd bang cach doc file query.txt va output ra 1 file result.txt o thu muc logs
+
 def run_query():
+    count = 0
+    for line in query.strip().splitlines():
+        count = count + 1
+        cmd = '{0}'.format(line.strip())
+        # print(cmd)
+        try:
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            # print(result.stdout)  # Output the command result
+            print(result.stderr)  # Print any errors
+        except Exception as e:
+            print(f"Error running command: {e}")
+
+
+'''
+def run_query1():
     f = open("query.txt", "r")
     count = 0
     for line in f:
@@ -108,6 +131,7 @@ def run_query():
             print(result.stderr)  # Print any errors
         except Exception as e:
             print(f"Error running command: {e}")
+'''
 
 
 # xoa khoang trang thua
@@ -805,7 +829,7 @@ def checklist_4(clist4):
     passed = []
     failed = []
     if "Account active" in clist4:
-        s = "Accounts: Administrator account status"
+        s = "Accounts Administrator: account status"
         if clist4.get("Account active") == "No":
             append_array(passed, s, "Disabled")
         else:
@@ -817,7 +841,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(passed, "Domain member: Digitally encrypt or sign secure channel data (always)", "Default/Enabled")
+        append_array(passed, "Domain member: Digitally encrypt or sign secure channel data (always)",
+                     "Default/Enabled")
     if "SealSecureChannel" in clist4:
         s = "Domain member: Digitally encrypt secure channel data (when possible)"
         if clist4.get("SealSecureChannel") == "0x1":
@@ -865,7 +890,7 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, f"{int(clist4.get("InactivityTimeoutSecs"), 16)} seconds")
     else:
-        append_array(failed, "Interactive logon: Machine inactivity limit Inactivity", "Default/not enforced")
+        append_array(failed, "Interactive logon: Machine inactivity limit", "Default/not enforced")
     if "CachedLogonsCount" in clist4:
         s = "Interactive logon: Number of previous logons to cache"
         if int(clist4.get("CachedLogonsCount")) <= 4:
@@ -897,7 +922,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(passed, "Microsoft network client: Digitally sign communications (if server agrees)", "Default/Enabled")
+        append_array(passed, "Microsoft network client: Digitally sign communications (if server agrees)",
+                     "Default/Enabled")
     if "EnablePlainTextPassword" in clist4:
         s = "Microsoft network client: Send unencrypted password to third-party SMB servers"
         if clist4.get("EnablePlainTextPassword") == "0x0":
@@ -905,7 +931,7 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(passed, "Microsoft network client: Send unencrypted password to third-party SMB servers", "Default/Disabled")
+        append_array(passed, "Microsoft network client: Send unencrypted password to third-party SMB servers","Default/Disabled")
     if "autodisconnect" in clist4:
         s = "Microsoft network server: Amount of idle time required before suspending session"
         if 0 < int(clist4.get("autodisconnect"), 16) <= 15:
@@ -913,7 +939,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, f"{int(clist4.get('autodisconnect'), 16)} minute(s)")
     else:
-        append_array(passed, "Microsoft network server: Amount of idle time required before suspending session", "Default/Not defined")
+        append_array(passed, "Microsoft network server: Amount of idle time required before suspending session",
+                     "Default/Not defined")
     if "requiresecuritysignature" in clist4:
         s = "Microsoft network server: Digitally sign communications (always)"
         if clist4.get("requiresecuritysignature") == "0x1":
@@ -929,7 +956,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(failed, "Microsoft network server: Digitally sign communications (if client agrees)", "Default/Enabled on domain controllers only.")
+        append_array(failed, "Microsoft network server: Digitally sign communications (if client agrees)",
+                     "Default/Enabled on domain controllers only.")
     if "enableforcedlogoff" in clist4:
         s = "Microsoft network server: Disconnect clients when logon hours expire"
         if clist4.get("enableforcedlogoff") == "0x1":
@@ -955,7 +983,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(passed, "Network security: Allow Local System to use computer identity for NTLM", "Default/Enabled")
+        append_array(passed, "Network security: Allow Local System to use computer identity for NTLM",
+                     "Default/Enabled")
     if "SupportedEncryptionTypes" in clist4:
         s = "Network security: Configure encryption types allowed for Kerberos"
         if clist4.get("SupportedEncryptionTypes") == "0x7ffffff8":
@@ -971,7 +1000,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(passed, "Network security: Do not store LAN Manager hash value on next password change", "Default/Enabled")
+        append_array(passed, "Network security: Do not store LAN Manager hash value on next password change",
+                     "Default/Enabled")
     if "LmCompatibilityLevel" in clist4:
         s = "Network security: LAN Manager authentication level"
         if clist4.get("LmCompatibilityLevel") == "0x5":
@@ -997,7 +1027,9 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Misconfigured")
     else:
-        append_array(failed, "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients", "Default/Depends on OS")
+        append_array(failed,
+                     "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients",
+                     "Default/Depends on OS")
     if "NtlmMinServerSec" in clist4:
         s = "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers"
         if clist4.get("NtlmMinServerSec") == "0x20080000":
@@ -1005,7 +1037,10 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Misconfigured")
     else:
-        append_array(failed, "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers", "Default/Depends on OS")
+        append_array(failed,
+                     "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers",
+                     "Default/Depends on OS")
+
     print("\n4. Security Options:")
     result_table(passed, failed)
 
@@ -1026,25 +1061,26 @@ def compare_checklist():
     clist16 = filer_info_registry(".\\logs\\result16.txt")
     clist4 = filter_info_4()
 
-    checklist_1(clist1)
+    #checklist_1(clist1)
     checklist_4(clist4)
-    checklist_5(clist5)
-    checklist_6(clist6)
-    checklist_7(clist7)
-    checklist_8(clist8)
-    checklist_9(clist9)
-    checklist_10(clist10)
-    checklist_11(clist11)
-    checklist_12(clist12)
-    checklist_13(clist13)
-    checklist_14(clist14)
-    checklist_15(clist15)
-    checklist_16(clist16)
+    #checklist_5(clist5)
+    #checklist_6(clist6)
+    #checklist_7(clist7)
+    #checklist_8(clist8)
+    #checklist_9(clist9)
+    #checklist_10(clist10)
+    #checklist_11(clist11)
+    #checklist_12(clist12)
+    #checklist_13(clist13)
+    #checklist_14(clist14)
+    #checklist_15(clist15)
+    #checklist_16(clist16)
+
 
 # dung de cho vao bang passed va failed
-def result_table(passed, failed):
+def result_table1(passed, failed):
     # Create the table with two columns
-    table = PrettyTable()
+    table = PrettyTable(max_table_width=100)
     table.field_names = ["Passed", "Failed"]
 
     # Determine the max length of passed/failed lists to balance the table rows
@@ -1060,12 +1096,27 @@ def result_table(passed, failed):
     print(table)
     return
 
+from textwrap import fill
+from tabulate import tabulate
+from itertools import zip_longest
+
+def result_table(passed, failed, width=100):
+    # Wrap text in each column to the specified width
+    passed_wrapped = [fill(item, width=width) if item else '' for item in passed]
+    failed_wrapped = [fill(item, width=width) if item else '' for item in failed]
+
+    # Create the table with two columns
+    table = [[p, f] for p, f in zip_longest(passed_wrapped, failed_wrapped, fillvalue='')]
+
+    # Print the table
+    print(tabulate(table, headers=["Passed", "Failed"], tablefmt="grid"))
+
 
 def execute(choice):
-    if choice == 0:
-        install_requirements()
-    elif choice == 1:
-        run_query()
+    #if choice == 0:
+    #    install_requirements()
+    if choice == 1:
+        #run_query()
         compare_checklist()
         return
 
