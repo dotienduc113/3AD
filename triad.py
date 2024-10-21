@@ -36,7 +36,7 @@ def menu():
     if not os.path.exists(new_path):
         os.makedirs(new_path)
     while True:
-        user_input = input("\nInput (0-2): ")
+        user_input = input("\nInput: ")
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
@@ -86,11 +86,13 @@ def install_requirements():
 
 query = r"""
 net accounts | findstr /i "password lockout" > .\logs\result1.txt
+secedit /export /cfg secpol.txt && type secpol.txt | findstr /i "SeNetworkLogonRight SeDenyNetworkLogonRight SeDenyBatchLogonRight SeDenyServiceLogonRight SeDenyRemoteInteractiveLogonRight SeDenyInteractiveLogonRight SeInteractiveLogonRight SeRemoteInteractiveLogonRight SeShutdownPrivilege SeTcbPrivilege" > result3.txt
+(net user Administrator | findstr /c:"Account active" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" | findstr /i "RequireSignOrSeal SealSecureChannel SignSecureChannel DisablePasswordChange MaximumPasswordAge RequireStrongKey" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | findstr /i InactivityTimeoutSecs & reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" | findstr /i "CachedLogonsCount PasswordExpiryWarning" &  reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" | findstr /i "RequireSecuritySignature EnableSecuritySignature EnablePlainTextPassword"  & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" | findstr /i "autodisconnect requiresecuritysignature enablesecuritysignature enableforcedlogoff SmbServerNameHardeningLevel"  & reg query "HKLM\System\CurrentControlSet\Control\LSA" | findstr /i "UseMachineId" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" | findstr /i "SupportedEncryptionTypes" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" | findstr /i "NoLMHash LmCompatibilityLevel" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" | findstr /i LDAPClientIntegrity & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" | findstr /i "NtlmMinClientSec NtlmMinServerSec") > .\logs\result4.txt
 netsh advfirewall show allprofiles | findstr /i "domain private public state outbound maxfilesize LogDroppedConnections LogAllowedConnections" > .\logs\result5.txt
 auditpol /get /category:* | findstr /i /c:"Credential Validation" /c:"Kerberos Authentication Service" /c:"Kerberos Service Ticket Operations" /c:"Distribution Group Management" /c:"Other Account Management Events" /c:"Application Group Management" /c:"User account management" /c:"Process Creation" /c:"Directory Service Access" /c:"Directory Service Changes" /c:"Directory Service Replication" /c:"Detailed Directory Service Replication" /c:"Logon" /c:"Logoff" /c:"Account Lockout" /c:"IPsec Main Mode" /c:"IPsec Quick Mode" /c:"IPsec Extended Mode" /c:"Special Logon" /c:"Other Logon/Logoff Events" /c:"Network Policy Server" /c:"Audit Policy Change" /c:"Authentication Policy Change" /c:"Authorization Policy Change" /c:"MPSSVC Rule-Level Policy Change" /c:"Filtering Platform Policy Change" /c:"Other Policy Change Events" /c:"Non Sensitive Privilege Use" /c:"Other Privilege Use Events" /c:"Sensitive Privilege Use" > .\logs\result6.txt
 (powershell.exe Get-SmbServerConfiguration | findstr EnableSMB1Protocol & sc query mrxsmb10 | find "STATE" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest" | find "UseLogonCredential") > .\logs\result7.txt
-reg query "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" | findstr AllowEncryptionOracle > .\logs\result9.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" | findstr /i "netlogon sysvol" > .\logs\result8.txt
+reg query "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters" | findstr AllowEncryptionOracle > .\logs\result9.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows Defender" /s | findstr "DisableAntiSpyware DisableBehaviorMonitoring DisableRealtimeMonitoring DisableScanOnRealtimeEnable DisableOnAccessProtection DisableIOAVProtection DisableArchiveScanning DisablePackedExeScanning DisableRemovableDriveScanning" > .\logs\result10.txt
 reg query "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" | findstr "fSingleSessionPerUser fDisableClip fDisableCdm MinEncryptionLevel fPromptForPassword fEncryptRPCTraffic fEncryptRPCTraffic SecurityLayer UserAuthentication MaxDisconnectionTime MaxIdleTime PerSessionTempDir DeleteTempDirsOnExit" > .\logs\result11.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\PowerShell" /s | findstr /i "EnableScripts ExecutionPolicy EnableScriptBlockLogging EnableTranscripting" > .\logs\result12.txt
@@ -98,7 +100,8 @@ reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM" /s | findstr "AllowBa
 reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS" | findstr AllowRemoteShellAccess > .\logs\result14.txt
 reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler" | findstr Start > .\logs\result15.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGPOProcessing > .\logs\result16.txt
-(net user Administrator | findstr /c:"Account active" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" | findstr /i "RequireSignOrSeal SealSecureChannel SignSecureChannel DisablePasswordChange MaximumPasswordAge RequireStrongKey" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | findstr /i InactivityTimeoutSecs & reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" | findstr /i "CachedLogonsCount PasswordExpiryWarning" &  reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" | findstr /i "RequireSecuritySignature EnableSecuritySignature EnablePlainTextPassword"  & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" | findstr /i "autodisconnect requiresecuritysignature enablesecuritysignature enableforcedlogoff SmbServerNameHardeningLevel"  & reg query "HKLM\System\CurrentControlSet\Control\LSA" | findstr /i "UseMachineId" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" | findstr /i "SupportedEncryptionTypes" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" | findstr /i "NoLMHash LmCompatibilityLevel" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" | findstr /i LDAPClientIntegrity & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" | findstr /i "NtlmMinClientSec NtlmMinServerSec") > .\logs\result4.txt
+type secpol.txt | findstr /i "PasswordComplexity ClearTextPassword" > result1_56.txt
+type secpol.txt | findstr /i "ForceLogoffWhenHourExpire" > result4_22.txt & del secpol.txt
 """
 
 
@@ -164,6 +167,7 @@ def filter_info_1():
 def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
     passed = []
     failed = []
+    checklist_misc(filter_info_secpol(".\\logs\\result1_56.txt"), passed, failed)
     for key in clist1:
         try:
             value = int(clist1.get(key))
@@ -171,39 +175,39 @@ def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
             value = -1
         if key == "Minimum password age (days)":
             if value >= 1:
-                append_array(passed, f"1.3 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"1.3 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Maximum password age (days)":
             if 30 <= value <= 90:
-                append_array(passed, f"1.2 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"1.2 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Minimum password length":
             if value >= 14:
-                append_array(passed, f"1.4 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"1.4 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Length of password history maintained":
             if value >= 14:
-                append_array(passed, f"1.1 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"1.1 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Lockout threshold":
             if 0 < value <= 5:
-                append_array(passed, f"2.2 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"2.2 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Lockout duration (minutes)":
             if value >= 15:
-                append_array(passed, f"2.1 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"2.1 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
         elif key == "Lockout observation window (minutes)":
             if value >= 15:
-                append_array(passed, f"2.2 {key}", clist1.get(key))
+                append_array(passed, f"{key}", clist1.get(key))
             else:
-                append_array(failed, f"2.2 {key}", clist1.get(key))
+                append_array(failed, f"{key}", clist1.get(key))
     print("\n1-2. Password Policy and Account Lockout Policy result:")
     result_table(passed, failed)
 
@@ -522,6 +526,7 @@ def checklist_10(clist10):
     print("\n10. Windows Defender:")
     result_table(passed, failed)
 
+
 def filer_info_11():
     file = open(".\\logs\\result11.txt", "r")
     settings = {}
@@ -546,7 +551,8 @@ def checklist_11(clist11):
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(passed, "Restrict Remote Desktop Services users to a single Remote Desktop Services session", "Not configured/Enabled")
+        append_array(passed, "Restrict Remote Desktop Services users to a single Remote Desktop Services session",
+                     "Not configured/Enabled")
     if "fDisableClip" in clist11:
         s = "Do not allow Clipboard redirection"
         if clist11.get("fDisableClip") == "0x1":
@@ -598,7 +604,8 @@ def checklist_11(clist11):
         elif clist11.get("SecurityLayer") == "0x0":
             append_array(failed, s, "RDP")
     else:
-        append_array(failed, "Require use of specific security layer for remote (RDP) connections", "Not configured/Disabled")
+        append_array(failed, "Require use of specific security layer for remote (RDP) connections",
+                     "Not configured/Disabled")
     if "UserAuthentication" in clist11:
         s = "Require user authentication for remote connections by using Network Level Authentication"
         if clist11.get("UserAuthentication") == "0x1":
@@ -606,7 +613,8 @@ def checklist_11(clist11):
         else:
             append_array(failed, s, "Disabled")
     else:
-        append_array(failed, "Require user authentication for remote connections by using Network Level Authentication", "Not configured/")
+        append_array(failed, "Require user authentication for remote connections by using Network Level Authentication",
+                     "Not configured/")
     if "MaxDisconnectionTime" in clist11:
         s = "Set time limit for disconnected sessions"
         if clist11.get("MaxDisconnectionTime") == "0xea60":
@@ -617,12 +625,13 @@ def checklist_11(clist11):
         append_array(failed, "Set time limit for disconnected sessions", "Not configured/Disabled")
     if "MaxIdleTime" in clist11:
         s = 0 < "Set time limit for active but idle Remote Desktop Services sessions"
-        if int(clist11.get("MaxIdleTime"),16) <= 900000:
+        if int(clist11.get("MaxIdleTime"), 16) <= 900000:
             append_array(passed, s, "<= 15 minutes")
         else:
             append_array(failed, s, "Misconfigured")
     else:
-        append_array(failed, "Set time limit for active but idle Remote Desktop Services sessions", "Not configured/Disabled")
+        append_array(failed, "Set time limit for active but idle Remote Desktop Services sessions",
+                     "Not configured/Disabled")
     if "exitDeleteTempDirsOnExit" in clist11:
         s = "Do not delete temp folders upon"
         if clist11.get("exitDeleteTempDirsOnExit") == "0x1":
@@ -865,6 +874,7 @@ def filter_info_4():
 def checklist_4(clist4):
     passed = []
     failed = []
+    checklist_misc(filter_info_secpol(".\\logs\\result4_22.txt"), passed, failed)
     if "Account active" in clist4:
         s = "Accounts Administrator: account status"
         if clist4.get("Account active") == "No":
@@ -1083,8 +1093,138 @@ def checklist_4(clist4):
     result_table(passed, failed)
 
 
+def filter_info_secpol(path):
+    file = open(path, "r")
+    settings = {}
+    for line in file:
+        line = remove_extra_spaces(line)
+        line = line.strip()
+        array_line = line.split("=")
+        settings[array_line[0].strip()] = array_line[1].strip()
+    return settings
+
+
+def checklist_3(clist3):
+    passed = []
+    failed = []
+    if "SeNetworkLogonRight" in clist3:
+        s = "Access this computer from the network"
+        if clist3.get("SeNetworkLogonRight") == "*S-1-5-11,*S-1-5-32-544,*S-1-5-9":
+            append_array(passed, s, "Administrators,Authenticated Users")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Access this computer from the network", "Default")
+    if "SeRemoteInteractiveLogonRight" in clist3:
+        s = "Deny access to this computer from the network"
+        if clist3.get("SeRemoteInteractiveLogonRight") == "*S-1-5-113,Administrator,Guest":
+            append_array(passed, s, "Guest,Administrators,Local Account")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Deny access to this computer from the network", "Default")
+    if "SeDenyBatchLogonRight" in clist3:
+        s = "Deny log on as a batch job"
+        if clist3.get("SeDenyBatchLogonRight") == "Guest,Domain Admins,Enterprise Admins":
+            append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Deny log on as a batch job", "Default")
+    if "SeDenyServiceLogonRight" in clist3:
+        s = "Deny log on as a service"
+        if clist3.get("SeDenyServiceLogonRight") == "Guest,Domain Admins,Enterprise Admins":
+            append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Deny log on as a service", "Default")
+    if "SeDenyRemoteInteractiveLogonRight" in clist3:
+        s = "Deny log on through Remote Desktop Services"
+        if clist3.get(
+                "SeDenyRemoteInteractiveLogonRight") == "*S-1-5-113,Administrator,Guest,Domain Admins,Enterprise Admins":
+            append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Deny log on through Remote Desktop Services", "Default")
+    if "SeDenyInteractiveLogonRight" in clist3:
+        s = "Deny log on locally"
+        if clist3.get("SeDenyInteractiveLogonRight") == "Guest,Domain Admins,Enterprise Admins":
+            append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Deny log on locally", "Default")
+    if "SeInteractiveLogonRight" in clist3:
+        s = "Allow log on locally"
+        if clist3.get("SeInteractiveLogonRight") == "*S-1-5-32-544":
+            append_array(passed, s, "Administrator")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Allow log on locally", "Default")
+    if "SeRemoteInteractiveLogonRight" in clist3:
+        s = "Allow log on through Remote Desktop Services"
+        if clist3.get("SeRemoteInteractiveLogonRight") == "*S-1-5-32-544":
+            append_array(passed, s, "Administrator")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(passed, "Allow log on through Remote Desktop Services", "Default")
+    if "SeShutdownPrivilege" in clist3:
+        s = "Shutdown the system"
+        if clist3.get("SeShutdownPrivilege") == "*S-1-5-32-544":
+            append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Shutdown the system", "Default")
+    if "SeAssignPrimaryTokenPrivilege" in clist3:
+        s = "Act as part of the operating system"
+        if clist3.get("SeAssignPrimaryTokenPrivilege") == "*S-1-5-19,*S-1-5-20":
+            append_array(passed, s, "None")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(passed, "Act as part of the operating system", "Default")
+
+    print("\n3. User Rights Assignment:")
+    result_table(passed, failed)
+
+
+def checklist_misc(clistmisc, passed, failed):
+    if "PasswordComplexity" in clistmisc:
+        s = "Password must meet complexity requirements "
+        if clistmisc.get("PasswordComplexity") == "1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Password must meet complexity requirements ", "Default/Enabled")
+    if "ClearTextPassword" in clistmisc:
+        s = "Store passwords using reversible encryption"
+        if clistmisc.get("ClearTextPassword") == "1":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(passed, "Store passwords using reversible encryption", "Default/Disabled")
+    if "ForceLogoffWhenHourExpire" in clistmisc:
+        s = "Network security: Force logoff when logon hours expire"
+        if clistmisc.get("ForceLogoffWhenHourExpire") == "1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Network security: Force logoff when logon hours expire", "Default/Enabled")
+
+
+
 def compare_checklist():
     clist1 = filter_info_1()
+    clist3 = filter_info_secpol(".\\logs\\result3.txt")
+    clist4 = filter_info_4()
     clist5 = filer_info_5()
     clist6 = filter_info_6()
     clist7 = filter_info_7()
@@ -1097,22 +1237,24 @@ def compare_checklist():
     clist14 = filer_info_registry(".\\logs\\result14.txt")
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
-    clist4 = filter_info_4()
 
-    #checklist_1(clist1)
-    #checklist_4(clist4)
+
+    checklist_1(clist1)
+    #checklist_3(clist3)
+    checklist_4(clist4)
     #checklist_5(clist5)
     #checklist_6(clist6)
     #checklist_7(clist7)
     #checklist_8(clist8)
     #checklist_9(clist9)
     #checklist_10(clist10)
-    checklist_11(clist11)
+    #checklist_11(clist11)
     #checklist_12(clist12)
     #checklist_13(clist13)
     #checklist_14(clist14)
     #checklist_15(clist15)
     #checklist_16(clist16)
+
 
 
 # dung de cho vao bang passed va failed
