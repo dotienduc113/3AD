@@ -4,7 +4,6 @@ import os
 import random
 import subprocess
 import re
-from prettytable import PrettyTable
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
@@ -86,7 +85,7 @@ def install_requirements():
 
 query = r"""
 net accounts | findstr /i "password lockout" > .\logs\result1.txt
-secedit /export /cfg secpol.txt && type secpol.txt | findstr /i "SeNetworkLogonRight SeDenyNetworkLogonRight SeDenyBatchLogonRight SeDenyServiceLogonRight SeDenyRemoteInteractiveLogonRight SeDenyInteractiveLogonRight SeInteractiveLogonRight SeRemoteInteractiveLogonRight SeShutdownPrivilege SeTcbPrivilege" > result3.txt
+secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "SeNetworkLogonRight SeDenyNetworkLogonRight SeDenyBatchLogonRight SeDenyServiceLogonRight SeDenyRemoteInteractiveLogonRight SeDenyInteractiveLogonRight SeInteractiveLogonRight SeRemoteInteractiveLogonRight SeShutdownPrivilege SeTcbPrivilege" > result3.txt
 (net user Administrator | findstr /c:"Account active" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" | findstr /i "RequireSignOrSeal SealSecureChannel SignSecureChannel DisablePasswordChange MaximumPasswordAge RequireStrongKey" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" | findstr /i InactivityTimeoutSecs & reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" | findstr /i "CachedLogonsCount PasswordExpiryWarning" &  reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" | findstr /i "RequireSecuritySignature EnableSecuritySignature EnablePlainTextPassword"  & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" | findstr /i "autodisconnect requiresecuritysignature enablesecuritysignature enableforcedlogoff SmbServerNameHardeningLevel"  & reg query "HKLM\System\CurrentControlSet\Control\LSA" | findstr /i "UseMachineId" & reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" | findstr /i "SupportedEncryptionTypes" & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" | findstr /i "NoLMHash LmCompatibilityLevel" & reg query "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" | findstr /i LDAPClientIntegrity & reg query "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" | findstr /i "NtlmMinClientSec NtlmMinServerSec") > .\logs\result4.txt
 netsh advfirewall show allprofiles | findstr /i "domain private public state outbound maxfilesize LogDroppedConnections LogAllowedConnections" > .\logs\result5.txt
 auditpol /get /category:* | findstr /i /c:"Credential Validation" /c:"Kerberos Authentication Service" /c:"Kerberos Service Ticket Operations" /c:"Distribution Group Management" /c:"Other Account Management Events" /c:"Application Group Management" /c:"User account management" /c:"Process Creation" /c:"Directory Service Access" /c:"Directory Service Changes" /c:"Directory Service Replication" /c:"Detailed Directory Service Replication" /c:"Logon" /c:"Logoff" /c:"Account Lockout" /c:"IPsec Main Mode" /c:"IPsec Quick Mode" /c:"IPsec Extended Mode" /c:"Special Logon" /c:"Other Logon/Logoff Events" /c:"Network Policy Server" /c:"Audit Policy Change" /c:"Authentication Policy Change" /c:"Authorization Policy Change" /c:"MPSSVC Rule-Level Policy Change" /c:"Filtering Platform Policy Change" /c:"Other Policy Change Events" /c:"Non Sensitive Privilege Use" /c:"Other Privilege Use Events" /c:"Sensitive Privilege Use" > .\logs\result6.txt
@@ -100,8 +99,8 @@ reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM" /s | findstr "AllowBa
 reg query "HKLM\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS" | findstr AllowRemoteShellAccess > .\logs\result14.txt
 reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler" | findstr Start > .\logs\result15.txt
 reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGPOProcessing > .\logs\result16.txt
-type secpol.txt | findstr /i "PasswordComplexity ClearTextPassword" > result1_56.txt
-type secpol.txt | findstr /i "ForceLogoffWhenHourExpire" > result4_22.txt & del secpol.txt
+secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "PasswordComplexity ClearTextPassword" > .\logs\result1_56.txt
+secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "ForceLogoffWhenHourExpire" > .\logs\result4_22.txt & del secpol.txt
 """
 
 
@@ -1302,7 +1301,4 @@ def execute(choice):
 
 if __name__ == "__main__":
     display_banner()
-    # install_requirements()
-    # checklist = filter_info()
-    # compare_checklist()
     menu()
