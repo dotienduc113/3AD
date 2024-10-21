@@ -311,7 +311,8 @@ def checklist_6(clist6):
         else:
             append_array(failed, f"{category}", setting)
     print("\n6. Audit Policy:")
-    print("NOTE: Please run as administrator to get full results")
+    if len(clist6) == 0:
+        print("NOTE: Please run as administrator to get full results")
     result_table(passed, failed)
 
 
