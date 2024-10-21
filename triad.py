@@ -5,9 +5,10 @@ import random
 import subprocess
 import re
 from prettytable import PrettyTable
-import textwrap
+from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
+
 
 # gui function
 def display_banner():  # Create random font
@@ -307,6 +308,7 @@ def checklist_6(clist6):
         else:
             append_array(failed, f"{category}", setting)
     print("\n6. Audit Policy:")
+    print("NOTE: Please run as administrator to get full results")
     result_table(passed, failed)
 
 
@@ -446,59 +448,79 @@ def filter_info_10():
 def checklist_10(clist10):
     passed = []
     failed = []
-    if len(clist10) == 0:
-        append_array(passed, "Windows Defender Policy 10.1 -> 10.8", "Default - Not configured")
-    for key, value in clist10.items():
-        if key == "DisableAntiSpyware":
-            if value == "0x0":
-                append_array(passed, "Turn off Windows Defender", "Disabled")
-            else:
-                append_array(failed, "Turn off Windows Defender", "Enabled")
-        elif key == "DisableRealtimeMonitoring":
-            if value == "0x0":
-                append_array(passed, "Turn off real-time protection", "Disabled")
-            else:
-                append_array(failed, "Turn off real-time protection", "Enabled")
-        elif key == "DisableBehaviorMonitoring":
-            if value == "0x0":
-                append_array(passed, "Turn on behavior monitoring", "Enabled")
-            else:
-                append_array(failed, "Turn on behavior monitoring", "Disable")
-        elif key == "DisableIOAVProtection":
-            if value == "0x0":
-                append_array(passed, "Scan all downloaded files and attachments", "Enabled")
-            else:
-                append_array(failed, "Scan all downloaded files and attachments", "Disable")
-        elif key == "DisableScanOnRealtimeEnable":
-            if value == "0x0":
-                append_array(passed, "Turn on process scanning whenever real-time protection is enabled", "Enabled")
-            else:
-                append_array(failed, "Turn on process scanning whenever real-time protection is enabled", "Disable")
-        elif key == "DisableOnAccessProtection":
-            if value == "0x0":
-                append_array(passed, "Monitor file and program activity on your computer", "Enabled")
-            else:
-                append_array(failed, "Monitor file and program activity on your computer", "Disable")
-        elif key == "DisableArchiveScanning":
-            if value == "0x0":
-                append_array(passed, "Scan archive files", "Enabled")
-            else:
-                append_array(failed, "Scan archive files", "Disable")
-        elif key == "DisablePackedExeScanning":
-            if value == "0x0":
-                append_array(passed, "Scan packed executables", "Enabled")
-            else:
-                append_array(failed, "Scan packed executables", "Disable")
-    if "DisableRemovableDriveScanning" in clist10:
-        if clist10["DisableRemovableDriveScanning"] == "0x0":
-            append_array(passed, "Scan removable drives", "Enabled")
+    if "DisableAntiSpyware" in clist10:
+        s = "Turn off Windows Defender"
+        if clist10.get("DisableAntiSpyware") == "0x0":
+            append_array(passed, s, "Disabled")
         else:
-            append_array(failed, "Scan removable drives", "Disable")
+            append_array(failed, s, "Enabled")
     else:
-        append_array(failed, "Scan removable drives", "Default - Not configured")
+        append_array(passed, "Turn off Windows Defender", "Not configure/Disable")
+    if "DisableRealtimeMonitoring" in clist10:
+        s = "Turn off real-time protection"
+        if clist10.get("DisableRealtimeMonitoring") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(passed, "Turn off real-time protection", "Not configure/Disable")
+    if "DisableBehaviorMonitoring" in clist10:
+        s = "Turn on behavior monitoring"
+        if clist10.get("DisableBehaviorMonitoring") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Turn on behavior monitoring", "Not configure/Enabled")
+    if "DisableIOAVProtection" in clist10:
+        s = "Scan all downloaded files and attachments"
+        if clist10.get("DisableIOAVProtection") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    if "DisableScanOnRealtimeEnable" in clist10:
+        s = "Turn on process scanning whenever real-time protection is enabled"
+        if clist10.get("DisableScanOnRealtimeEnable") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Turn on process scanning whenever real-time protection is enabled",
+                     "Not configure/Enabled")
+    if "DisableOnAccessProtection" in clist10:
+        s = "Monitor file and program activity on your computer"
+        if clist10.get("DisableOnAccessProtection") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Monitor file and program activity on your computer", "Not configure/Enabled")
+    if "DisableArchiveScanning" in clist10:
+        s = "Scan archive files"
+        if clist10.get("DisableArchiveScanning") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Scan archive files", "Not configure/Enabled")
+    if "DisablePackedExeScanning" in clist10:
+        s = "Scan packed executables"
+        if clist10.get("DisablePackedExeScanning") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Scan packed executables", "Not configure/Enabled")
+    if "DisableRemovableDriveScanning" in clist10:
+        s = "Scan removable drives"
+        if clist10.get("DisableRemovableDriveScanning") == "0x0":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Scan removable drives", "Not configure/Disabled")
     print("\n10. Windows Defender:")
     result_table(passed, failed)
-
 
 def filer_info_11():
     file = open(".\\logs\\result11.txt", "r")
@@ -517,92 +539,107 @@ def filer_info_11():
 def checklist_11(clist11):
     passed = []
     failed = []
-    if len(clist11) == 0:
-        append_array(failed, "Remote Desktop Services", "Default - Not configured")
-    for key, value in clist11.items():
-        if key == "fSingleSessionPerUser":
-            s = "Restrict Remote Desktop Services users to a single Remote Desktop Services session"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "fDisableClip":
-            s = "Do not allow Clipboard redirection"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "fDisableCdm":
-            s = "Do not allow drive redirection"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "MinEncryptionLevel":
-            s = "Set client connection encryption level"
-            if value == "0x3":
-                append_array(passed, s, "High Level")
-            elif value == "0x2":
-                append_array(failed, s, "Client Compatible")
-            elif value == "0x1":
-                append_array(failed, s, "Low Level")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "fPromptForPassword":
-            s = "Always prompt for password upon connection"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "fEncryptRPCTraffic":
-            s = "Require secure RPC communication"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "SecurityLayer":
-            s = "Require use of specific security layer for remote (RDP) connections"
-            if value == "0x2":
-                append_array(passed, s, "SSL")
-            elif value == "0x1":
-                append_array(failed, s, "Negotiate")
-            elif value == "0x0":
-                append_array(failed, s, "RDP")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "UserAuthentication":
-            s = "Require user authentication for remote connections by using Network Level Authentication"
-            if value == "0x1":
-                append_array(passed, s, "Enabled")
-            else:
-                append_array(failed, s, "Disabled")
-        elif key == "MaxDisconnectionTime":
-            s = "Require secure RPC communication"
-            if value == "0xea60":
-                append_array(passed, s, "'Enabled 1 minute")
-            else:
-                append_array(failed, s, "Disabled or wrong configuration")
-        elif key == "MaxIdleTime":
-            s = "Set time limit for active but idle Remote Desktop Services sessions"
-            if value == "0xdbba0":
-                append_array(passed, s, "Enabled <= 15 minute(s) (>0)")
-            else:
-                append_array(failed, s, "Disabled or wrong configuration")
-        elif key == "exitDeleteTempDirsOnExit":
-            s = "Do not delete temp folders upon"
-            if value == "0x1":
-                append_array(passed, s, "Disabled")
-            else:
-                append_array(failed, s, "Enabled")
-    if "fSingleSessionPerUser" not in clist11:
+    if "fSingleSessionPerUser" in clist11:
         s = "Restrict Remote Desktop Services users to a single Remote Desktop Services session"
-        append_array(passed, s, "Default - Not configured/Enable")
-    if "MinEncryptionLevel" not in clist11:
+        if clist11.get("fSingleSessionPerUser") == "0x1":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(passed, "Restrict Remote Desktop Services users to a single Remote Desktop Services session", "Not configured/Enabled")
+    if "fDisableClip" in clist11:
+        s = "Do not allow Clipboard redirection"
+        if clist11.get("fDisableClip") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Do not allow Clipboard redirection", "Not configured/Disabled")
+    if "fDisableCdm" in clist11:
+        s = "Do not allow drive redirection"
+        if clist11.get("fDisableCdm") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Do not allow drive redirection", "Not configured/Disabled")
+    if "MinEncryptionLevel" in clist11:
         s = "Set client connection encryption level"
-        append_array(passed, s, "Default - Not configured/High Level")
+        if clist11.get("MinEncryptionLevel") == "0x3":
+            append_array(passed, s, "High Level")
+        elif clist11.get("MinEncryptionLevel") == "0x2":
+            append_array(failed, s, "Client Compatible")
+        else:
+            append_array(failed, s, "Low Level")
+    else:
+        append_array(passed, "Set client connection encryption level", "Not configured/High Level")
+    if "fPromptForPassword" in clist11:
+        s = "Always prompt for password upon connection"
+        if clist11.get("fPromptForPassword") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Always prompt for password upon connection", "Not configured/Disabled")
+    if "fEncryptRPCTraffic" in clist11:
+        s = "Require secure RPC communication"
+        if clist11.get("fEncryptRPCTraffic") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Require secure RPC communication", "Not configured/Disabled")
+    if "SecurityLayer" in clist11:
+        s = "Require use of specific security layer for remote (RDP) connections"
+        if clist11.get("SecurityLayer") == "0x2":
+            append_array(passed, s, "SSL")
+        elif clist11.get("SecurityLayer") == "0x1":
+            append_array(failed, s, "Negotiate")
+        elif clist11.get("SecurityLayer") == "0x0":
+            append_array(failed, s, "RDP")
+    else:
+        append_array(failed, "Require use of specific security layer for remote (RDP) connections", "Not configured/Disabled")
+    if "UserAuthentication" in clist11:
+        s = "Require user authentication for remote connections by using Network Level Authentication"
+        if clist11.get("UserAuthentication") == "0x1":
+            append_array(passed, s, "Enabled")
+        else:
+            append_array(failed, s, "Disabled")
+    else:
+        append_array(failed, "Require user authentication for remote connections by using Network Level Authentication", "Not configured/")
+    if "MaxDisconnectionTime" in clist11:
+        s = "Set time limit for disconnected sessions"
+        if clist11.get("MaxDisconnectionTime") == "0xea60":
+            append_array(passed, s, "1 minutes")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Set time limit for disconnected sessions", "Not configured/Disabled")
+    if "MaxIdleTime" in clist11:
+        s = 0 < "Set time limit for active but idle Remote Desktop Services sessions"
+        if int(clist11.get("MaxIdleTime"),16) <= 900000:
+            append_array(passed, s, "<= 15 minutes")
+        else:
+            append_array(failed, s, "Misconfigured")
+    else:
+        append_array(failed, "Set time limit for active but idle Remote Desktop Services sessions", "Not configured/Disabled")
+    if "exitDeleteTempDirsOnExit" in clist11:
+        s = "Do not delete temp folders upon"
+        if clist11.get("exitDeleteTempDirsOnExit") == "0x1":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Do not delete temp folders upon", "Not configured")
+    if "PerSessionTempDir" in clist11:
+        s = "Do not use temporary folders per session"
+        if clist11.get("PerSessionTempDir") == "0x1":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Do not use temporary folders per session", "Not configured")
     print("\n11. Remote Desktop Services:")
-    if len(clist11) < 12:
-        print("WARNING: Query results are missing REQUIRE MANUAL CHECK")
     result_table(passed, failed)
 
 
@@ -931,7 +968,8 @@ def checklist_4(clist4):
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(passed, "Microsoft network client: Send unencrypted password to third-party SMB servers","Default/Disabled")
+        append_array(passed, "Microsoft network client: Send unencrypted password to third-party SMB servers",
+                     "Default/Disabled")
     if "autodisconnect" in clist4:
         s = "Microsoft network server: Amount of idle time required before suspending session"
         if 0 < int(clist4.get("autodisconnect"), 16) <= 15:
@@ -1062,14 +1100,14 @@ def compare_checklist():
     clist4 = filter_info_4()
 
     #checklist_1(clist1)
-    checklist_4(clist4)
+    #checklist_4(clist4)
     #checklist_5(clist5)
     #checklist_6(clist6)
     #checklist_7(clist7)
     #checklist_8(clist8)
     #checklist_9(clist9)
     #checklist_10(clist10)
-    #checklist_11(clist11)
+    checklist_11(clist11)
     #checklist_12(clist12)
     #checklist_13(clist13)
     #checklist_14(clist14)
@@ -1078,6 +1116,7 @@ def compare_checklist():
 
 
 # dung de cho vao bang passed va failed
+'''
 def result_table1(passed, failed):
     # Create the table with two columns
     table = PrettyTable(max_table_width=100)
@@ -1095,10 +1134,8 @@ def result_table1(passed, failed):
     # Print the table
     print(table)
     return
+'''
 
-from textwrap import fill
-from tabulate import tabulate
-from itertools import zip_longest
 
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
