@@ -10,6 +10,7 @@ from itertools import zip_longest
 import datetime
 import argparse
 
+
 # gui function
 def display_banner():  # Create random font
     fonts = pyfiglet.FigletFont.getFonts()
@@ -1120,6 +1121,7 @@ def checklist_4(clist4):
     t = result_table(passed, failed)
     export_result("\n" + str + "\n", t)
 
+
 def filter_info_secpol(path):
     file = open(path, "r")
     settings = {}
@@ -1331,10 +1333,9 @@ def execute(choice):
     #if choice == 0:
     #    install_requirements()
     if choice == 1:
-        #run_query()
+        run_query()
         compare_checklist()
         return
-
 
 
 if __name__ == "__main__":
@@ -1350,7 +1351,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.nogui:
-        #run_query()
+        run_query()
         compare_checklist()
     else:
         menu()
