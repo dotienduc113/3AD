@@ -7,7 +7,8 @@ import re
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
-
+import datetime
+import argparse
 
 # gui function
 def display_banner():  # Create random font
@@ -31,9 +32,6 @@ def menu():
     # print("0. Install requirements")
     print("1. Auto Audit")
     print("2. Exit")
-    new_path = ".\\logs"
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
     while True:
         user_input = input("\nInput: ")
         if user_input.isdigit():
@@ -207,8 +205,10 @@ def checklist_1(clist1):  # checklist 1 va 2 lay du lieu va so sanh
                 append_array(passed, f"{key}", clist1.get(key))
             else:
                 append_array(failed, f"{key}", clist1.get(key))
-    print("\n1-2. Password Policy and Account Lockout Policy result:")
-    result_table(passed, failed)
+    str = "\n1-2. Password Policy and Account Lockout Policy result:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result(str.strip() + "\n", t)
 
 
 # loc du lieu trong trong query checklist 5
@@ -256,8 +256,10 @@ def checklist_5(clist5):  # checklist 5 lay du lieu va so sanh
                 append_array(passed, f"{profile[:-18]} {obj}", value)
             else:
                 append_array(failed, f"{profile[:-18]} {obj}", value)
-    print("\n5. Windows Defender Firewall with Advanced Security result:")
-    result_table(passed, failed)
+    str = "\n5. Windows Defender Firewall with Advanced Security result:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_6():
@@ -310,10 +312,15 @@ def checklist_6(clist6):
             append_array(passed, f"{category}", setting)
         else:
             append_array(failed, f"{category}", setting)
-    print("\n6. Audit Policy:")
+
+    str = "\n6. Audit Policy:"
+    print(str)
+    t = result_table(passed, failed)
     if len(clist6) == 0:
         print("NOTE: Please run as administrator to get full results")
-    result_table(passed, failed)
+        export_result("\n" + str + "\n" + "NOTE: Please run as administrator to get full results\n", t)
+    else:
+        export_result("\n" + str + "\n", t)
 
 
 def filter_info_7():
@@ -348,8 +355,10 @@ def checklist_7(clist7):
                 append_array(passed, "WDigest Authentication", "Disable")
             else:
                 append_array(failed, "WDigest Authentication", "Enable")
-    print("\n7. MS Security Guide:")
-    result_table(passed, failed)
+    str = "\n7. MS Security Guide:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_8():
@@ -400,8 +409,10 @@ def checklist_8(clist8):
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - NETLOGON", value)
-    print("\n8. Network Provider:")
-    result_table(passed, failed)
+    str = "\n8. Network Provider:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_9():
@@ -431,8 +442,10 @@ def checklist_9(clist9):
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
             elif value == "0x2":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
-    print("\n9. Credentials Delegation:")
-    result_table(passed, failed)
+    str = "\n9. Credentials Delegation:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_10():
@@ -523,8 +536,10 @@ def checklist_10(clist10):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, "Scan removable drives", "Not configure/Disabled")
-    print("\n10. Windows Defender:")
-    result_table(passed, failed)
+    str = "\n10. Windows Defender:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filer_info_11():
@@ -648,8 +663,10 @@ def checklist_11(clist11):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Do not use temporary folders per session", "Not configured")
-    print("\n11. Remote Desktop Services:")
-    result_table(passed, failed)
+    str = "\n11. Remote Desktop Services:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filer_info_registry(filename):
@@ -705,8 +722,10 @@ def checklist_12(clist12):
     if "EnableScripts" not in clist12:
         s = "Turn on Script Execution"
         append_array(failed, s, "Default - Not configured/Disable")
-    print("\n12. Windows PowerShell:")
-    result_table(passed, failed)
+    str = "\n12. Windows PowerShell:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_13():
@@ -802,8 +821,10 @@ def checklist_13(clist13):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Service Allow remote server management through WinRM", "Not configured")
-    print("\n13. WinRM:")
-    result_table(passed, failed)
+    str = "\n13. WinRM:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def checklist_14(clist14):
@@ -817,8 +838,10 @@ def checklist_14(clist14):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, s, "Not configured")
-    print("\n14. Windows Remote Shell:")
-    result_table(passed, failed)
+    str = "\n14. Windows Remote Shell:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def checklist_15(clist15):
@@ -834,8 +857,10 @@ def checklist_15(clist15):
             append_array(failed, s, "Automatic")
     else:
         append_array(failed, s, "Not configured")
-    print("\n15. System Services:")
-    result_table(passed, failed)
+    str = "\n15. System Services:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def checklist_16(clist16):
@@ -850,8 +875,10 @@ def checklist_16(clist16):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, s, "Not configured")
-    print("\n16. Group Policy:")
-    result_table(passed, failed)
+    str = "\n16. Group Policy:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def filter_info_4():
@@ -1088,10 +1115,10 @@ def checklist_4(clist4):
         append_array(failed,
                      "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers",
                      "Default/Depends on OS")
-
-    print("\n4. Security Options:")
-    result_table(passed, failed)
-
+    str = "\n4. Security Options:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 def filter_info_secpol(path):
     file = open(path, "r")
@@ -1189,8 +1216,10 @@ def checklist_3(clist3):
     else:
         append_array(passed, "Act as part of the operating system", "Default")
 
-    print("\n3. User Rights Assignment:")
-    result_table(passed, failed)
+    str = "\n3. User Rights Assignment:"
+    print(str)
+    t = result_table(passed, failed)
+    export_result("\n" + str + "\n", t)
 
 
 def checklist_misc(clistmisc, passed, failed):
@@ -1220,7 +1249,6 @@ def checklist_misc(clistmisc, passed, failed):
         append_array(passed, "Network security: Force logoff when logon hours expire", "Default/Enabled")
 
 
-
 def compare_checklist():
     clist1 = filter_info_1()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
@@ -1238,7 +1266,6 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-
     checklist_1(clist1)
     checklist_3(clist3)
     checklist_4(clist4)
@@ -1254,7 +1281,6 @@ def compare_checklist():
     checklist_14(clist14)
     checklist_15(clist15)
     checklist_16(clist16)
-
 
 
 # dung de cho vao bang passed va failed
@@ -1290,16 +1316,41 @@ def result_table(passed, failed, width=100):
     # Print the table
     print(tabulate(table, headers=["Passed", "Failed"], tablefmt="grid"))
 
+    return tabulate(table, headers=["Passed", "Failed"], tablefmt="grid")
+
+
+def export_result(str, table):
+    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+    f_name = f"3AD_{current_time}.txt"
+    with open(f".\\results\\{f_name}", "a+") as f:
+        f.write(str)
+        f.write(table)
+
 
 def execute(choice):
     #if choice == 0:
     #    install_requirements()
     if choice == 1:
-        run_query()
+        #run_query()
         compare_checklist()
         return
 
 
+
 if __name__ == "__main__":
+    new_path = ".\\logs"
+    if not os.path.exists(new_path):
+        os.makedirs(new_path)
+    new_path2 = ".\\results"
+    if not os.path.exists(new_path2):
+        os.makedirs(new_path2)
     display_banner()
-    menu()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-nogui', action='store_true', help='Run without GUI')
+    args = parser.parse_args()
+
+    if args.nogui:
+        #run_query()
+        compare_checklist()
+    else:
+        menu()
