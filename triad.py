@@ -1349,7 +1349,7 @@ if __name__ == "__main__":
         os.makedirs(new_path2)
     display_banner()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--nogui', action='store_true', help='Run without GUI')
+    parser.add_argument('--nogui', action='store_true', help='run without GUI')
     parser.add_argument('-l', '--loop', action='store_true', help='loop')
     args = parser.parse_args()
 
