@@ -1351,18 +1351,101 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--nogui', action='store_true', help='run without GUI')
     parser.add_argument('-l', '--loop', action='store_true', help='loop')
+    parser.add_argument('-s', '--sec', type=int, help='set time loop (default 15s)')
+    parser.add_argument('-cl1', '--checklist1', action='store_true', help='checklist 1: Password Policy')
+    parser.add_argument('-cl2', '--checklist2', action='store_true', help='checklist 2: Account Lockout Policy')
+    parser.add_argument('-cl3', '--checklist3', action='store_true', help='checklist 3: User Rights Assignment')
+    parser.add_argument('-cl4', '--checklist4', action='store_true', help='checklist 4: Security Options')
+    parser.add_argument('-cl5', '--checklist5', action='store_true', help='checklist 5: Windows Defender Firewall with Advanced Security')
+    parser.add_argument('-cl6', '--checklist6', action='store_true', help='checklist 6: Audit Policy')
+    parser.add_argument('-cl7', '--checklist7', action='store_true', help='checklist 7: MS Security Guide')
+    parser.add_argument('-cl8', '--checklist8', action='store_true', help='checklist 8: Network Provider')
+    parser.add_argument('-cl9', '--checklist9', action='store_true', help='checklist 9: Credentials Delegation')
+    parser.add_argument('-cl10', '--checklist10', action='store_true', help='checklist 10: Windows Defender')
+    parser.add_argument('-cl11', '--checklist11', action='store_true', help='checklist 11: Remote Desktop Services')
+    parser.add_argument('-cl12', '--checklist12', action='store_true', help='checklist 12: Windows PowerShell')
+    parser.add_argument('-cl13', '--checklist13', action='store_true', help='checklist 13: WinRM')
+    parser.add_argument('-cl14', '--checklist14', action='store_true', help='checklist 14: Windows Remote Shell')
+    parser.add_argument('-cl15', '--checklist15', action='store_true', help='checklist 15: System Services')
+    parser.add_argument('-cl16', '--checklist16', action='store_true', help='checklist 16: Group Policy')
     args = parser.parse_args()
 
-    if args.loop:
+    condition_met = False
+    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+    if (args.loop and args.sec) or args.loop:
+        if not args.sec:
+            args.sec = 15
+        condition_met = True
         while True:
             current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
             run_query()
             compare_checklist()
-            time.sleep(15)
-    elif args.nogui:
-        current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+            time.sleep(args.sec)
+    if args.nogui:
+        condition_met = True
         run_query()
         compare_checklist()
-    else:
-        current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+    if args.checklist1 or args.checklist2:
+        condition_met = True
+        run_query()
+        clist1 = filter_info_1()
+        checklist_1(clist1)
+    if args.checklist3:
+        condition_met = True
+        clist3 = filter_info_secpol(".\\logs\\result3.txt")
+        checklist_3(clist3)
+    if args.checklist4:
+        condition_met = True
+        clist4 = filter_info_4()
+        checklist_4(clist4)
+    if args.checklist5:
+        condition_met = True
+        clist5 = filer_info_5()
+        checklist_5(clist5)
+    if args.checklist6:
+        condition_met = True
+        clist6 = filter_info_6()
+        checklist_6(clist6)
+    if args.checklist7:
+        condition_met = True
+        clist7 = filter_info_7()
+        checklist_7(clist7)
+    if args.checklist8:
+        condition_met = True
+        clist8 = filter_info_8()
+        checklist_8(clist8)
+    if args.checklist9:
+        condition_met = True
+        clist9 = filter_info_9()
+        checklist_9(clist9)
+    if args.checklist10:
+        condition_met = True
+        clist10 = filer_info_registry(".\\logs\\result10.txt")
+        checklist_10(clist10)
+    if args.checklist11:
+        condition_met = True
+        clist11 = filer_info_registry(".\\logs\\result11.txt")
+        checklist_11(clist11)
+    if args.checklist12:
+        condition_met = True
+        clist12 = filer_info_registry(".\\logs\\result12.txt")
+        checklist_12(clist12)
+    if args.checklist13:
+        condition_met = True
+        clist13 = filter_info_13()
+        checklist_13(clist13)
+    if args.checklist14:
+        condition_met = True
+        clist14 = filer_info_registry(".\\logs\\result14.txt")
+        checklist_14(clist14)
+    if args.checklist15:
+        condition_met = True
+        clist15 = filer_info_registry(".\\logs\\result15.txt")
+        checklist_15(clist15)
+    if args.checklist16:
+        condition_met = True
+        clist16 = filer_info_registry(".\\logs\\result16.txt")
+        checklist_16(clist16)
+
+    if not condition_met:
         menu()
