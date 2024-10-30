@@ -9,7 +9,7 @@ from tabulate import tabulate
 from itertools import zip_longest
 import datetime
 import argparse
-
+import time
 
 # gui function
 def display_banner():  # Create random font
@@ -101,6 +101,7 @@ reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGP
 secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "PasswordComplexity ClearTextPassword" > .\logs\result1_56.txt
 secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "ForceLogoffWhenHourExpire" > .\logs\result4_22.txt & del secpol.txt
 """
+
 
 
 # chay lenh cmd bang cach doc file query.txt va output ra 1 file result.txt o thu muc logs
@@ -1252,6 +1253,8 @@ def checklist_misc(clistmisc, passed, failed):
 
 
 def compare_checklist():
+    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+
     clist1 = filter_info_1()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
     clist4 = filter_info_4()
@@ -1322,7 +1325,6 @@ def result_table(passed, failed, width=100):
 
 
 def export_result(str, table):
-    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
     f_name = f"3AD_{current_time}.txt"
     with open(f".\\results\\{f_name}", "a+") as f:
         f.write(str)
@@ -1347,11 +1349,20 @@ if __name__ == "__main__":
         os.makedirs(new_path2)
     display_banner()
     parser = argparse.ArgumentParser()
-    parser.add_argument('-nogui', action='store_true', help='Run without GUI')
+    parser.add_argument('--nogui', action='store_true', help='Run without GUI')
+    parser.add_argument('-l', '--loop', action='store_true', help='loop')
     args = parser.parse_args()
 
-    if args.nogui:
+    if args.loop:
+        while True:
+            current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+            run_query()
+            compare_checklist()
+            time.sleep(15)
+    elif args.nogui:
+        current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
         run_query()
         compare_checklist()
     else:
+        current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
         menu()
