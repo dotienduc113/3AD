@@ -809,7 +809,7 @@ def checklist_13(clist13):
         append_array(failed, "Service Allow unencrypted traffic", "Not configured")
     if "Service DisableRunAs" in clist13:
         s = "Service Disallow WinRM from storing RunAs credentials"
-        if clist13.get("Service DisableRunAs") == "0x0":
+        if clist13.get("Service DisableRunAs") == "0x1":
             append_array(passed, s, "Enabled")
         else:
             append_array(failed, s, "Disabled")
