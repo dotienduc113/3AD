@@ -341,22 +341,30 @@ def filter_info_7():
 def checklist_7(clist7):
     passed = []
     failed = []
-    for category, value in clist7.items():
-        if category == "EnableSMB1Protocol":
-            if value == "False":
-                append_array(passed, f"Configure SMB v1 server", value)
-            else:
-                append_array(failed, f"Configure SMB v1 server", value)
-        elif category == "Start REG_DWORD":
-            if value == "0x0":
-                append_array(passed, "Configure SMB v1 client driver", "Disable")
-            else:
-                append_array(failed, "Configure SMB v1 client driver", "Manual start or Automatic start")
-        elif category == "UseLogonCredential REG_DWORD":
-            if value == "0x0":
-                append_array(passed, "WDigest Authentication", "Disable")
-            else:
-                append_array(failed, "WDigest Authentication", "Enable")
+    if "EnableSMB1Protocol" in clist7:
+        s = "Configure SMB v1 server"
+        if clist7.get("EnableSMB1Protocol") == "False":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Configure SMB v1 server", "Not configure/Enable")
+    if "Start REG_DWORD" in clist7:
+        s = "Configure SMB v1 server"
+        if clist7.get("Start REG_DWORD") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "Configure SMB v1 server", "Not configure/Enable")
+    if "UseLogonCredential REG_DWORD" in clist7:
+        s = "WDigest Authentication"
+        if clist7.get("UseLogonCredential REG_DWORD") == "0x0":
+            append_array(passed, s, "Disabled")
+        else:
+            append_array(failed, s, "Enabled")
+    else:
+        append_array(failed, "WDigest Authentication", "Not configure/Enable")
     str = "\n7. MS Security Guide:"
     print(str)
     t = result_table(passed, failed)
