@@ -185,7 +185,14 @@ if __name__ == "__main__":
         condition_met = True
         run_query()
         compare_checklist()
+    if args.verbose:
+        print('Running query...')
+    run_query()
 
+    # Step 2: Compare checklist
+    if args.verbose:
+        print('Comparing checklist...')
+        compare_checklist()
     '''
     if args.checklist1 or args.checklist2:
         condition_met = True

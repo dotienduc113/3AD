@@ -21,7 +21,6 @@ secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "ForceLogoffWhenH
 """
 
 
-
 # chay lenh cmd bang cach doc file query.txt va output ra 1 file result.txt o thu muc logs
 
 def run_query():

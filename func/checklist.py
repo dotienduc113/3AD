@@ -7,10 +7,6 @@ from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 
 
-
-
-
-
 def compare_checklist():
     current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
     clist1 = filter_info_1()
@@ -30,20 +26,20 @@ def compare_checklist():
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
     checklist_1(clist1, current_time)
-    #checklist_3(clist3, current_time)
-    #checklist_4(clist4, current_time)
-    #checklist_5(clist5, current_time)
-    #checklist_6(clist6, current_time)
-    #checklist_7(clist7, current_time)
-    #checklist_8(clist8, current_time)
-    #checklist_9(clist9, current_time)
-    #checklist_10(clist10, current_time)
-    #checklist_11(clist11, current_time)
-    #checklist_12(clist12, current_time)
-    #checklist_13(clist13, current_time)
-    #checklist_14(clist14, current_time)
-    #checklist_15(clist15, current_time)
-    #checklist_16(clist16, current_time)
+    checklist_3(clist3, current_time)
+    checklist_4(clist4, current_time)
+    checklist_5(clist5, current_time)
+    checklist_6(clist6, current_time)
+    checklist_7(clist7, current_time)
+    checklist_8(clist8, current_time)
+    checklist_9(clist9, current_time)
+    checklist_10(clist10, current_time)
+    checklist_11(clist11, current_time)
+    checklist_12(clist12, current_time)
+    checklist_13(clist13, current_time)
+    checklist_14(clist14, current_time)
+    checklist_15(clist15, current_time)
+    checklist_16(clist16, current_time)
 
 
 def result_table(passed, failed, width=100):
