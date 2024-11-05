@@ -117,7 +117,7 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
             else:
                 append_array(failed, f"{str}", clist1.get(key))
         elif key == "Lockout duration (minutes)":
-            str = "Account Lockout duration (minutes)"
+            str = "Account lockout duration (minutes)"
             if value >= 15:
                 append_array(passed, f"{str}", clist1.get(key))
             else:
@@ -133,8 +133,8 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
     t = result_table(passed, failed)
     #print(passed)
     #print(failed)
-    #export_json("test.json", passed, str.strip(), "passed")
-    #export_json("test.json", failed, str.strip(), "failed")
+    export_json("result.json", passed, str.strip(), "passed")
+    export_json("result.json", failed, str.strip(), "failed")
     export_result(str.strip() + "\n", t, current_time)
 
 

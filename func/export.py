@@ -27,5 +27,6 @@ def export_json(json_name, arr, checklist_name,status):
                      "checklist_name": checklist_name,
                      "status": status,
                      "mitigation": mitigation[0], "severity": mitigation[1]})
+    print(result)
     with open(json_name, 'w') as f:
         json.dump(result, f, indent=4)
