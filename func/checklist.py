@@ -5,6 +5,8 @@ from itertools import zip_longest
 import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
+import json
+from func.export import ck1_miti, export_json
 
 
 def compare_checklist():
@@ -26,20 +28,20 @@ def compare_checklist():
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
     checklist_1(clist1, current_time)
-    checklist_3(clist3, current_time)
-    checklist_4(clist4, current_time)
-    checklist_5(clist5, current_time)
-    checklist_6(clist6, current_time)
-    checklist_7(clist7, current_time)
-    checklist_8(clist8, current_time)
-    checklist_9(clist9, current_time)
-    checklist_10(clist10, current_time)
-    checklist_11(clist11, current_time)
-    checklist_12(clist12, current_time)
-    checklist_13(clist13, current_time)
-    checklist_14(clist14, current_time)
-    checklist_15(clist15, current_time)
-    checklist_16(clist16, current_time)
+    #checklist_3(clist3, current_time)
+    #checklist_4(clist4, current_time)
+    #checklist_5(clist5, current_time)
+    #checklist_6(clist6, current_time)
+    #checklist_7(clist7, current_time)
+    #checklist_8(clist8, current_time)
+    #checklist_9(clist9, current_time)
+    #checklist_10(clist10, current_time)
+    #checklist_11(clist11, current_time)
+    #checklist_12(clist12, current_time)
+    #checklist_13(clist13, current_time)
+    #checklist_14(clist14, current_time)
+    #checklist_15(clist15, current_time)
+    #checklist_16(clist16, current_time)
 
 
 def result_table(passed, failed, width=100):
@@ -68,10 +70,20 @@ def append_array(array, key, value):
     return
 
 
+'''
+def export_json(passed, timestamp, checklist_name):
+    result = []
+    for i in passed:
+        result.append({"name": i, "timestamp": timestamp, "checklist_name": checklist_name, "detail": "detail"})
+    with open('result.json', 'w') as f:
+        json.dump(result, f, indent=4)
+'''
+
+
 def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so sanh
     passed = []
     failed = []
-    checklist_misc(filter_info_secpol(".\\logs\\result1_56.txt"), passed, failed)
+    checklist_misc(filter_info_secpol(".\\logs\\result1_56.txt"), passed, failed, 1)
     for key in clist1:
         try:
             value = int(clist1.get(key))
@@ -93,30 +105,36 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
             else:
                 append_array(failed, f"{key}", clist1.get(key))
         elif key == "Length of password history maintained":
+            str = "Enforce password history"
             if value >= 14:
-                append_array(passed, f"{key}", clist1.get(key))
+                append_array(passed, f"{str}", clist1.get(key))
             else:
-                append_array(failed, f"{key}", clist1.get(key))
+                append_array(failed, f"{str}", clist1.get(key))
         elif key == "Lockout threshold":
+            str = "Account lockout threshold"
             if 0 < value <= 5:
-                append_array(passed, f"{key}", clist1.get(key))
+                append_array(passed, f"{str}", clist1.get(key))
             else:
-                append_array(failed, f"{key}", clist1.get(key))
+                append_array(failed, f"{str}", clist1.get(key))
         elif key == "Lockout duration (minutes)":
+            str = "Account Lockout duration (minutes)"
             if value >= 15:
-                append_array(passed, f"{key}", clist1.get(key))
+                append_array(passed, f"{str}", clist1.get(key))
             else:
-                append_array(failed, f"{key}", clist1.get(key))
+                append_array(failed, f"{str}", clist1.get(key))
         elif key == "Lockout observation window (minutes)":
+            str = "Reset account lockout counter after (minutes)"
             if value >= 15:
-                append_array(passed, f"{key}", clist1.get(key))
+                append_array(passed, f"{str}", clist1.get(key))
             else:
-                append_array(failed, f"{key}", clist1.get(key))
+                append_array(failed, f"{str}", clist1.get(key))
     str = "\n1-2. Password Policy and Account Lockout Policy result:"
     print(str)
     t = result_table(passed, failed)
     #print(passed)
     #print(failed)
+    #export_json("test.json", passed, str.strip(), "passed")
+    #export_json("test.json", failed, str.strip(), "failed")
     export_result(str.strip() + "\n", t, current_time)
 
 
@@ -214,7 +232,7 @@ def checklist_3(clist3, current_time):
 def checklist_4(clist4, current_time):
     passed = []
     failed = []
-    checklist_misc(filter_info_secpol(".\\logs\\result4_22.txt"), passed, failed)
+    checklist_misc(filter_info_secpol(".\\logs\\result4_22.txt"), passed, failed, 4)
     if "Account active" in clist4:
         s = "Accounts Administrator: account status"
         if clist4.get("Account active") == "No":
@@ -950,28 +968,30 @@ def checklist_16(clist16, current_time):
     export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_misc(clistmisc, passed, failed):
-    if "PasswordComplexity" in clistmisc:
-        s = "Password must meet complexity requirements "
-        if clistmisc.get("PasswordComplexity") == "1":
-            append_array(passed, s, "Enabled")
+def checklist_misc(clistmisc, passed, failed, i):
+    if i == 1:
+        if "PasswordComplexity" in clistmisc:
+            s = "Password must meet complexity requirements "
+            if clistmisc.get("PasswordComplexity") == "1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
         else:
-            append_array(failed, s, "Disabled")
-    else:
-        append_array(passed, "Password must meet complexity requirements ", "Default/Enabled")
-    if "ClearTextPassword" in clistmisc:
-        s = "Store passwords using reversible encryption"
-        if clistmisc.get("ClearTextPassword") == "1":
-            append_array(passed, s, "Disabled")
+            append_array(passed, "Password must meet complexity requirements ", "Default/Enabled")
+        if "ClearTextPassword" in clistmisc:
+            s = "Store passwords using reversible encryption"
+            if clistmisc.get("ClearTextPassword") == "1":
+                append_array(passed, s, "Disabled")
+            else:
+                append_array(failed, s, "Enabled")
         else:
-            append_array(failed, s, "Enabled")
-    else:
-        append_array(passed, "Store passwords using reversible encryption", "Default/Disabled")
-    if "ForceLogoffWhenHourExpire" in clistmisc:
-        s = "Network security: Force logoff when logon hours expire"
-        if clistmisc.get("ForceLogoffWhenHourExpire") == "1":
-            append_array(passed, s, "Enabled")
+            append_array(passed, "Store passwords using reversible encryption", "Default/Disabled")
+    elif i == 4:
+        if "ForceLogoffWhenHourExpire" in clistmisc:
+            s = "Network security: Force logoff when logon hours expire"
+            if clistmisc.get("ForceLogoffWhenHourExpire") == "1":
+                append_array(passed, s, "Enabled")
+            else:
+                append_array(failed, s, "Disabled")
         else:
-            append_array(failed, s, "Disabled")
-    else:
-        append_array(passed, "Network security: Force logoff when logon hours expire", "Default/Enabled")
+            append_array(passed, "Network security: Force logoff when logon hours expire", "Default/Enabled")
