@@ -168,7 +168,6 @@ if __name__ == "__main__":
     parser.add_argument('-cl16', '--checklist16', action='store_true', help='checklist 16: Group Policy')
     '''
     args = parser.parse_args()
-
     condition_met = False
     current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 
