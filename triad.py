@@ -187,7 +187,7 @@ if __name__ == "__main__":
         compare_checklist()
     if args.verbose:
         print('Running query...')
-    run_query()
+        run_query()
 
     # Step 2: Compare checklist
     if args.verbose:
