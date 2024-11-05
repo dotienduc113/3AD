@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, export_json
+from func.export import ck1_miti, export_json, ck3_miti
 
 
 def compare_checklist():
@@ -28,7 +28,7 @@ def compare_checklist():
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
     checklist_1(clist1, current_time)
-    #checklist_3(clist3, current_time)
+    checklist_3(clist3, current_time)
     #checklist_4(clist4, current_time)
     #checklist_5(clist5, current_time)
     #checklist_6(clist6, current_time)
@@ -131,8 +131,8 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
     str = "\n1-2. Password Policy and Account Lockout Policy result:"
     print(str)
     t = result_table(passed, failed)
-    export_json("result.json", passed, str.strip(), "passed")
-    export_json("result.json", failed, str.strip(), "failed")
+    export_json("result.json", passed, ck1_miti, str.strip(), "passed")
+    export_json("result.json", failed, ck1_miti, str.strip(), "failed")
     export_result(str.strip() + "\n", t, current_time)
 
 
@@ -205,13 +205,13 @@ def checklist_3(clist3, current_time):
     else:
         append_array(passed, "Allow log on through Remote Desktop Services", "Default")
     if "SeShutdownPrivilege" in clist3:
-        s = "Shutdown the system"
+        s = "Shut down the system"
         if clist3.get("SeShutdownPrivilege") == "*S-1-5-32-544":
             append_array(passed, s, "Guest,Domain Admins,Enterprise Admins")
         else:
             append_array(failed, s, "Misconfigured")
     else:
-        append_array(failed, "Shutdown the system", "Default")
+        append_array(failed, "Shut down the system", "Default")
     if "SeAssignPrimaryTokenPrivilege" in clist3:
         s = "Act as part of the operating system"
         if clist3.get("SeAssignPrimaryTokenPrivilege") == "*S-1-5-19,*S-1-5-20":
@@ -224,6 +224,8 @@ def checklist_3(clist3, current_time):
     str = "\n3. User Rights Assignment:"
     print(str)
     t = result_table(passed, failed)
+    export_json("result.json", passed, ck3_miti, str.strip(), "passed")
+    export_json("result.json", failed, ck3_miti, str.strip(), "failed")
     export_result("\n" + str + "\n", t, current_time)
 
 
