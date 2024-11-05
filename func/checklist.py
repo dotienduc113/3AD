@@ -131,8 +131,6 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
     str = "\n1-2. Password Policy and Account Lockout Policy result:"
     print(str)
     t = result_table(passed, failed)
-    #print(passed)
-    #print(failed)
     export_json("result.json", passed, str.strip(), "passed")
     export_json("result.json", failed, str.strip(), "failed")
     export_result(str.strip() + "\n", t, current_time)
