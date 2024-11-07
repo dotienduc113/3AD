@@ -132,7 +132,7 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
                 append_array(passed, f"{str}", clist1.get(key))
             else:
                 append_array(failed, f"{str}", clist1.get(key))
-    str = "\n1-2. Password Policy and Account Lockout Policy result"
+    str = "\n1-2. Password Policy and Account Lockout Policy"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck1_miti, str.strip(), "passed")
@@ -228,8 +228,8 @@ def checklist_3(clist3, current_time):
     str = "\n3. User Rights Assignment"
     print(str)
     t = result_table(passed, failed)
-    #export_json(passed, ck3_miti, str.strip(), "passed")
-    #export_json(failed, ck3_miti, str.strip(), "failed")
+    export_json(passed, ck3_miti, str.strip(), "passed")
+    export_json(failed, ck3_miti, str.strip(), "failed")
     #export_result("\n" + str + "\n", t, current_time)
 
 
@@ -453,8 +453,8 @@ def checklist_4(clist4, current_time):
     str = "\n4. Security Options"
     print(str)
     t = result_table(passed, failed)
-    #export_json(passed, ck4_miti, str.strip(), "passed")
-    #export_json(failed, ck4_miti, str.strip(), "failed")
+    export_json(passed, ck4_miti, str.strip(), "passed")
+    export_json(failed, ck4_miti, str.strip(), "failed")
     #export_result("\n" + str + "\n", t, current_time)
 
 
@@ -977,13 +977,13 @@ def checklist_16(clist16, current_time):
 def checklist_misc(clistmisc, passed, failed, i):
     if i == 1:
         if "PasswordComplexity" in clistmisc:
-            s = "Password must meet complexity requirements "
+            s = "Password must meet complexity requirements"
             if clistmisc.get("PasswordComplexity") == "1":
                 append_array(passed, s, "Enabled")
             else:
                 append_array(failed, s, "Disabled")
         else:
-            append_array(passed, "Password must meet complexity requirements ", "Default/Enabled")
+            append_array(passed, "Password must meet complexity requirements", "Default/Enabled")
         if "ClearTextPassword" in clistmisc:
             s = "Store passwords using reversible encryption"
             if clistmisc.get("ClearTextPassword") == "1":

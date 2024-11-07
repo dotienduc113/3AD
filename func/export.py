@@ -21,7 +21,7 @@ ck1_miti = {
         "Short passwords are vulnerable to password attacks. Minimum password length is 14 characters",
         "Medium"
     ],
-    "Passwords must meet complexity requirements": [
+    "Password must meet complexity requirements": [
         "Simple passwords are vulnerable to brute-force attacks. Password must include a mix of upper and lower case letters, numbers, and special characters.",
         "Medium"
     ],
@@ -83,7 +83,7 @@ ck3_miti = {
     ],
     "Act as part of the operating system": [
         "Allow none to prevent unauthorized privilege escalation, ensuring system security and integrity.",
-        "Medium"
+        "High"
     ]
 }
 
@@ -91,7 +91,7 @@ ck3_miti = {
 ck4_miti = {
     "Accounts: Administrator account status": [
         "Ensure the default admin account is renamed and disabled to prevent unauthorized access. The recommended state for this setting is: Disabled.",
-        "Medium"
+        "Low"
     ],
     "Domain member: Digitally encrypt or sign secure channel data (always)": [
         "Require encryption or signing of all secure channel data to ensure integrity and confidentiality. The recommended state for this setting is: Enabled.",
@@ -121,13 +121,13 @@ ck4_miti = {
         "Set a time limit for inactive machines to automatically lock. The recommended state for this setting is: 15 minutes.",
         "Medium"
     ],
-    "Interactive logon: Number of previous logons to cache (in case domain controller is not available)": [
+    "Interactive logon: Number of previous logons to cache": [
         "Limit cached logons to the required minimum to reduce risk. The recommended state for this setting is: 2 logons.",
-        "Medium"
+        "Low"
     ],
     "Interactive logon: Prompt user to change password before expiration": [
         "Prompt 14 days before expiration to ensure uninterrupted access. The recommended state for this setting is: 5-14 days.",
-        "Medium"
+        "Low"
     ],
     "Microsoft network client: Digitally sign communications (always)": [
         "Require digital signing of all client communications for security. The recommended state for this setting is: Enabled.",
@@ -139,7 +139,7 @@ ck4_miti = {
     ],
     "Microsoft network client: Send unencrypted password to third-party SMB servers": [
         "Disable to avoid exposure of passwords. The recommended state for this setting is: Disabled.",
-        "Medium"
+        "High"
     ],
     "Microsoft network server: Amount of idle time required before suspending session": [
         "Suspend sessions after a reasonable idle period (e.g., 15 minutes). The recommended state for this setting is: 15 minutes.",
@@ -155,7 +155,7 @@ ck4_miti = {
     ],
     "Microsoft network server: Disconnect clients when logon hours expire": [
         "Automatically disconnect clients past their logon hours to enforce policy. The recommended state for this setting is: Enabled.",
-        "Medium"
+        "Low"
     ],
     "Microsoft network server: Server SPN target name validation level": [
         "Require strict SPN validation to prevent spoofing. The recommended state for this setting is: Accept if provided by client.",
@@ -167,11 +167,11 @@ ck4_miti = {
     ],
     "Network security: Configure encryption types allowed for Kerberos": [
         "Allow only strong encryption types like AES for Kerberos. The recommended state for this setting is: AES128_HMAC_SHA1 AES256_HMAC_SHA1 Future encryption types.",
-        "Medium"
+        "High"
     ],
     "Network security: Do not store LAN Manager hash value on next password change": [
         "Disable LM hash storage to protect against easy cracking. The recommended state for this setting is: Enabled.",
-        "Medium"
+        "High"
     ],
     "Network security: Force logoff when logon hours expire": [
         "Enable force logoff to maintain access restrictions. The recommended state for this setting is: Enabled.",
@@ -179,7 +179,7 @@ ck4_miti = {
     ],
     "Network security: LAN Manager authentication level": [
         "Set to NTLMv2 only to avoid weak authentication methods. The recommended state for this setting is: Send NTLMv2 response only. Refuse LM & NTLM.",
-        "Medium"
+        "High"
     ],
     "Network security: LDAP client signing requirements": [
         "Require signing to ensure LDAP transaction integrity and security. The recommended state for this setting is: Negotiating.",
@@ -194,7 +194,6 @@ ck4_miti = {
         "Medium"
     ]
 }
-
 
 
 ck5_miti = {
@@ -273,8 +272,8 @@ def export_csv_line():
                     medium += 1
                 elif row['severity'] == "Low":
                     low += 1
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "critical", 'count': high})
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "high", 'count': medium})
+        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "high", 'count': high})
+        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "medium", 'count': medium})
         writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "low", 'count': low})
 
 
