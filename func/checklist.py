@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, export_json, ck3_miti
+from func.export import ck1_miti, ck3_miti, ck4_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
 
 
 def compare_checklist():
@@ -29,7 +29,7 @@ def compare_checklist():
 
     checklist_1(clist1, current_time)
     checklist_3(clist3, current_time)
-    #checklist_4(clist4, current_time)
+    checklist_4(clist4, current_time)
     #checklist_5(clist5, current_time)
     #checklist_6(clist6, current_time)
     #checklist_7(clist7, current_time)
@@ -42,6 +42,10 @@ def compare_checklist():
     #checklist_14(clist14, current_time)
     #checklist_15(clist15, current_time)
     #checklist_16(clist16, current_time)
+
+    export_csv_table()
+    export_csv_line()
+    #export_zip_files()
 
 
 def result_table(passed, failed, width=100):
@@ -131,9 +135,9 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
     str = "\n1-2. Password Policy and Account Lockout Policy result:"
     print(str)
     t = result_table(passed, failed)
-    export_json("result.json", passed, ck1_miti, str.strip(), "passed")
-    export_json("result.json", failed, ck1_miti, str.strip(), "failed")
-    export_result(str.strip() + "\n", t, current_time)
+    export_json(passed, ck1_miti, str.strip(), "passed")
+    export_json(failed, ck1_miti, str.strip(), "failed")
+    #export_result(str.strip() + "\n", t, current_time)
 
 
 def checklist_3(clist3, current_time):
@@ -224,9 +228,9 @@ def checklist_3(clist3, current_time):
     str = "\n3. User Rights Assignment:"
     print(str)
     t = result_table(passed, failed)
-    export_json("result.json", passed, ck3_miti, str.strip(), "passed")
-    export_json("result.json", failed, ck3_miti, str.strip(), "failed")
-    export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck3_miti, str.strip(), "passed")
+    export_json(failed, ck3_miti, str.strip(), "failed")
+    #export_result("\n" + str + "\n", t, current_time)
 
 
 def checklist_4(clist4, current_time):
@@ -234,7 +238,7 @@ def checklist_4(clist4, current_time):
     failed = []
     checklist_misc(filter_info_secpol(".\\logs\\result4_22.txt"), passed, failed, 4)
     if "Account active" in clist4:
-        s = "Accounts Administrator: account status"
+        s = "Accounts: Administrator account status"
         if clist4.get("Account active") == "No":
             append_array(passed, s, "Disabled")
         else:
@@ -450,6 +454,8 @@ def checklist_4(clist4, current_time):
     print(str)
     t = result_table(passed, failed)
     export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck4_miti, str.strip(), "passed")
+    export_json(failed, ck4_miti, str.strip(), "failed")
 
 
 def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
