@@ -228,8 +228,8 @@ def checklist_3(clist3, current_time):
     str = "\n3. User Rights Assignment"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck3_miti, str.strip(), "passed")
-    export_json(failed, ck3_miti, str.strip(), "failed")
+    #export_json(passed, ck3_miti, str.strip(), "passed")
+    #export_json(failed, ck3_miti, str.strip(), "failed")
     #export_result("\n" + str + "\n", t, current_time)
 
 
@@ -453,9 +453,9 @@ def checklist_4(clist4, current_time):
     str = "\n4. Security Options"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck4_miti, str.strip(), "passed")
-    export_json(failed, ck4_miti, str.strip(), "failed")
+    #export_json(passed, ck4_miti, str.strip(), "passed")
+    #export_json(failed, ck4_miti, str.strip(), "failed")
+    #export_result("\n" + str + "\n", t, current_time)
 
 
 def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh

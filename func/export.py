@@ -5,15 +5,42 @@ import zipfile
 import os
 
 ck1_miti = {
-	"Enforce password history": ["Previously compromised passwords might be used to gain access. Password reuse must be different than the last 24 passwords", "Critical"],
-	"Maximum password age": ["Without regular password changes, passwords can be exposed for a longer period. Maximum password age from 30 - 90 days", "High"],
-	"Minimum password age": ["Too short password age might let users bypass password history requirements. Minimum password age is 1 day", "Medium"],
-	"Minimum password length": ["Short passwords are vulnerable to password attacks. Minimum password length is 14 characters", "High"],
-	"Password must meet complexity requirements": ["Simple passwords are vulnerable to brute-force attacks. Password must include a mix of upper and lower case letters, numbers, and special characters.", "Critical"],
-	"Store passwords using reversible encryption": ["Reversible encryption is not recommended since passwords will be easily decrypted. Set to Disabled", "Low"],
-	"Account lockout duration": ["Short durations can allow repeated brute-force attempts. Set to at least 15 minutes", "High"],
-	"Account lockout threshold": ["High thresholds can enable multiple guessing attempts before lockout. Set to 5 failed attempts", "Critical"],
-	"Reset account lockout counter after": [" Long reset time can delay detection of brute-force attacks. Set to at least 15 minutes", "Medium"]
+    "Enforce password history": [
+        "Previously compromised passwords might be used to gain access. Password reuse must be different than the last 24 passwords",
+        "Medium"
+    ],
+    "Maximum password age": [
+        "Without regular password changes, passwords can be exposed for a longer period. Maximum password age from 30 - 90 days",
+        "Medium"
+    ],
+    "Minimum password age": [
+        "Too short password age might let users bypass password history requirements. Minimum password age is 1 day",
+        "Medium"
+    ],
+    "Minimum password length": [
+        "Short passwords are vulnerable to password attacks. Minimum password length is 14 characters",
+        "Medium"
+    ],
+    "Passwords must meet complexity requirements": [
+        "Simple passwords are vulnerable to brute-force attacks. Password must include a mix of upper and lower case letters, numbers, and special characters.",
+        "Medium"
+    ],
+    "Store passwords using reversible encryption": [
+        "Reversible encryption is not recommended since passwords will be easily decrypted. Set to Disabled",
+        "Medium"
+    ],
+    "Account lockout duration": [
+        "Short durations can allow repeated brute-force attempts. Set to at least 15 minutes",
+        "Medium"
+    ],
+    "Account lockout threshold": [
+        "High thresholds can enable multiple guessing attempts before lockout. Set to 5 failed attempts",
+        "Medium"
+    ],
+    "Reset account lockout counter after": [
+        "Long reset time can delay detection of brute-force attacks. Set to at least 15 minutes",
+        "Medium"
+    ]
 }
 
 
@@ -60,18 +87,19 @@ ck3_miti = {
     ]
 }
 
+
 ck4_miti = {
     "Accounts: Administrator account status": [
         "Ensure the default admin account is renamed and disabled to prevent unauthorized access. The recommended state for this setting is: Disabled.",
-        "Critical"
+        "Medium"
     ],
     "Domain member: Digitally encrypt or sign secure channel data (always)": [
         "Require encryption or signing of all secure channel data to ensure integrity and confidentiality. The recommended state for this setting is: Enabled.",
-        "High"
+        "Medium"
     ],
     "Domain member: Digitally encrypt secure channel data (when possible)": [
         "Encrypt secure channel data whenever possible to prevent interception. The recommended state for this setting is: Enabled.",
-        "High"
+        "Medium"
     ],
     "Domain member: Digitally sign secure channel data (when possible)": [
         "Sign channel data for authenticity where possible. The recommended state for this setting is: Enabled.",
@@ -79,7 +107,7 @@ ck4_miti = {
     ],
     "Domain member: Disable machine account password changes": [
         "Do not disable; regular password changes should be enabled for security. The recommended state for this setting is: Disabled.",
-        "High"
+        "Medium"
     ],
     "Domain member: Maximum machine account password age": [
         "Set to a maximum of 30 days to facilitate timely password updates. The recommended state for this setting is: 30 days.",
@@ -87,15 +115,15 @@ ck4_miti = {
     ],
     "Domain member: Require strong (Windows 2000 or later) session key": [
         "Ensure use of strong session keys to protect data transmission. The recommended state for this setting is: Enabled.",
-        "High"
+        "Medium"
     ],
     "Interactive logon: Machine inactivity limit": [
         "Set a time limit for inactive machines to automatically lock. The recommended state for this setting is: 15 minutes.",
         "Medium"
     ],
-    "Interactive logon: Number of previous logons to cache": [
+    "Interactive logon: Number of previous logons to cache (in case domain controller is not available)": [
         "Limit cached logons to the required minimum to reduce risk. The recommended state for this setting is: 2 logons.",
-        "Low"
+        "Medium"
     ],
     "Interactive logon: Prompt user to change password before expiration": [
         "Prompt 14 days before expiration to ensure uninterrupted access. The recommended state for this setting is: 5-14 days.",
@@ -103,7 +131,7 @@ ck4_miti = {
     ],
     "Microsoft network client: Digitally sign communications (always)": [
         "Require digital signing of all client communications for security. The recommended state for this setting is: Enabled.",
-        "High"
+        "Medium"
     ],
     "Microsoft network client: Digitally sign communications (if server agrees)": [
         "Sign communications if mutually agreed to enhance security. The recommended state for this setting is: Enabled.",
@@ -111,15 +139,15 @@ ck4_miti = {
     ],
     "Microsoft network client: Send unencrypted password to third-party SMB servers": [
         "Disable to avoid exposure of passwords. The recommended state for this setting is: Disabled.",
-        "Critical"
+        "Medium"
     ],
     "Microsoft network server: Amount of idle time required before suspending session": [
         "Suspend sessions after a reasonable idle period (e.g., 15 minutes). The recommended state for this setting is: 15 minutes.",
-        "Low"
+        "Medium"
     ],
     "Microsoft network server: Digitally sign communications (always)": [
         "Always sign server communications to prevent tampering. The recommended state for this setting is: Enabled.",
-        "High"
+        "Medium"
     ],
     "Microsoft network server: Digitally sign communications (if client agrees)": [
         "Sign communications if mutually agreed to protect integrity. The recommended state for this setting is: Enabled.",
@@ -131,7 +159,7 @@ ck4_miti = {
     ],
     "Microsoft network server: Server SPN target name validation level": [
         "Require strict SPN validation to prevent spoofing. The recommended state for this setting is: Accept if provided by client.",
-        "High"
+        "Medium"
     ],
     "Network security: Allow Local System to use computer identity for NTLM": [
         "Restrict use of computer identity to prevent improper authorization. The recommended state for this setting is: Enabled.",
@@ -139,11 +167,11 @@ ck4_miti = {
     ],
     "Network security: Configure encryption types allowed for Kerberos": [
         "Allow only strong encryption types like AES for Kerberos. The recommended state for this setting is: AES128_HMAC_SHA1 AES256_HMAC_SHA1 Future encryption types.",
-        "High"
+        "Medium"
     ],
     "Network security: Do not store LAN Manager hash value on next password change": [
         "Disable LM hash storage to protect against easy cracking. The recommended state for this setting is: Enabled.",
-        "Critical"
+        "Medium"
     ],
     "Network security: Force logoff when logon hours expire": [
         "Enable force logoff to maintain access restrictions. The recommended state for this setting is: Enabled.",
@@ -151,25 +179,51 @@ ck4_miti = {
     ],
     "Network security: LAN Manager authentication level": [
         "Set to NTLMv2 only to avoid weak authentication methods. The recommended state for this setting is: Send NTLMv2 response only. Refuse LM & NTLM.",
-        "Critical"
+        "Medium"
     ],
     "Network security: LDAP client signing requirements": [
         "Require signing to ensure LDAP transaction integrity and security. The recommended state for this setting is: Negotiating.",
-        "High"
+        "Medium"
     ],
     "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients": [
         "Set robust security policies for client sessions to safeguard data. The recommended state for this setting is: Require NTLMv2 session security and Require 128-bit encryption.",
-        "High"
+        "Medium"
     ],
     "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers": [
         "Implement strict security measures for server sessions to protect data. The recommended state for this setting is: Require NTLMv2 session security and Require 128-bit encryption.",
+        "Medium"
+    ]
+}
+
+
+
+ck5_miti = {
+    "Firewall state": [
+        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+        "Critical"
+    ],
+    "Inbound connections": [
+        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
         "High"
+    ],
+    "Log file maximum size (KB)": [
+        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "Medium"
+    ],
+    "Log dropped packets": [
+        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Medium"
+    ],
+    "Log successful connections": [
+        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Medium"
     ]
 }
 
 
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
 json_name = f"3AD_{current_time}.json"
 csv_table_name = f"3AD_table_{current_time}.csv"
 csv_line_name = f"3AD_line_{current_time}.csv"
@@ -182,7 +236,7 @@ def export_json(arr, ck_mitigation, checklist_name, status):
             if v in i:
                 mitigation = ck_mitigation.get(v)
                 result.append(
-                    {"timestamp": current_time, "name": i,
+                    {"timestamp": timestamp, "name": i,
                      "checklist_name": checklist_name,
                      "status": status,
                      "mitigation": mitigation[0], "severity": mitigation[1]})
@@ -206,20 +260,21 @@ def export_csv_line():
         data = json.load(f)
     fieldnames = ['timestamp', 'severity', 'count']
     low = 0
+    medium = 0
     high = 0
-    critical = 0
     with open(f".\\results\\{csv_line_name}", 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for row in data:
-            if row['severity'] == "Critical":
-                critical += 1
-            elif row['severity'] == "High":
-                high += 1
-            elif row['severity'] == "Low":
-                low += 1
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "critical", 'count': critical})
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "high", 'count': high})
+            if row['status'] == "failed":
+                if row['severity'] == "High":
+                    high += 1
+                elif row['severity'] == "Medium":
+                    medium += 1
+                elif row['severity'] == "Low":
+                    low += 1
+        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "critical", 'count': high})
+        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "high", 'count': medium})
         writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "low", 'count': low})
 
 
