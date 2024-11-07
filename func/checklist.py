@@ -132,7 +132,7 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
                 append_array(passed, f"{str}", clist1.get(key))
             else:
                 append_array(failed, f"{str}", clist1.get(key))
-    str = "\n1-2. Password Policy and Account Lockout Policy result:"
+    str = "\n1-2. Password Policy and Account Lockout Policy result"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck1_miti, str.strip(), "passed")
@@ -225,7 +225,7 @@ def checklist_3(clist3, current_time):
     else:
         append_array(passed, "Act as part of the operating system", "Default")
 
-    str = "\n3. User Rights Assignment:"
+    str = "\n3. User Rights Assignment"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck3_miti, str.strip(), "passed")
@@ -450,7 +450,7 @@ def checklist_4(clist4, current_time):
         append_array(failed,
                      "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers",
                      "Default/Depends on OS")
-    str = "\n4. Security Options:"
+    str = "\n4. Security Options"
     print(str)
     t = result_table(passed, failed)
     export_result("\n" + str + "\n", t, current_time)
