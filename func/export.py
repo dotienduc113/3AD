@@ -328,6 +328,164 @@ ck9_miti = {
 }
 
 
+ck10_miti = {
+    "Turn off Windows Defender": [
+        "Disabling Defender without an alternative leaves systems vulnerable. Keep Defender enabled unless there is a credible antivirus substitute.",
+        "Medium"
+    ],
+    "Turn off real-time protection": [
+        "Real-time protection is essential for immediate threat mitigation. Ensure it is always enabled to prevent delayed detection.",
+        "Medium"
+    ],
+    "Turn on behavior monitoring": [
+        "Behavior monitoring identifies and responds to suspicious activities. Enable to effectively track potential threats.",
+        "Medium"
+    ],
+    "Scan all downloaded files and attachments": [
+        "Unchecked downloads and files can introduce malware. Ensure scans are performed to filter threats.",
+        "Medium"
+    ],
+    "Turn on process scanning whenever real-time protection is enabled": [
+        "Process scanning alongside real-time protection detects malicious processes. Enable this for comprehensive security.",
+        "Medium"
+    ],
+    "Monitor file and program activity on your computer": [
+        "Without monitoring, harmful activities may go unnoticed. Enable for enhanced security visibility.",
+        "Medium"
+    ],
+    "Scan archive files": [
+        "Archives can conceal malicious files. Ensure that these are included in scanning routines.",
+        "Medium"
+    ],
+    "Scan packed executables": [
+        "Packed executables can hide malware. Enable scanning to detect disguised threats.",
+        "Medium"
+    ],
+    "Scan removable drives": [
+        "Unscanned drives can spread malware. Ensure all removable media is scanned upon access.",
+        "Medium"
+    ]
+}
+
+ck11_miti = {
+    "Restrict Remote Desktop Services users to a single Remote Desktop Services session": [
+        "Allowing multiple sessions can strain resources and pose security risks. Limit users to one session to minimize exposure.",
+        "Medium"
+    ],
+    "Do not allow Clipboard redirection": [
+        "Clipboard redirection may result in data leakage. Disable to prevent unauthorized data transfer during remote sessions.",
+        "Medium"
+    ],
+    "Do not allow drive redirection": [
+        "Drive redirection can lead to unintended data exposure. Disable to secure RDP session data.",
+        "Medium"
+    ],
+    "Set client connection encryption level": [
+        "Weak encryption can be intercepted. Use strong encryption levels to secure client communications.",
+        "Medium"
+    ],
+    "Always prompt for password upon connection": [
+        "Skipping prompts might lead to unauthorized access. Require passwords for authentication on each connection.",
+        "Medium"
+    ],
+    "Require secure RPC communication": [
+        "Unsecured RPC can be vulnerable to interception or alteration. Require secure RPC to maintain data integrity.",
+        "Medium"
+    ],
+    "Require use of specific security layer for remote (RDP) connections": [
+        "Undefined security layers can expose vulnerabilities. Enforce specific layers like SSL/TLS.",
+        "Medium"
+    ],
+    "Require user authentication for remote connections by using Network Level Authentication": [
+        "Connections without NLA weaken security. Implement NLA for authentication before session establishment.",
+        "Medium"
+    ],
+    "Set time limit for disconnected sessions": [
+        "Unlimited disconnected sessions consume resources and can expose security risks. Set reasonable time limits (e.g., 15 minutes).",
+        "Medium"
+    ],
+    "Set time limit for active but idle Remote Desktop Services sessions": [
+        "Idle sessions hold resources and may expose risks. Set reasonable limits for session idle time (e.g., 15 minutes).",
+        "Medium"
+    ],
+    "Do not delete temp folders upon exit": [
+        "Retained temp data can lead to unauthorized data access. Ensure temp data is deleted unless necessary.",
+        "Medium"
+    ],
+    "Do not use temporary folders per session": [
+        "Using shared temp folders can risk data leaks. Utilize separate folders per session to isolate data.",
+        "Medium"
+    ]
+}
+
+
+ck12_miti = {
+    "Turn on PowerShell Script Block Logging": [
+        "Without script block logging, potential threats may not be identified. Enable for security auditing and threat analysis.",
+        "Medium"
+    ],
+    "Turn on PowerShell Transcription": [
+        "Without transcription, command activities remain unchecked. Enable to capture command outputs for detailed analysis.",
+        "High"
+    ],
+    "Turn on Script Execution": [
+        "Unrestricted execution can lead to security vulnerabilities. Restrict to signed scripts to ensure credibility.",
+        "Medium"
+    ]
+}
+
+
+ck13_miti = {
+    "Allow Basic authentication": [
+        "Basic authentication is insecure as it exposes credentials. Disable or ensure secure practices are used.",
+        "High"
+    ],
+    "Allow unencrypted traffic": [
+        "Unencrypted traffic is vulnerable to interception. Disable to protect data integrity and confidentiality.",
+        "High"
+    ],
+    "Disallow Digest authentication": [
+        "Digest authentication may not sufficiently secure credentials. Disable to prevent potential vulnerabilities.",
+        "High"
+    ],
+    "Disallow WinRM from storing RunAs credentials": [
+        "Storing credentials can result in unauthorized access. Prevent storage to enhance security.",
+        "Medium"
+    ],
+    "Allow remote server management through WinRM": [
+        "Improper configurations may lead to unauthorized access. Enable securely with authentication controls.",
+        "Medium"
+    ]
+}
+
+
+ck14_miti = {
+    "Allow Remote Shell Access": [
+        "Unrestricted remote shell access can lead to unauthorized control and exploitation. Restrict access with strict controls.",
+        "Medium"
+    ]
+}
+
+
+ck15_miti = {
+    "Print Spooler (Spooler)": [
+        "An enabled spooler is at risk for exploits, such as remote code execution. Monitor and restrict spooler usage.",
+        "Medium"
+    ]
+}
+
+
+ck16_miti = {
+    "Turn off local group policy processing": [
+        "Local policy processing can lead to inconsistent security settings. Keep central domain policy control to maintain uniform security standards.",
+        "Medium"
+    ]
+}
+
+
+
+
+
 
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')

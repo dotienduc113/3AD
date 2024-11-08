@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
+from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, ck11_miti, ck12_miti, ck13_miti, ck14_miti, ck15_miti, ck16_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
 
 
 def compare_checklist():
@@ -27,21 +27,21 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-    #checklist_1(clist1, current_time)
-    #checklist_3(clist3, current_time)
-    #checklist_4(clist4, current_time)
-    #checklist_5(clist5, current_time)
-    #checklist_6(clist6, current_time)
-    #checklist_7(clist7, current_time)
-    #checklist_8(clist8, current_time)
+    checklist_1(clist1, current_time)
+    checklist_3(clist3, current_time)
+    checklist_4(clist4, current_time)
+    checklist_5(clist5, current_time)
+    checklist_6(clist6, current_time)
+    checklist_7(clist7, current_time)
+    checklist_8(clist8, current_time)
     checklist_9(clist9, current_time)
-    #checklist_10(clist10, current_time)
-    #checklist_11(clist11, current_time)
-    #checklist_12(clist12, current_time)
-    #checklist_13(clist13, current_time)
-    #checklist_14(clist14, current_time)
-    #checklist_15(clist15, current_time)
-    #checklist_16(clist16, current_time)
+    checklist_10(clist10, current_time)
+    checklist_11(clist11, current_time)
+    checklist_12(clist12, current_time)
+    checklist_13(clist13, current_time)
+    checklist_14(clist14, current_time)
+    checklist_15(clist15, current_time)
+    checklist_16(clist16, current_time)
 
     export_csv_table()
     export_csv_line()
@@ -735,7 +735,9 @@ def checklist_10(clist10, current_time):
     str = "\n10. Windows Defender:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck10_miti, str.strip(), "passed")
+    export_json(failed, ck10_miti, str.strip(), "failed")
 
 
 def checklist_11(clist11, current_time):
@@ -830,13 +832,13 @@ def checklist_11(clist11, current_time):
         append_array(failed, "Set time limit for active but idle Remote Desktop Services sessions",
                      "Not configured/Disabled")
     if "exitDeleteTempDirsOnExit" in clist11:
-        s = "Do not delete temp folders upon"
+        s = "Do not delete temp folders upon exit"
         if clist11.get("exitDeleteTempDirsOnExit") == "0x1":
             append_array(passed, s, "Disabled")
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(failed, "Do not delete temp folders upon", "Not configured")
+        append_array(failed, "Do not delete temp folders upon exit", "Not configured")
     if "PerSessionTempDir" in clist11:
         s = "Do not use temporary folders per session"
         if clist11.get("PerSessionTempDir") == "0x1":
@@ -848,7 +850,9 @@ def checklist_11(clist11, current_time):
     str = "\n11. Remote Desktop Services:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck11_miti, str.strip(), "passed")
+    export_json(failed, ck11_miti, str.strip(), "failed")
 
 
 def checklist_12(clist12, current_time):
@@ -893,7 +897,9 @@ def checklist_12(clist12, current_time):
     str = "\n12. Windows PowerShell:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck12_miti, str.strip(), "passed")
+    export_json(failed, ck12_miti, str.strip(), "failed")
 
 
 def checklist_13(clist13, current_time):
@@ -958,7 +964,9 @@ def checklist_13(clist13, current_time):
     str = "\n13. WinRM:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck13_miti, str.strip(), "passed")
+    export_json(failed, ck13_miti, str.strip(), "failed")
 
 
 def checklist_14(clist14, current_time):
@@ -975,13 +983,15 @@ def checklist_14(clist14, current_time):
     str = "\n14. Windows Remote Shell:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck14_miti, str.strip(), "passed")
+    export_json(failed, ck14_miti, str.strip(), "failed")
 
 
 def checklist_15(clist15, current_time):
     passed = []
     failed = []
-    s = "Print Spooler"
+    s = "Print Spooler (Spooler)"
     if "Start" in clist15:
         if clist15.get("Start") == "0x4":
             append_array(passed, s, "Disabled")
@@ -994,13 +1004,15 @@ def checklist_15(clist15, current_time):
     str = "\n15. System Services:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck15_miti, str.strip(), "passed")
+    export_json(failed, ck15_miti, str.strip(), "failed")
 
 
 def checklist_16(clist16, current_time):
     passed = []
     failed = []
-    s = "Turn off Local Group Policy Objects processing"
+    s = "Turn off local group policy processing"
     if "DisableLGPOProcessing" in clist16:
 
         if clist16.get("DisableLGPOProcessing") == "0x1":
@@ -1012,7 +1024,9 @@ def checklist_16(clist16, current_time):
     str = "\n16. Group Policy:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck16_miti, str.strip(), "passed")
+    export_json(failed, ck16_miti, str.strip(), "failed")
 
 
 def checklist_misc(clistmisc, passed, failed, i):
