@@ -62,7 +62,7 @@ def filter_info_6():
             match = re.match(r'(.+?)\s{2,}(.+)', line)
             if match:
                 category, setting = match.groups()
-                settings[category] = setting
+                settings[category.strip()] = setting
     return settings
 
 

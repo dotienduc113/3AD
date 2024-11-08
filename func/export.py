@@ -197,24 +197,96 @@ ck4_miti = {
 
 
 ck5_miti = {
-    "Firewall state": [
+    "Domain Firewall State": [
         "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
-        "Critical"
+        "Medium"
     ],
-    "Inbound connections": [
+    "Private Firewall State": [
+        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+        "Medium"
+    ],
+    "Public Firewall State": [
+        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+        "Medium"
+    ],
+    "Domain Inbound connections": [
         "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
-        "High"
+        "Medium"
     ],
-    "Log file maximum size (KB)": [
+    "Private Inbound connections": [
+        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
+        "Medium"
+    ],
+    "Public Inbound connections": [
+        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
+        "Medium"
+    ],
+    "Domain Log file maximum size (KB)": [
         "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
         "Medium"
     ],
-    "Log dropped packets": [
+    "Private Log file maximum size (KB)": [
+        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "Medium"
+    ],
+    "Public Log file maximum size (KB)": [
+        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "Medium"
+    ],
+    "Domain Log dropped packets": [
         "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
         "Medium"
     ],
-    "Log successful connections": [
+    "Private Log dropped packets": [
+        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Medium"
+    ],
+    "Public Log dropped packets": [
+        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Medium"
+    ],
+    "Domain Log successful connections": [
         "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Medium"
+    ],
+    "Private Log successful connections": [
+        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Medium"
+    ],
+    "Public Log successful connections": [
+        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Medium"
+    ]
+}
+
+
+ck6_miti = {
+    "Audit account logon event": [
+        "Audit for both Success and Failure to ensure detection of all account logon attempts, whether successful or failed.",
+        "Medium"
+    ],
+    "Audit account management": [
+        "Audit for Success and Failure to capture all account management activities, enhancing visibility into changes made to user accounts.",
+        "Medium"
+    ],
+    "Audit process tracking": [
+        "Audit for Success Only to track all process creation and termination, providing insights into application usage and potential issues.",
+        "Medium"
+    ],
+    "Audit Directory Service Access": [
+        "Audit for both Success and Failure to monitor access attempts to directory services, detecting potential unauthorized access.",
+        "Medium"
+    ],
+    "Audit logon events": [
+        "Audit for both Success and Failure to capture all logon attempts, aiding in the identification of unauthorized access attempts.",
+        "Medium"
+    ],
+    "Audit Policy Change": [
+        "Audit for Success Only to track successful changes to security policies, ensuring accountability for policy modifications.",
+        "Medium"
+    ],
+    "Audit Privilege Use": [
+        "Audit for both Success and Failure to monitor all attempts to use privileges, identifying potential misuse of elevated permissions.",
         "Medium"
     ]
 }

@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, ck3_miti, ck4_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
+from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
 
 
 def compare_checklist():
@@ -30,8 +30,8 @@ def compare_checklist():
     checklist_1(clist1, current_time)
     checklist_3(clist3, current_time)
     checklist_4(clist4, current_time)
-    #checklist_5(clist5, current_time)
-    #checklist_6(clist6, current_time)
+    checklist_5(clist5, current_time)
+    checklist_6(clist6, current_time)
     #checklist_7(clist7, current_time)
     #checklist_8(clist8, current_time)
     #checklist_9(clist9, current_time)
@@ -463,67 +463,102 @@ def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
     failed = []
     for profile, settings in clist5.items():
         for obj, value in settings:
-            if obj == "State" and value == "ON":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "Firewall Policy" and "BlockInbound" in value:
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "LogAllowedConnections" and value == "Enable":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "LogDroppedConnections" and value == "Enable":
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            elif obj == "MaxFileSize" and int(value) >= 16384:
-                append_array(passed, f"{profile[:-18]} {obj}", value)
-            else:
-                append_array(failed, f"{profile[:-18]} {obj}", value)
-    str = "\n5. Windows Defender Firewall with Advanced Security result:"
+            if obj == "State":
+                if value == "ON":
+                    append_array(passed, f"{profile[:-18]} Firewall {obj}", value)
+                else:
+                    append_array(failed, f"{profile[:-18]} Firewall {obj}", value)
+            if obj == "Firewall Policy":
+                if "BlockInbound" in value:
+                    append_array(passed, f"{profile[:-18]} Inbound connections", value)
+                else:
+                    append_array(failed, f"{profile[:-18]} Inbound connections", value)
+            if obj == "LogAllowedConnections":
+                if value == "Enable":
+                    append_array(passed, f"{profile[:-18]} Log successful connections", value)
+                else:
+                    append_array(failed, f"{profile[:-18]} Log successful connections", value)
+            if obj == "LogDroppedConnections":
+                if value == "Enable":
+                    append_array(passed, f"{profile[:-18]} Log dropped packets", value)
+                else:
+                    append_array(failed, f"{profile[:-18]} Log dropped packets", value)
+            if obj == "MaxFileSize":
+                if int(value) >= 16384:
+                    append_array(passed, f"{profile[:-18]} Log file maximum size (KB)", value)
+                else:
+                    append_array(failed, f"{profile[:-18]} Log file maximum size (KB)", value)
+    str = "\n5. Windows Defender Firewall with Advanced Security result"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck5_miti, str.strip(), "passed")
+    export_json(failed, ck5_miti, str.strip(), "failed")
+    # export_result("\n" + str + "\n", t, current_time)
 
 
 def checklist_6(clist6, current_time):
     passed = []
     failed = []
-    for category, setting in clist6.items():
-        category = category.strip()
-        setting = setting.strip()
-        if (
-                category == "Credential Validation" or category == "Kerberos Service Ticket Operations" or category == "Kerberos Authentication Service") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Distribution Group Management" or category == "Other Account Management Events") and setting == "Success":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Application Group Management" or category == "User account management") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif category == "Process Creation" and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Directory Service Access" or category == "Directory Service Changes" or category == "Directory Service Replication" or category == "Detailed Directory Service Replication") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Logon" or category == "Logoff" or category == "Account Lockout" or category == "IPsec Main Mode" or category == "IPsec Quick Mode" or category == "IPsec Extended Mode" or category == "Special Logon" or category == "Other Logon/Logoff Events" or category == "Network Policy Server") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Audit Policy Change" or category == "MPSSVC Rule-Level Policy Change" or category == "Other Policy Change Events") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Authentication Policy Change" or category == "Authorization Policy Change" or category == "Filtering Platform Policy Change") and setting == "Success":
-            append_array(passed, f"{category}", setting)
-        elif (
-                category == "Non Sensitive Privilege Use " or category == "Other Privilege Use Events" or category == "Sensitive Privilege Use") and setting == "Success and Failure":
-            append_array(passed, f"{category}", setting)
+    if "Credential Validation" in clist6 and "Kerberos Service Ticket Operations" in clist6 and "Kerberos Authentication Service" in clist6:
+        if clist6.get("Credential Validation") == "Success and Failure" and clist6.get("Kerberos Service Ticket Operations") == "Success and Failure" and clist6.get("Kerberos Authentication Service") == "Success and Failure":
+            append_array(passed, "Audit account logon event", "Success and Failure")
         else:
-            append_array(failed, f"{category}", setting)
+            append_array(failed, "Audit account logon event", "Misconfigure")
+    else:
+        append_array(failed, "Audit account logon event", "Default")
+    if "Distribution Group Management" in clist6 and "Other Account Management Events" in clist6 and "Application Group Management" in clist6 and "User account management" in clist6:
+        if clist6.get("Distribution Group Management") == "Success" and clist6.get("Other Account Management Events") == "Success" and clist6.get("Application Group Management") == "Success and Failure" and clist6.get("User account management") == "Success and Failure":
+            append_array(passed, "Audit account management", "Success")
+        else:
+            append_array(failed, "Audit account management", "Misconfigure")
+    else:
+        append_array(failed, "Audit account management", "Default")
+    if "Process Creation" in clist6:
+        if clist6.get("Process Creation") == "Success":
+            append_array(passed, "Audit process tracking", "Success")
+        else:
+            append_array(failed, "Audit process tracking", "Misconfigure")
+    else:
+        append_array(failed, "Audit process tracking", "Default")
+    if "Directory Service Access" in clist6 and "Directory Service Changes" in clist6 and "Directory Service Replication" in clist6 and "Detailed Directory Service Replication" in clist6:
+        if clist6.get("Directory Service Access") == "Success and Failure" and clist6.get("Directory Service Changes") == "Success and Failure" and clist6.get("Directory Service Replication") == "Success and Failure" and clist6.get("Detailed Directory Service Replication") == "Success and Failure":
+            append_array(passed, "Audit Directory Service Access", "Success and Failure")
+        else:
+            append_array(failed, "Audit Directory Service Access", "Default/Misconfigure")
+    else:
+        append_array(failed, "Audit Directory Service Access", "Default")
+    if "Logon" in clist6 and "Logoff" in clist6 and "Account Lockout" in clist6 and "IPsec Main Mode" in clist6 and "IPsec Quick Mode" in clist6 and "IPsec Extended Mode" in clist6 and "Special Logon" in clist6 and "Other Logon/Logoff Events" in clist6 and "Network Policy Server" in clist6:
+        if clist6.get("Logon") == "Success and Failure" and clist6.get("Logoff") == "Success and Failure" and clist6.get("Account Lockout") == "Success and Failure" and clist6.get("IPsec Main Mode") == "Success and Failure" and clist6.get("IPsec Quick Mode") == "Success and Failure" and clist6.get("IPsec Extended Mode") == "Success and Failure" and clist6.get("Special Logon") == "Success and Failure" and clist6.get("Other Logon/Logoff Events") == "Success and Failure" and clist6.get("Network Policy Server") == "Success and Failure":
+            append_array(passed, "Audit logon events", "Success and Failure")
+        else:
+            append_array(failed, "Audit logon events", "Misconfigure")
+    else:
+        append_array(failed, "Audit logon events", "Default")
+    if "Audit Policy Change" in clist6 and "MPSSVC Rule-Level Policy Change" in clist6 and "Other Policy Change Events" in clist6 and "Authentication Policy Change" in clist6 and "Authorization Policy Change" in clist6 and "Filtering Platform Policy Change" in clist6:
+        if clist6.get("Audit Policy Change") == "Success and Failure" and clist6.get("MPSSVC Rule-Level Policy Change") == "Success and Failure" and clist6.get("Other Policy Change Events") == "Success and Failure" and clist6.get("Authentication Policy Change") == "Success" and clist6.get("Authorization Policy Change") == "Success" and clist6.get("Filtering Platform Policy Change") == "Success":
+            append_array(passed, "Audit Policy Change", "Success and Failure")
+        else:
+            append_array(failed, "Audit Policy Change", "Misconfigure")
+    else:
+        append_array(failed, "Audit Policy Change", "Default")
+    if "Non Sensitive Privilege Use" in clist6 and "Other Privilege Use Events" in clist6 and "Sensitive Privilege Use" in clist6:
+        if clist6.get("Non Sensitive Privilege Use") == "Success and Failure" and clist6.get("Other Privilege Use Events") == "Success and Failure" and clist6.get("Sensitive Privilege Use") == "Success and Failure":
+            append_array(passed, "Audit Privilege Use", "Success and Failure")
+        else:
+            append_array(failed, "Audit Privilege Use", "Misconfigure")
+    else:
+        append_array(failed, "Audit Privilege Use", "Default")
 
-    str = "\n6. Audit Policy:"
+    str = "\n6. Audit Policy"
     print(str)
     t = result_table(passed, failed)
+    export_json(passed, ck6_miti, str.strip(), "passed")
+    export_json(failed, ck6_miti, str.strip(), "failed")
     if len(clist6) == 0:
         print("NOTE: Please run as administrator to get full results")
-        export_result("\n" + str + "\n" + "NOTE: Please run as administrator to get full results\n", t, current_time)
-    else:
-        export_result("\n" + str + "\n", t, current_time)
+        #export_result("\n" + str + "\n" + "NOTE: Please run as administrator to get full results\n", t, current_time)
+    #else:
+        #export_result("\n" + str + "\n", t, current_time)
 
 
 def checklist_7(clist7, current_time):
