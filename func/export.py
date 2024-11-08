@@ -292,6 +292,43 @@ ck6_miti = {
 }
 
 
+ck7_miti = {
+    "Configure SMB v1 client driver": [
+        "SMB v1 is outdated and susceptible to critical vulnerabilities, such as WannaCry attacks. Disable SMB v1 to mitigate these risks.",
+        "High"
+    ],
+    "Configure SMB v1 server": [
+        "Enabling SMB v1 on servers increases the risk of significant security breaches. Disable to prevent exploitation vulnerabilities.",
+        "High"
+    ],
+    "WDigest Authentication": [
+        "WDigest stores credentials insecurely, making them vulnerable to theft. Disable to enhance security and prevent plain-text credential storage.",
+        "Medium"
+    ]
+}
+
+
+ck8_miti = {
+    "Hardened UNC Paths - SYSVOL": [
+        "Without hardened UNC paths, unauthorized access to critical network shares can occur. Apply restrictions to trusted paths only.",
+        "Medium"
+
+    ],
+    "Hardened UNC Paths - NETLOGON": [
+        "Without hardened UNC paths, unauthorized access to critical network shares can occur. Apply restrictions to trusted paths only.",
+        "Medium"
+    ]
+}
+
+ck9_miti = {
+    "Encryption Oracle Remediation": [
+        "Without proper remediation, encryption handling vulnerabilities can be exploited. Enforce updated security configurations to avoid such attacks.",
+        "High"
+    ]
+}
+
+
+
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')

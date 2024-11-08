@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
+from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
 
 
 def compare_checklist():
@@ -27,14 +27,14 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-    checklist_1(clist1, current_time)
-    checklist_3(clist3, current_time)
-    checklist_4(clist4, current_time)
-    checklist_5(clist5, current_time)
-    checklist_6(clist6, current_time)
+    #checklist_1(clist1, current_time)
+    #checklist_3(clist3, current_time)
+    #checklist_4(clist4, current_time)
+    #checklist_5(clist5, current_time)
+    #checklist_6(clist6, current_time)
     #checklist_7(clist7, current_time)
     #checklist_8(clist8, current_time)
-    #checklist_9(clist9, current_time)
+    checklist_9(clist9, current_time)
     #checklist_10(clist10, current_time)
     #checklist_11(clist11, current_time)
     #checklist_12(clist12, current_time)
@@ -591,7 +591,9 @@ def checklist_7(clist7, current_time):
     str = "\n7. MS Security Guide:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck7_miti, str.strip(), "passed")
+    export_json(failed, ck7_miti, str.strip(), "failed")
 
 
 def checklist_8(clist8, current_time):
@@ -630,7 +632,9 @@ def checklist_8(clist8, current_time):
     str = "\n8. Network Provider:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck8_miti, str.strip(), "passed")
+    export_json(failed, ck8_miti, str.strip(), "failed")
 
 
 def checklist_9(clist9, current_time):
@@ -649,7 +653,9 @@ def checklist_9(clist9, current_time):
     str = "\n9. Credentials Delegation:"
     print(str)
     t = result_table(passed, failed)
-    export_result("\n" + str + "\n", t, current_time)
+    #export_result("\n" + str + "\n", t, current_time)
+    export_json(passed, ck9_miti, str.strip(), "passed")
+    export_json(failed, ck9_miti, str.strip(), "failed")
 
 
 def checklist_10(clist10, current_time):
