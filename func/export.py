@@ -1,6 +1,7 @@
 import json
 import datetime
 import csv
+import socket
 import zipfile
 import os
 
@@ -42,7 +43,6 @@ ck1_miti = {
         "Medium"
     ]
 }
-
 
 ck3_miti = {
     "Access this computer from the network": [
@@ -86,7 +86,6 @@ ck3_miti = {
         "High"
     ]
 }
-
 
 ck4_miti = {
     "Accounts: Administrator account status": [
@@ -195,7 +194,6 @@ ck4_miti = {
     ]
 }
 
-
 ck5_miti = {
     "Domain Firewall State": [
         "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
@@ -259,7 +257,6 @@ ck5_miti = {
     ]
 }
 
-
 ck6_miti = {
     "Audit account logon event": [
         "Audit for both Success and Failure to ensure detection of all account logon attempts, whether successful or failed.",
@@ -291,7 +288,6 @@ ck6_miti = {
     ]
 }
 
-
 ck7_miti = {
     "Configure SMB v1 client driver": [
         "SMB v1 is outdated and susceptible to critical vulnerabilities, such as WannaCry attacks. Disable SMB v1 to mitigate these risks.",
@@ -306,7 +302,6 @@ ck7_miti = {
         "Medium"
     ]
 }
-
 
 ck8_miti = {
     "Hardened UNC Paths - SYSVOL": [
@@ -326,7 +321,6 @@ ck9_miti = {
         "High"
     ]
 }
-
 
 ck10_miti = {
     "Turn off Windows Defender": [
@@ -418,7 +412,6 @@ ck11_miti = {
     ]
 }
 
-
 ck12_miti = {
     "Turn on PowerShell Script Block Logging": [
         "Without script block logging, potential threats may not be identified. Enable for security auditing and threat analysis.",
@@ -433,7 +426,6 @@ ck12_miti = {
         "Medium"
     ]
 }
-
 
 ck13_miti = {
     "Allow Basic authentication": [
@@ -458,7 +450,6 @@ ck13_miti = {
     ]
 }
 
-
 ck14_miti = {
     "Allow Remote Shell Access": [
         "Unrestricted remote shell access can lead to unauthorized control and exploitation. Restrict access with strict controls.",
@@ -466,14 +457,12 @@ ck14_miti = {
     ]
 }
 
-
 ck15_miti = {
     "Print Spooler (Spooler)": [
         "An enabled spooler is at risk for exploits, such as remote code execution. Monitor and restrict spooler usage.",
         "Medium"
     ]
 }
-
 
 ck16_miti = {
     "Turn off local group policy processing": [
@@ -483,8 +472,12 @@ ck16_miti = {
 }
 
 
-
-
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
 
 
 result = []
@@ -494,6 +487,7 @@ json_name = f"3AD_{current_time}.json"
 csv_table_name = f"3AD_table_{current_time}.csv"
 csv_line_name = f"3AD_line_{current_time}.csv"
 zip_file_name = f"3AD_{current_time}.zip"
+ip_address = get_ip()
 
 
 def export_json(arr, ck_mitigation, checklist_name, status):
@@ -502,7 +496,9 @@ def export_json(arr, ck_mitigation, checklist_name, status):
             if v in i:
                 mitigation = ck_mitigation.get(v)
                 result.append(
-                    {"timestamp": timestamp, "name": i,
+                    {"timestamp": timestamp,
+                     "ip_address": ip_address,
+                     "name": i,
                      "checklist_name": checklist_name,
                      "status": status,
                      "mitigation": mitigation[0], "severity": mitigation[1]})
@@ -513,7 +509,7 @@ def export_json(arr, ck_mitigation, checklist_name, status):
 def export_csv_table():
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp', 'name', 'checklist_name', 'status', 'mitigation', 'severity']
+    fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'mitigation', 'severity']
     with open(f".\\results\\{csv_table_name}", 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()

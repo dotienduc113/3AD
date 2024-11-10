@@ -44,7 +44,7 @@ def compare_checklist():
     checklist_16(clist16, current_time)
 
     export_csv_table()
-    export_csv_line()
+    #export_csv_line()
     #export_zip_files()
 
 
@@ -132,7 +132,7 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
                 append_array(passed, f"{str}", clist1.get(key))
             else:
                 append_array(failed, f"{str}", clist1.get(key))
-    str = "\n1-2. Password Policy and Account Lockout Policy"
+    str = "\nPassword Policy and Account Lockout Policy"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck1_miti, str.strip(), "passed")
@@ -225,7 +225,7 @@ def checklist_3(clist3, current_time):
     else:
         append_array(passed, "Act as part of the operating system", "Default")
 
-    str = "\n3. User Rights Assignment"
+    str = "\nUser Rights Assignment"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck3_miti, str.strip(), "passed")
@@ -450,7 +450,7 @@ def checklist_4(clist4, current_time):
         append_array(failed,
                      "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers",
                      "Default/Depends on OS")
-    str = "\n4. Security Options"
+    str = "\nSecurity Options"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck4_miti, str.strip(), "passed")
@@ -488,7 +488,7 @@ def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
                     append_array(passed, f"{profile[:-18]} Log file maximum size (KB)", value)
                 else:
                     append_array(failed, f"{profile[:-18]} Log file maximum size (KB)", value)
-    str = "\n5. Windows Defender Firewall with Advanced Security result"
+    str = "\nWindows Defender Firewall with Advanced Security result"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck5_miti, str.strip(), "passed")
@@ -549,7 +549,7 @@ def checklist_6(clist6, current_time):
     else:
         append_array(failed, "Audit Privilege Use", "Default")
 
-    str = "\n6. Audit Policy"
+    str = "\nAudit Policy"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck6_miti, str.strip(), "passed")
@@ -588,7 +588,7 @@ def checklist_7(clist7, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "WDigest Authentication", "Not configure/Enable")
-    str = "\n7. MS Security Guide:"
+    str = "\nMS Security Guide:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -629,7 +629,7 @@ def checklist_8(clist8, current_time):
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - NETLOGON", value)
-    str = "\n8. Network Provider:"
+    str = "\nNetwork Provider:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -650,7 +650,7 @@ def checklist_9(clist9, current_time):
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
             elif value == "0x2":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
-    str = "\n9. Credentials Delegation:"
+    str = "\nCredentials Delegation:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -732,7 +732,7 @@ def checklist_10(clist10, current_time):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, "Scan removable drives", "Not configure/Disabled")
-    str = "\n10. Windows Defender:"
+    str = "\nWindows Defender:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -847,7 +847,7 @@ def checklist_11(clist11, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Do not use temporary folders per session", "Not configured")
-    str = "\n11. Remote Desktop Services:"
+    str = "\nRemote Desktop Services:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -894,7 +894,7 @@ def checklist_12(clist12, current_time):
     if "EnableScripts" not in clist12:
         s = "Turn on Script Execution"
         append_array(failed, s, "Default - Not configured/Disable")
-    str = "\n12. Windows PowerShell:"
+    str = "\nWindows PowerShell:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -961,7 +961,7 @@ def checklist_13(clist13, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Service Allow remote server management through WinRM", "Not configured")
-    str = "\n13. WinRM:"
+    str = "\nWinRM:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -980,7 +980,7 @@ def checklist_14(clist14, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, s, "Not configured")
-    str = "\n14. Windows Remote Shell:"
+    str = "\nWindows Remote Shell:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -1001,7 +1001,7 @@ def checklist_15(clist15, current_time):
             append_array(failed, s, "Automatic")
     else:
         append_array(failed, s, "Not configured")
-    str = "\n15. System Services:"
+    str = "\nSystem Services:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -1021,7 +1021,7 @@ def checklist_16(clist16, current_time):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, s, "Not configured")
-    str = "\n16. Group Policy:"
+    str = "\nGroup Policy:"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
