@@ -484,10 +484,17 @@ result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
 json_name = f"3AD_result.json"
-csv_table_name = f"3AD_result.csv"
+# csv_table_name = f"3AD_result_{current_time}.csv"
 # csv_line_name = f"3AD_line_{current_time}.csv"
 # zip_file_name = f"3AD_{current_time}.zip"
 ip_address = get_ip()
+
+
+def file_name(csv_table_name=None):
+    if csv_table_name is not None and csv_table_name != "":
+        return f"{csv_table_name}.csv"
+    else:
+        return f"3AD_result.csv"
 
 
 def export_json(arr, ck_mitigation, checklist_name, status):
@@ -506,7 +513,11 @@ def export_json(arr, ck_mitigation, checklist_name, status):
         json.dump(result, f, indent=4)
 
 
-def export_csv_table():
+def export_csv_table(csv_table_name=None):
+    if csv_table_name is not None and csv_table_name != "":
+        csv_table_name = f"{csv_table_name}.csv"
+    else:
+        csv_table_name = f"3AD_result.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
     fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'mitigation', 'severity']

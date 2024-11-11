@@ -2,31 +2,22 @@ import pyfiglet
 import pyfiglet.fonts
 import os
 import random
-import subprocess
-import re
-from textwrap import fill
-from tabulate import tabulate
-from itertools import zip_longest
 import datetime
 import argparse
-import time
-import json
 from func.query import run_query
 from func.checklist import compare_checklist
-from func.export import delete_json
+from func.export import delete_json, export_csv_table
 
-def display_banner():  # Create random font
+
+def display_banner():
     fonts = pyfiglet.FigletFont.getFonts()
     rd = random.randint(0, len(fonts) - 1)
 
-    # Create an ASCII art banner
     banner = pyfiglet.figlet_format("TriAD", font=fonts[rd])
 
-    if os.name == 'nt':  # If on Windows set the ANSICON environment variable to enable ANSI escape sequences
+    if os.name == 'nt':
         os.system('color')
 
-    # Print the banner with some formatting
-    # print("\033[1;92m")  # Change text color to blue
     print(banner)
     print("Welcome to TriAD! Starting up...\n")
     print("\033[0m")  # Reset text color to default
@@ -36,7 +27,8 @@ def display_banner():  # Create random font
 def menu():
     # print("0. Install requirements")
     print("1. Auto Audit")
-    print("2. Exit")
+    print("2. Export CSV")
+    print("3. Exit")
     while True:
         user_input = input("\nInput: ")
         if user_input.isdigit():
@@ -44,6 +36,9 @@ def menu():
             if choice == 1:
                 execute(choice)
             elif choice == 2:
+                file_name = input("Input file name (blank for default):")
+                export_csv_table(file_name)
+            elif choice == 3:
                 exit()
             else:
                 print("Invalid input! Try again.")
@@ -128,7 +123,7 @@ def execute(choice):
     #if choice == 0:
     #    install_requirements()
     if choice == 1:
-        #run_query()
+        run_query()
         compare_checklist()
         return
 
@@ -142,9 +137,10 @@ if __name__ == "__main__":
         os.makedirs(new_path2)
     display_banner()
     parser = argparse.ArgumentParser()
-    parser.add_argument('-nogui', action='store_true', help='run without GUI')
+    parser.add_argument('-nogui', action='store_true', help='Run without GUI')
     parser.add_argument('-i', '--intensive', action='store_true', help='Intensive mode')
     parser.add_argument('-b', '--basic', action='store_true', help='Basic mode')
+    parser.add_argument('-e', '--export', nargs='?', default=None, help='Export results to json and csv file')
     parser.add_argument('-csv', '--onlycsv', action='store_true', help='Return only cvs file')
     parser.add_argument('-vb', '--verbose', action='store_true', help='Verbose mode')
     args = parser.parse_args()
@@ -163,10 +159,13 @@ if __name__ == "__main__":
         condition_met = True
         run_query()
         compare_checklist()
+    if args.nogui and (args.export or args.export is None):
+        condition_met = True
+        export_csv_table(args.export)
     if args.nogui and args.onlycsv:
         condition_met = True
+        #export_csv_table(file_name)
         delete_json()
-
 
 
     if not condition_met:
