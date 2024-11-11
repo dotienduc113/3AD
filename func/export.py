@@ -483,10 +483,10 @@ def get_ip():
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
-json_name = f"3AD_{current_time}.json"
-csv_table_name = f"3AD_table_{current_time}.csv"
-csv_line_name = f"3AD_line_{current_time}.csv"
-zip_file_name = f"3AD_{current_time}.zip"
+json_name = f"3AD_result.json"
+csv_table_name = f"3AD_result.csv"
+# csv_line_name = f"3AD_line_{current_time}.csv"
+# zip_file_name = f"3AD_{current_time}.zip"
 ip_address = get_ip()
 
 
@@ -510,13 +510,22 @@ def export_csv_table():
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
     fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'mitigation', 'severity']
-    with open(f".\\results\\{csv_table_name}", 'w', newline='') as csvfile:
+    file_exists = os.path.isfile(f".\\results\\{csv_table_name}")
+    with open(f".\\results\\{csv_table_name}", 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+        if not file_exists or os.path.getsize(f".\\results\\{csv_table_name}") == 0:
+            writer.writeheader()
         for row in data:
             writer.writerow(row)
 
 
+def delete_json():
+    file_path = f".\\results\\{json_name}"
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+
+'''
 def export_csv_line():
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
@@ -552,3 +561,4 @@ def export_zip_files():
     for file_name in [f".\\results\\{json_name}", f".\\results\\{csv_table_name}",
                       f".\\results\\{csv_line_name}"]:
         os.remove(file_name)
+'''

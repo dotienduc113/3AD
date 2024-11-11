@@ -6,7 +6,7 @@ import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13
 import json
-from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, ck11_miti, ck12_miti, ck13_miti, ck14_miti, ck15_miti, ck16_miti, export_json,  export_csv_table, export_csv_line, export_zip_files
+from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, ck11_miti, ck12_miti, ck13_miti, ck14_miti, ck15_miti, ck16_miti, export_json,  export_csv_table
 
 
 def compare_checklist():
