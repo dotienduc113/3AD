@@ -140,7 +140,7 @@ if __name__ == "__main__":
     parser.add_argument('-nogui', action='store_true', help='Run without GUI')
     parser.add_argument('-i', '--intensive', action='store_true', help='Intensive mode')
     parser.add_argument('-b', '--basic', action='store_true', help='Basic mode')
-    parser.add_argument('-e', '--export', nargs='?', default=None, help='Export results to json and csv file')
+    parser.add_argument('-n', '--filename', nargs='?', default=None, help='Specify the name of the csv file')
     parser.add_argument('-csv', '--onlycsv', action='store_true', help='Return only cvs file')
     parser.add_argument('-vb', '--verbose', action='store_true', help='Verbose mode')
     args = parser.parse_args()
@@ -159,14 +159,12 @@ if __name__ == "__main__":
         condition_met = True
         run_query()
         compare_checklist()
-    if args.nogui and (args.export or args.export is None):
+    if args.nogui and (args.filename or args.filename is None):
         condition_met = True
-        export_csv_table(args.export)
+        export_csv_table(args.filename)
     if args.nogui and args.onlycsv:
         condition_met = True
-        #export_csv_table(file_name)
         delete_json()
-
 
     if not condition_met:
         menu()
