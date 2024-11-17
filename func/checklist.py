@@ -1,8 +1,8 @@
-from func.filter import filter_info_secpol
+
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
-import datetime
+from datetime import datetime
 from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
     filter_info_8, filter_info_9, filer_info_registry, filter_info_13, filter_info_17_1, filter_info_17_2
 import json
@@ -11,7 +11,7 @@ from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_mi
 
 
 def compare_checklist():
-    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
+    current_time = datetime.now().strftime('%d%m%Y_%H%M%S')
     clist1 = filter_info_1()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
     clist4 = filter_info_4()
@@ -45,6 +45,7 @@ def compare_checklist():
     checklist_16(clist16, current_time)
     checklist_17_1()
     checklist_17_2()
+    checklist_17_3()
 
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
@@ -1103,7 +1104,7 @@ def checklist_17_2():
 def checklist_17_3():
     passed = []
     failed = []
-    data = filter_info_17_3(".\\logs\\result17_2.txt")
+    data = filter_info_17_1(".\\logs\\result17_3.txt")
     s = "Check unused accounts"
     if "none" in data.values():
         name = [k for k, v in data.items() if v == "none"]
@@ -1115,8 +1116,27 @@ def checklist_17_3():
     t = result_table(passed, failed)
 
 
-
-
+def checklist_17_3():
+    data = filter_info_17_1(".\\logs\\result17_3.txt")
+    passed = []
+    failed = []
+    s = "Check for accounts that haven't changed passwords"
+    failed_user = []
+    for date in data.values():
+        date_object = datetime.strptime(date, "%d/%m/%Y").date()
+        today = datetime.today().date()
+        date_diff = today - date_object
+        if date_diff.days >= 365:
+            name = [k for k, v in data.items() if v == date]
+            s = "".join(name)
+            failed_user.append(s)
+    if len(failed_user) != 0:
+        append_array(failed, s, "True - Account: " + ",".join(failed_user))
+    else:
+        append_array(passed, s, "False")
+    str = "\nAD user account:"
+    print(str)
+    t = result_table(passed, failed)
 
 
 
