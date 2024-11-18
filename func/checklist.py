@@ -3,8 +3,7 @@ from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
 from datetime import datetime
-from func.filter import filter_info_1, filter_info_secpol, filter_info_4, filer_info_5, filter_info_6, filter_info_7, \
-    filter_info_8, filter_info_9, filer_info_registry, filter_info_13, filter_info_17_1, filter_info_17_2
+from func.filter import *
 import json
 from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, \
     ck11_miti, ck12_miti, ck13_miti, ck14_miti, ck15_miti, ck16_miti, export_json, export_csv_table
@@ -46,6 +45,7 @@ def compare_checklist():
     checklist_17_1()
     checklist_17_2()
     checklist_17_3()
+    checklist_17_4()
 
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
@@ -1074,13 +1074,13 @@ def checklist_17_1():
     passed = []
     failed = []
 
-    data = filter_info_17_1(".\\logs\\result17_1.txt")
+    data = filter_info_17(".\\logs\\result17_1.txt")
     s = "Password settings not required"
     if "True" in data.values():
         name = [k for k, v in data.items() if v == "True"]
-        append_array(failed, s, "True - Account:" + ",".join(name))
+        append_array(failed, s, "True - Account: " + ", ".join(name))
     else:
-        append_array(passed, s, "False")
+        append_array(passed, s, "None")
     str = "\nAD user account:"
     print(str)
     t = result_table(passed, failed)
@@ -1093,50 +1093,45 @@ def checklist_17_2():
     s = "Check unused accounts"
     if "none" in data.values():
         name = [k for k, v in data.items() if v == "none"]
-        append_array(failed, s, "True - Account:" + ",".join(name))
+        append_array(failed, s, "Account (" + ", ".join(name) + ")")
     else:
-        append_array(passed, s, "False")
-    str = "\nAD user account:"
-    print(str)
+        append_array(passed, s, "None")
     t = result_table(passed, failed)
 
 
 def checklist_17_3():
+    data = filter_info_17(".\\logs\\result17_3.txt")
     passed = []
     failed = []
-    data = filter_info_17_1(".\\logs\\result17_3.txt")
-    s = "Check unused accounts"
-    if "none" in data.values():
-        name = [k for k, v in data.items() if v == "none"]
-        append_array(failed, s, "True - Account:" + ",".join(name))
-    else:
-        append_array(passed, s, "False")
-    str = "\nAD user account:"
-    print(str)
-    t = result_table(passed, failed)
-
-
-def checklist_17_3():
-    data = filter_info_17_1(".\\logs\\result17_3.txt")
-    passed = []
-    failed = []
+    failed_user = {}
     s = "Check for accounts that haven't changed passwords"
-    failed_user = []
     for date in data.values():
         date_object = datetime.strptime(date, "%d/%m/%Y").date()
         today = datetime.today().date()
         date_diff = today - date_object
         if date_diff.days >= 365:
             name = [k for k, v in data.items() if v == date]
-            s = "".join(name)
-            failed_user.append(s)
+            failed_user = ", ".join(name)
     if len(failed_user) != 0:
-        append_array(failed, s, "True - Account: " + ",".join(failed_user))
+        append_array(failed, s, "Account (" + failed_user + ")")
     else:
-        append_array(passed, s, "False")
-    str = "\nAD user account:"
-    print(str)
+        append_array(passed, s, "None")
     t = result_table(passed, failed)
 
 
+def checklist_17_4():
+    data = filter_info_17(".\\logs\\result17_4.txt")
+    passed = []
+    failed = []
+    failed_user = {}
+    s = "Check for accounts that haven't changed passwords"
+    for value in data.values():
+        if value != "{}":
+            name = [k for k, v in data.items() if v != "{}"]
+            failed_user = ", ".join(name)
+    if len(failed_user) != 0:
+        append_array(failed, s, "Account (" + failed_user + ")")
+    else:
+        append_array(passed, s, "None")
+    t = result_table(passed, failed)
 

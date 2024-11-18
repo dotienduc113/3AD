@@ -18,6 +18,10 @@ reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler" | finds
 reg query "HKLM\Software\Policies\Microsoft\Windows\System" | findstr DisableLGPOProcessing > .\logs\result16.txt
 secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "PasswordComplexity ClearTextPassword" > .\logs\result1_56.txt
 secedit /export /cfg secpol.txt & type secpol.txt | findstr /i "ForceLogoffWhenHourExpire" > .\logs\result4_22.txt & del secpol.txt
+powershell.exe "Get-ADUser -Filter {Enabled -eq $true} -Properties PasswordNotRequired | Format-Table Name, PasswordNotRequired" > .\logs\result17_1.txt
+powershell.exe "Get-ADUser -Filter {Enabled -eq $true} -Properties LastLogonTimestamp | Format-Table Name, LastLogonTimestamp" > .\logs\result17_2.txt
+powershell.exe "Get-ADUser -Filter {Enabled -eq $true} -Properties pwdLastSet | Select-Object Name, @{Name='pwdLastSetReadable';Expression={[datetime]::FromFileTime($_.pwdLastSet).ToString('dd/MM/yyyy')}}" > .\logs\result17_3.txt
+powershell.exe "Get-ADUser -Filter {Enabled -eq $true -and AdminCount -eq 1} -Properties servicePrincipalName | Format-Table Name, servicePrincipalName" > .\logs\result17_4.txt
 """
 
 

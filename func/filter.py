@@ -212,14 +212,17 @@ def filter_info_secpol(path):
     return settings
 
 
-def filter_info_17_1(path):
+def filter_info_17(path):
     file = open(path, "r").readlines()
     data = {}
-    for line in file[2:]:  # skip the header line
-        values = line.split()
-        account_name = ' '.join(values[:-1])
-        value = values[1]
-        data[account_name] = value
+    try:
+        for line in file[3:-2]:  # skip the header line
+            values = line.split()
+            account_name = ' '.join(values[:-1])
+            value = values[1]
+            data[account_name] = value
+    except:
+        pass
     return data
 
 
@@ -227,7 +230,7 @@ def filter_info_17_2(path):
     file = open(path, "r").readlines()
     data = {}
     black_list = [""]
-    for line in file[2:]:  # skip the header line
+    for line in file[3:]:  # skip the header line
         values = line.split()
         if len(values) >= 2 and values[-1].isdigit():  # check if the line has at least 2 values and the last value is a digit
             name = ' '.join(values[:-1])  # join all values except the last one
@@ -242,16 +245,3 @@ def filter_info_17_2(path):
     return data
 
 
-def filter_info_17_3(path):
-    file = open(path, "r").readlines()
-    data = {}
-    black_list = [""]
-    for line in file[2:]:  # skip the header line
-        values = line.split()
-        if len(values) >= 2 and values[-1].isdigit():  # check if the line has at least 2 values and the last value is a digit
-            name = ' '.join(values[:-1])  # join all values except the last one
-            if name not in black_list:
-                value = values[-1]  # get the last value
-                data[name] = value
-        else:
-             name = line.strip()
