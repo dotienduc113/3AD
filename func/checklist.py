@@ -1,4 +1,3 @@
-
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
@@ -46,6 +45,8 @@ def compare_checklist():
     checklist_17_2()
     checklist_17_3()
     checklist_17_4()
+    checklist_17_5()
+
 
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
@@ -491,7 +492,7 @@ def checklist_6(clist6, current_time):
     if "Credential Validation" in clist6 and "Kerberos Service Ticket Operations" in clist6 and "Kerberos Authentication Service" in clist6:
         if clist6.get("Credential Validation") == "Success and Failure" and clist6.get(
                 "Kerberos Service Ticket Operations") == "Success and Failure" and clist6.get(
-                "Kerberos Authentication Service") == "Success and Failure":
+            "Kerberos Authentication Service") == "Success and Failure":
             append_array(passed, "Audit account logon event", "Success and Failure")
         else:
             append_array(failed, "Audit account logon event", "Misconfigure")
@@ -500,8 +501,8 @@ def checklist_6(clist6, current_time):
     if "Distribution Group Management" in clist6 and "Other Account Management Events" in clist6 and "Application Group Management" in clist6 and "User account management" in clist6:
         if clist6.get("Distribution Group Management") == "Success" and clist6.get(
                 "Other Account Management Events") == "Success" and clist6.get(
-                "Application Group Management") == "Success and Failure" and clist6.get(
-                "User account management") == "Success and Failure":
+            "Application Group Management") == "Success and Failure" and clist6.get(
+            "User account management") == "Success and Failure":
             append_array(passed, "Audit account management", "Success")
         else:
             append_array(failed, "Audit account management", "Misconfigure")
@@ -517,8 +518,8 @@ def checklist_6(clist6, current_time):
     if "Directory Service Access" in clist6 and "Directory Service Changes" in clist6 and "Directory Service Replication" in clist6 and "Detailed Directory Service Replication" in clist6:
         if clist6.get("Directory Service Access") == "Success and Failure" and clist6.get(
                 "Directory Service Changes") == "Success and Failure" and clist6.get(
-                "Directory Service Replication") == "Success and Failure" and clist6.get(
-                "Detailed Directory Service Replication") == "Success and Failure":
+            "Directory Service Replication") == "Success and Failure" and clist6.get(
+            "Detailed Directory Service Replication") == "Success and Failure":
             append_array(passed, "Audit Directory Service Access", "Success and Failure")
         else:
             append_array(failed, "Audit Directory Service Access", "Default/Misconfigure")
@@ -527,13 +528,13 @@ def checklist_6(clist6, current_time):
     if "Logon" in clist6 and "Logoff" in clist6 and "Account Lockout" in clist6 and "IPsec Main Mode" in clist6 and "IPsec Quick Mode" in clist6 and "IPsec Extended Mode" in clist6 and "Special Logon" in clist6 and "Other Logon/Logoff Events" in clist6 and "Network Policy Server" in clist6:
         if clist6.get("Logon") == "Success and Failure" and clist6.get(
                 "Logoff") == "Success and Failure" and clist6.get(
-                "Account Lockout") == "Success and Failure" and clist6.get(
-                "IPsec Main Mode") == "Success and Failure" and clist6.get(
-                "IPsec Quick Mode") == "Success and Failure" and clist6.get(
-                "IPsec Extended Mode") == "Success and Failure" and clist6.get(
-                "Special Logon") == "Success and Failure" and clist6.get(
-                "Other Logon/Logoff Events") == "Success and Failure" and clist6.get(
-                "Network Policy Server") == "Success and Failure":
+            "Account Lockout") == "Success and Failure" and clist6.get(
+            "IPsec Main Mode") == "Success and Failure" and clist6.get(
+            "IPsec Quick Mode") == "Success and Failure" and clist6.get(
+            "IPsec Extended Mode") == "Success and Failure" and clist6.get(
+            "Special Logon") == "Success and Failure" and clist6.get(
+            "Other Logon/Logoff Events") == "Success and Failure" and clist6.get(
+            "Network Policy Server") == "Success and Failure":
             append_array(passed, "Audit logon events", "Success and Failure")
         else:
             append_array(failed, "Audit logon events", "Misconfigure")
@@ -542,10 +543,10 @@ def checklist_6(clist6, current_time):
     if "Audit Policy Change" in clist6 and "MPSSVC Rule-Level Policy Change" in clist6 and "Other Policy Change Events" in clist6 and "Authentication Policy Change" in clist6 and "Authorization Policy Change" in clist6 and "Filtering Platform Policy Change" in clist6:
         if clist6.get("Audit Policy Change") == "Success and Failure" and clist6.get(
                 "MPSSVC Rule-Level Policy Change") == "Success and Failure" and clist6.get(
-                "Other Policy Change Events") == "Success and Failure" and clist6.get(
-                "Authentication Policy Change") == "Success" and clist6.get(
-                "Authorization Policy Change") == "Success" and clist6.get(
-                "Filtering Platform Policy Change") == "Success":
+            "Other Policy Change Events") == "Success and Failure" and clist6.get(
+            "Authentication Policy Change") == "Success" and clist6.get(
+            "Authorization Policy Change") == "Success" and clist6.get(
+            "Filtering Platform Policy Change") == "Success":
             append_array(passed, "Audit Policy Change", "Success and Failure")
         else:
             append_array(failed, "Audit Policy Change", "Misconfigure")
@@ -554,7 +555,7 @@ def checklist_6(clist6, current_time):
     if "Non Sensitive Privilege Use" in clist6 and "Other Privilege Use Events" in clist6 and "Sensitive Privilege Use" in clist6:
         if clist6.get("Non Sensitive Privilege Use") == "Success and Failure" and clist6.get(
                 "Other Privilege Use Events") == "Success and Failure" and clist6.get(
-                "Sensitive Privilege Use") == "Success and Failure":
+            "Sensitive Privilege Use") == "Success and Failure":
             append_array(passed, "Audit Privilege Use", "Success and Failure")
         else:
             append_array(failed, "Audit Privilege Use", "Misconfigure")
@@ -1134,4 +1135,22 @@ def checklist_17_4():
     else:
         append_array(passed, s, "None")
     t = result_table(passed, failed)
+
+
+def checklist_17_5():
+    data = filter_info_17(".\\logs\\result17_5.txt")
+    passed = []
+    failed = []
+    s = "Account krbtgt password latest change"
+    for date in data.values():
+        date_object = datetime.strptime(date, "%d/%m/%Y").date()
+        today = datetime.today().date()
+        date_diff = today - date_object
+        if date_diff.days >= 180:
+            append_array(failed, s, "(" + date + ")")
+        else:
+            append_array(passed, s, "(" + date + ")")
+    t = result_table(passed, failed)
+
+
 

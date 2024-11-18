@@ -7,40 +7,39 @@ import os
 
 ck1_miti = {
     "Enforce password history": [
-        "Previously compromised passwords might be used to gain access. Password reuse must be different than the last 24 passwords",
+        "Reference: The Enforce password history policy setting determines the number of unique new passwords that must be associated with a user account before. If not defined, users can use the same password for unlimited duration, which enhances the risk of being brute-forced.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Enforce password history to 24.",
         "Medium"
     ],
+
     "Maximum password age": [
-        "Without regular password changes, passwords can be exposed for a longer period. Maximum password age from 30 - 90 days",
+        "Reference: The Maximum password age policy setting determines the period that a password can be used before the system requires the user to change it. Setting the age to 0 will never require a password change, posing a security risk.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Maximum password age to between 30 and 90 days to ensure a balance between security and usability.",
         "Medium"
     ],
+
     "Minimum password age": [
-        "Too short password age might let users bypass password history requirements. Minimum password age is 1 day",
+        "Reference: The Minimum password age policy setting determines the period a user must wait before changing their password. A minimum age of 0 allows users to bypass password history requirements.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password age to at least 1 day.",
         "Medium"
     ],
+
     "Minimum password length": [
-        "Short passwords are vulnerable to password attacks. Minimum password length is 14 characters",
+        "Reference: The Minimum password length policy setting specifies the fewest number of characters a password can have. Short passwords are easier to crack.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password length to at least 14 characters.",
         "Medium"
     ],
+
     "Password must meet complexity requirements": [
-        "Simple passwords are vulnerable to brute-force attacks. Password must include a mix of upper and lower case letters, numbers, and special characters.",
+        "Reference: The Password must meet complexity requirements policy ensures that passwords contain a combination of uppercase, lowercase, digits, and symbols to increase security.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set this policy to Enabled.",
         "Medium"
     ],
+
     "Store passwords using reversible encryption": [
-        "Reversible encryption is not recommended since passwords will be easily decrypted. Set to Disabled",
-        "Medium"
-    ],
-    "Account lockout duration": [
-        "Short durations can allow repeated brute-force attempts. Set to at least 15 minutes",
-        "Medium"
-    ],
-    "Account lockout threshold": [
-        "High thresholds can enable multiple guessing attempts before lockout. Set to 5 failed attempts",
-        "Medium"
-    ],
-    "Reset account lockout counter after": [
-        "Long reset time can delay detection of brute-force attacks. Set to at least 15 minutes",
-        "Medium"
+        "Reference: Storing passwords using reversible encryption is essentially the same as storing plain-text passwords. This is highly discouraged.",
+        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Store passwords using reversible encryption to Disabled.",
+        "High"
     ]
 }
 
@@ -508,7 +507,8 @@ def export_json(arr, ck_mitigation, checklist_name, status):
                      "name": i,
                      "checklist_name": checklist_name,
                      "status": status,
-                     "mitigation": mitigation[0], "severity": mitigation[1]})
+                     "mitigation": mitigation[0],
+                     "severity": mitigation[1]})
     with open(f".\\results\\{json_name}", 'w') as f:
         json.dump(result, f, indent=4)
 
