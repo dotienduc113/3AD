@@ -424,114 +424,167 @@ ck7_miti = {
     ]
 }
 
+
 ck8_miti = {
     "Hardened UNC Paths - SYSVOL": [
-        "Without hardened UNC paths, unauthorized access to critical network shares can occur. Apply restrictions to trusted paths only.",
-        "Medium"
-
-    ],
-    "Hardened UNC Paths - NETLOGON": [
-        "Without hardened UNC paths, unauthorized access to critical network shares can occur. Apply restrictions to trusted paths only.",
+        "This security setting configures the hardening of UNC paths, specifically for NETLOGON and SYSVOL, to strengthen security through additional authentication and integrity checks.",
+        "Require Mutual Authentication and Require Integrity for UNC paths to ensure secure communication and prevent unauthorized access. Configure two parameters: RequireMutualAuthentication=1, RequireIntegrity=1 for the UNC paths '\\\\*\\SYSVOL' and '\\\\*\\NETLOGON'.",
         "Medium"
     ]
 }
 
+
+ck8_miti = {
+    "Hardened UNC Paths - SYSVOL": [
+        "This security setting configures the hardening of UNC paths, specifically for NETLOGON and SYSVOL, to strengthen security through additional authentication and integrity checks.",
+        "Require Mutual Authentication and Require Integrity for UNC paths to ensure secure communication and prevent unauthorized access. Configure two parameters: RequireMutualAuthentication=1, RequireIntegrity=1 for the UNC paths '\\\\*\\SYSVOL' and '\\\\*\\NETLOGON'.",
+        "Medium"
+    ],
+    "Hardened UNC Paths - NETLOGON": [
+        "This security setting configures the hardening of UNC paths, specifically for NETLOGON and SYSVOL, to strengthen security through additional authentication and integrity checks.",
+        "Require Mutual Authentication and Require Integrity for UNC paths to ensure secure communication and prevent unauthorized access. Configure two parameters: RequireMutualAuthentication=1, RequireIntegrity=1 for the UNC paths '\\\\*\\SYSVOL' and '\\\\*\\NETLOGON'.",
+        "Medium"
+    ],
+}
+
 ck9_miti = {
-    "Encryption Oracle Remediation": [
-        "Without proper remediation, encryption handling vulnerabilities can be exploited. Enforce updated security configurations to avoid such attacks.",
-        "High"
-    ]
+	"Encryption Oracle Remediation": [
+    	"The Encryption Oracle Remediation policy setting rectifies potential vulnerabilities within the Credential Security Support Provider (CredSSP) protocol, which could be exploited in man-in-the-middle attacks. This setting is crucial for ensuring secure communications between client and server.",
+    	"Navigate to Computer Configuration\\Administrative Templates\\System\\Credentials Delegation and set Encryption Oracle Remediation to 'Enabled: Force Updated Clients'. This configuration mandates that only clients with up-to-date security updates are able to establish connections, thus reducing the risk of exploitation through outdated encryption methods.",
+    	"High"
+	]
 }
 
 ck10_miti = {
     "Turn off Windows Defender": [
-        "Disabling Defender without an alternative leaves systems vulnerable. Keep Defender enabled unless there is a credible antivirus substitute.",
+        "Windows Defender provides essential protection against malware and other security threats. Disabling this feature can leave the system vulnerable to attacks.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender and set 'Turn off Windows Defender' to 'Disabled' to ensure that Windows Defender remains active.",
         "Medium"
     ],
+
     "Turn off real-time protection": [
-        "Real-time protection is essential for immediate threat mitigation. Ensure it is always enabled to prevent delayed detection.",
+        "Real-time protection is a feature of Windows Defender that immediately scans files as they are accessed to detect malware. Disabling real-time protection increases the risk of undetected malware execution.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Real-time Protection and set 'Turn off real-time protection' to 'Disabled' to maintain continuous monitoring of threats.",
         "Medium"
     ],
+
     "Turn on behavior monitoring": [
-        "Behavior monitoring identifies and responds to suspicious activities. Enable to effectively track potential threats.",
+        "Behaviour monitoring helps detect new, emerging, and unknown threats by observing the behaviour of programs. Enabling this feature provides an additional layer of security.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Real-time Protection and set 'Turn on behaviour monitoring' to 'Enabled'.",
         "Medium"
     ],
+
     "Scan all downloaded files and attachments": [
-        "Unchecked downloads and files can introduce malware. Ensure scans are performed to filter threats.",
+        "Scanning all downloaded files and email attachments helps prevent malicious files from executing by providing an essential safeguard against many types of cyber threats.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Scan and set 'Scan all downloaded files and attachments' to 'Enabled'.",
         "Medium"
     ],
+
     "Turn on process scanning whenever real-time protection is enabled": [
-        "Process scanning alongside real-time protection detects malicious processes. Enable this for comprehensive security.",
+        "Process scanning analyses running processes to detect potentially harmful behavior or known malware patterns, enhancing overall protection.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Real-time Protection and set 'Turn on process scanning whenever real-time protection is enabled' to 'Enabled'.",
         "Medium"
     ],
+
     "Monitor file and program activity on your computer": [
-        "Without monitoring, harmful activities may go unnoticed. Enable for enhanced security visibility.",
+        "Monitoring file and program activities helps detect and respond to suspicious behaviors, providing proactive protection against malware.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Real-time Protection and set 'Monitor file and program activity on your computer' to 'Enabled'.",
         "Medium"
     ],
+
     "Scan archive files": [
-        "Archives can conceal malicious files. Ensure that these are included in scanning routines.",
+        "Scanning archive files allows Windows Defender to detect hidden threats within compressed files, preventing malware from bypassing security checks.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Scan and set 'Scan archive files' to 'Enabled'.",
         "Medium"
     ],
+
     "Scan packed executables": [
-        "Packed executables can hide malware. Enable scanning to detect disguised threats.",
+        "Packed executables can contain obfuscated malicious code. Scanning them helps protect against threats that attempt to evade traditional anti-malware detection.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Scan and set 'Scan packed executables' to 'Enabled'.",
         "Medium"
     ],
+
     "Scan removable drives": [
-        "Unscanned drives can spread malware. Ensure all removable media is scanned upon access.",
+        "Removable drives can be a vector for malware transfer. Ensuring they are scanned helps mitigate the risk of infection from external sources.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Defender Antivirus\\Scan and set 'Scan removable drives' to 'Enabled'.",
         "Medium"
     ]
 }
 
 ck11_miti = {
     "Restrict Remote Desktop Services users to a single Remote Desktop Services session": [
-        "Allowing multiple sessions can strain resources and pose security risks. Limit users to one session to minimize exposure.",
+        "This setting restricts users to a single session on a Remote Desktop Server, which helps contain user activity and reduces server load.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Connections and set 'Restrict Remote Desktop Services users to a single Remote Desktop Services session' to 'Enabled'.",
         "Medium"
     ],
+
     "Do not allow Clipboard redirection": [
-        "Clipboard redirection may result in data leakage. Disable to prevent unauthorized data transfer during remote sessions.",
+        "Clipboard redirection can pose a security risk by allowing data transfer between local and remote desktops. Disabling it enhances data security.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Device and Resource Redirection and set 'Do not allow Clipboard redirection' to 'Enabled'.",
         "Medium"
     ],
+
     "Do not allow drive redirection": [
-        "Drive redirection can lead to unintended data exposure. Disable to secure RDP session data.",
+        "Drive redirection allows users to access local drives from the remote session. Disabling this increases security by preventing potential unauthorized data transfer.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Device and Resource Redirection and set 'Do not allow drive redirection' to 'Enabled'.",
         "Medium"
     ],
+
     "Set client connection encryption level": [
-        "Weak encryption can be intercepted. Use strong encryption levels to secure client communications.",
+        "The encryption level setting determines the strength of the encryption used for RDP connections. 'High Level' ensures data confidentiality.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Security and set 'Set client connection encryption level' to 'High Level'.",
         "Medium"
     ],
+
     "Always prompt for password upon connection": [
-        "Skipping prompts might lead to unauthorized access. Require passwords for authentication on each connection.",
+        "Requiring users to enter their password upon each connection adds a layer of security by ensuring user authentication at each access attempt.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Security and set 'Always prompt for password upon connection' to 'Enabled'.",
         "Medium"
     ],
+
     "Require secure RPC communication": [
-        "Unsecured RPC can be vulnerable to interception or alteration. Require secure RPC to maintain data integrity.",
+        "Secure Remote Procedure Call (RPC) communication helps protect communication between client and server from interception and attacks.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Security and set 'Require secure RPC communication' to 'Enabled'.",
         "Medium"
     ],
+
     "Require use of specific security layer for remote (RDP) connections": [
-        "Undefined security layers can expose vulnerabilities. Enforce specific layers like SSL/TLS.",
+        "Selecting a specific security layer (e.g., SSL) for RDP connections helps ensure credible and more secure remote connections.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Security and set 'Require use of specific security layer for remote (RDP) connections' to 'SSL'.",
         "Medium"
     ],
+
     "Require user authentication for remote connections by using Network Level Authentication": [
-        "Connections without NLA weaken security. Implement NLA for authentication before session establishment.",
+        "Network Level Authentication (NLA) verifies user credentials before establishing a remote connection, offering improved security.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Security and set 'Require user authentication for remote connections by using Network Level Authentication' to 'Enabled'.",
         "Medium"
     ],
+
     "Set time limit for disconnected sessions": [
-        "Unlimited disconnected sessions consume resources and can expose security risks. Set reasonable time limits (e.g., 15 minutes).",
+        "Setting a time limit for disconnected sessions helps to free up system resources and decreases the risk of session hijacking.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Session Time Limits and set 'Set time limit for disconnected sessions' to 'Enabled: 1 minute'.",
         "Medium"
     ],
+
     "Set time limit for active but idle Remote Desktop Services sessions": [
-        "Idle sessions hold resources and may expose risks. Set reasonable limits for session idle time (e.g., 15 minutes).",
+        "Setting a time limit for idle sessions helps ensure resources are available and enhances security by terminating unattended sessions.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Session Time Limits and set 'Set time limit for active but idle Remote Desktop Services sessions' to '<= 15 minute(s) (>0)'.",
         "Medium"
     ],
+
     "Do not delete temp folders upon exit": [
-        "Retained temp data can lead to unauthorized data access. Ensure temp data is deleted unless necessary.",
+        "When enabled, temporary folders are not deleted upon user session exit, which could lead to information being retained unintentionally.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Temporary Folders and set 'Do not delete temp folders upon exit' to 'Disabled' to ensure cleanup and security.",
         "Medium"
     ],
+
     "Do not use temporary folders per session": [
-        "Using shared temp folders can risk data leaks. Utilize separate folders per session to isolate data.",
+        "Enabling this setting means that each user session will not create separate temporary folders, potentially causing file conflicts.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Desktop Services\\Remote Desktop Session Host\\Temporary Folders and set 'Do not use temporary folders per session' to 'Disabled'.",
         "Medium"
     ]
 }
+
 
 ck12_miti = {
     "Turn on PowerShell Script Block Logging": [
