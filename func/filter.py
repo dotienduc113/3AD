@@ -73,7 +73,7 @@ def filter_info_7():
     for line in file:
         line = remove_extra_spaces(line.strip().replace(":", ""))
         parts = line.split()
-        key = " ".join(parts[:-1])
+        key = parts[0]
         settings[key] = parts[-1]
     # Iterate over the lines and extract settings
     return settings

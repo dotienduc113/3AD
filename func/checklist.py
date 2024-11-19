@@ -30,8 +30,8 @@ def compare_checklist():
     #checklist_3(clist3, current_time)
     #checklist_4(clist4, current_time)
     #checklist_5(clist5, current_time)
-    checklist_6(clist6, current_time)
-    #checklist_7(clist7, current_time)
+    #checklist_6(clist6, current_time)
+    checklist_7(clist7, current_time)
     #checklist_8(clist8, current_time)
     #checklist_9(clist9, current_time)
     #checklist_10(clist10, current_time)
@@ -577,31 +577,34 @@ def checklist_6(clist6, current_time):
 def checklist_7(clist7, current_time):
     passed = []
     failed = []
-    if "EnableSMB1Protocol" in clist7:
+    print(clist7)
+    if "SMB1" in clist7:
         s = "Configure SMB v1 server"
-        if clist7.get("EnableSMB1Protocol") == "False":
+        if clist7.get("SMB1") == "0x0":
             append_array(passed, s, "Disabled")
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(failed, "Configure SMB v1 server", "Not configure/Enable")
-    if "Start REG_DWORD" in clist7:
-        s = "Configure SMB v1 server"
-        if clist7.get("Start REG_DWORD") == "0x0":
+        append_array(failed, "Configure SMB v1 server", "Not configured/Default Enabled")
+    if "Start" in clist7:
+        s = "Configure SMB v1 client driver"
+        if clist7.get("Start") == "0x4":
             append_array(passed, s, "Disabled")
-        else:
-            append_array(failed, s, "Enabled")
+        elif clist7.get("Start") == "0x3":
+            append_array(failed, s, "Manual start")
+        elif clist7.get("Start") == "0x2":
+            append_array(failed, s, "Automatic start")
     else:
-        append_array(failed, "Configure SMB v1 server", "Not configure/Enable")
-    if "UseLogonCredential REG_DWORD" in clist7:
+        append_array(failed, "Configure SMB v1 client driver", "Not configured/Default Enabled")
+    if "UseLogonCredential" in clist7:
         s = "WDigest Authentication"
-        if clist7.get("UseLogonCredential REG_DWORD") == "0x0":
+        if clist7.get("UseLogonCredential") == "0x0":
             append_array(passed, s, "Disabled")
         else:
             append_array(failed, s, "Enabled")
     else:
-        append_array(failed, "WDigest Authentication", "Not configure/Enable")
-    str = "\nMS Security Guide:"
+        append_array(failed, "WDigest Authentication", "Not configured/Enabled")
+    str = "\nMS Security Guide"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -642,7 +645,7 @@ def checklist_8(clist8, current_time):
                     append_array(passed, "Hardened UNC Paths - NETLOGON", value)
                 else:
                     append_array(failed, "Hardened UNC Paths - NETLOGON", value)
-    str = "\nNetwork Provider:"
+    str = "\nNetwork Provider"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -663,7 +666,7 @@ def checklist_9(clist9, current_time):
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Mitigated")
             elif value == "0x2":
                 append_array(failed, "Encryption Oracle Remediation", "Enabled Vulnerable")
-    str = "\nCredentials Delegation:"
+    str = "\nCredentials Delegation"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)

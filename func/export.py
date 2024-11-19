@@ -406,15 +406,20 @@ ck6_miti = {
 
 ck7_miti = {
     "Configure SMB v1 client driver": [
-        "SMB v1 is outdated and susceptible to critical vulnerabilities, such as WannaCry attacks. Disable SMB v1 to mitigate these risks.",
+        "The configuration of the SMB v1 client driver is important for mitigating vulnerabilities associated with the outdated SMB v1 protocol. Disabling the SMB v1 client driver reduces the attack surface posed by less secure protocols.",
+        "Set to 'Enabled: Disable driver' to prevent the use of SMB v1.",
         "High"
     ],
+
     "Configure SMB v1 server": [
-        "Enabling SMB v1 on servers increases the risk of significant security breaches. Disable to prevent exploitation vulnerabilities.",
-        "High"
+        "The configuration of the SMB v1 server is critical for ensuring the security of file sharing services. Disabling the SMB v1 server prevents the system from acting as an SMB v1 server, which safeguards it against known vulnerabilities.",
+        "Set to 'Disabled' to ensure the SMB v1 server is not operational.",
+        "Medium"
     ],
+
     "WDigest Authentication": [
-        "WDigest stores credentials insecurely, making them vulnerable to theft. Disable to enhance security and prevent plain-text credential storage.",
+        "WDigest Authentication, when enabled, stores user credentials in memory in a less secure manner. Disabling WDigest prevents this and enhances credential protection.",
+        "Set to 'Disabled' to protect credentials from being stored in memory insecurely.",
         "Medium"
     ]
 }
