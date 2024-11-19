@@ -226,6 +226,20 @@ def filter_info_17(path):
     return data
 
 
+def filter_info_17(path):
+    with open(path, "r") as file:
+        lines = file.readlines()
+    data = {}
+    for line in lines[3:]:  # skip the header line
+        line = line.strip()  # strip newline character
+        values = line.split()
+        if len(values) > 1:  # check if line has at least two values
+            account_name = ' '.join(values[:-1])
+            value = values[-1]  # use the last value, not the second one
+            data[account_name] = value
+    return data
+
+
 def filter_info_17_2(path):
     file = open(path, "r").readlines()
     data = {}
@@ -245,3 +259,13 @@ def filter_info_17_2(path):
     return data
 
 
+def filter_info_17_6(path):
+    with open(path, "r") as file:
+        lines = file.readlines()
+    data = []
+    domain_name = lines[0].strip()  # strip newline character
+    for line in lines[4:]:
+        line = line.strip()  # strip newline character
+        if line:  # check if line is not blank
+            data.append(line)
+    return data, domain_name

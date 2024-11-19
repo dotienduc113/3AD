@@ -1,7 +1,7 @@
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
-from datetime import datetime
+import datetime
 from func.filter import *
 import json
 from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, \
@@ -9,7 +9,7 @@ from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_mi
 
 
 def compare_checklist():
-    current_time = datetime.now().strftime('%d%m%Y_%H%M%S')
+    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
     clist1 = filter_info_1()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
     clist4 = filter_info_4()
@@ -46,6 +46,7 @@ def compare_checklist():
     checklist_17_3()
     checklist_17_4()
     checklist_17_5()
+    checklist_17_6()
 
 
 def result_table(passed, failed, width=100):
@@ -1079,7 +1080,7 @@ def checklist_17_1():
     failed = []
 
     data = filter_info_17(".\\logs\\result17_1.txt")
-    s = "Password settings not required"
+    s = "Password Configuration"
     if "True" in data.values():
         name = [k for k, v in data.items() if v == "True"]
         append_array(failed, s, "True - Account: " + ", ".join(name))
@@ -1094,7 +1095,7 @@ def checklist_17_2():
     passed = []
     failed = []
     data = filter_info_17_2(".\\logs\\result17_2.txt")
-    s = "Check unused accounts"
+    s = "Check Unused Accounts"
     if "none" in data.values():
         name = [k for k, v in data.items() if v == "none"]
         append_array(failed, s, "Account (" + ", ".join(name) + ")")
@@ -1108,10 +1109,10 @@ def checklist_17_3():
     passed = []
     failed = []
     failed_user = {}
-    s = "Check for accounts that haven't changed passwords"
+    s = "Check Accounts Not Changing Passwords Periodically"
     for date in data.values():
-        date_object = datetime.strptime(date, "%d/%m/%Y").date()
-        today = datetime.today().date()
+        date_object = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+        today = datetime.datetime.today().date()
         date_diff = today - date_object
         if date_diff.days >= 365:
             name = [k for k, v in data.items() if v == date]
@@ -1128,7 +1129,7 @@ def checklist_17_4():
     passed = []
     failed = []
     failed_user = {}
-    s = "Check for accounts that haven't changed passwords"
+    s = "Check Accounts Used for Services"
     for value in data.values():
         if value != "{}":
             name = [k for k, v in data.items() if v != "{}"]
@@ -1144,10 +1145,10 @@ def checklist_17_5():
     data = filter_info_17(".\\logs\\result17_5.txt")
     passed = []
     failed = []
-    s = "Account krbtgt password latest change"
+    s = "Change krbtgt Account Password"
     for date in data.values():
-        date_object = datetime.strptime(date, "%d/%m/%Y").date()
-        today = datetime.today().date()
+        date_object = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+        today = datetime.datetime.today().date()
         date_diff = today - date_object
         if date_diff.days >= 180:
             append_array(failed, s, "(" + date + ")")
@@ -1156,4 +1157,26 @@ def checklist_17_5():
     t = result_table(passed, failed)
 
 
+def checklist_17_6():
+    data = filter_info_17_6(".\\logs\\result17_6.txt")
+    passed = []
+    failed = []
+    s = "Configure NTFS Permissions for AdminSDHolder Folder"
+    failed_arr = []
+    domain_name = data[1].upper()
+    approved_account = [r'NT AUTHORITY\Authenticated Users', r'NT AUTHORITY\SYSTEM', r'BUILTIN\Administrators',
+                        rf'{domain_name}\Domain Admins', rf'{domain_name}\Enterprise Admins', 'Everyone',
+                        r'NT AUTHORITY\SELF', r'BUILTIN\Pre-Windows 2000 Compatible Access',
+                        r'BUILTIN\Windows Authorization Access Group', r'BUILTIN\Terminal Server License Servers',
+                        rf'{domain_name}\Cert Publishers']
+    for name in data[0]:
+        name = name.strip()
+        if name not in approved_account:
+            failed_arr.append(name)
+    failed_user = ", ".join(failed_arr)
+    if len(failed_arr) != 0:
+        append_array(failed, s, "Account (" + failed_user + ")")
+    else:
+        append_array(passed, s, "None")
+    t = result_table(passed, failed)
 
