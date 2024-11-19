@@ -26,26 +26,26 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-    checklist_1(clist1, current_time)
-    checklist_3(clist3, current_time)
-    checklist_4(clist4, current_time)
-    checklist_5(clist5, current_time)
+    #checklist_1(clist1, current_time)
+    #checklist_3(clist3, current_time)
+    #checklist_4(clist4, current_time)
+    #checklist_5(clist5, current_time)
     checklist_6(clist6, current_time)
-    checklist_7(clist7, current_time)
-    checklist_8(clist8, current_time)
-    checklist_9(clist9, current_time)
-    checklist_10(clist10, current_time)
-    checklist_11(clist11, current_time)
-    checklist_12(clist12, current_time)
-    checklist_13(clist13, current_time)
-    checklist_14(clist14, current_time)
-    checklist_15(clist15, current_time)
-    checklist_16(clist16, current_time)
-    checklist_17_1()
-    checklist_17_2()
-    checklist_17_3()
-    checklist_17_4()
-    checklist_17_5()
+    #checklist_7(clist7, current_time)
+    #checklist_8(clist8, current_time)
+    #checklist_9(clist9, current_time)
+    #checklist_10(clist10, current_time)
+    #checklist_11(clist11, current_time)
+    #checklist_12(clist12, current_time)
+    #checklist_13(clist13, current_time)
+    #checklist_14(clist14, current_time)
+    #checklist_15(clist15, current_time)
+    #checklist_16(clist16, current_time)
+    #checklist_17_1()
+    #checklist_17_2()
+    #checklist_17_3()
+    #checklist_17_4()
+    #checklist_17_5()
 
 
 def result_table(passed, failed, width=100):
@@ -291,13 +291,13 @@ def checklist_4(clist4, current_time):
     else:
         append_array(failed, "Interactive logon: Machine inactivity limit", "Default/not enforced")
     if "CachedLogonsCount" in clist4:
-        s = "Interactive logon: Number of previous logons to cache"
+        s = "Interactive logon: Number of previous logons to cache (in case domain controller is not available)"
         if int(clist4.get("CachedLogonsCount")) <= 4:
             append_array(passed, s, f"{int(clist4.get("CachedLogonsCount"))} logon(s)")
         else:
             append_array(failed, s, f"{int(clist4.get("CachedLogonsCount"))} logon(s)")
     else:
-        append_array(failed, "Interactive logon: Number of previous logons to cache", "Default/10 logon(s)")
+        append_array(failed, "Interactive logon: Number of previous logons to cache (in case domain controller is not available)", "Default/10 logon(s)")
     if "PasswordExpiryWarning" in clist4:
         s = "Interactive logon: Prompt user to change password before expiration"
         if 5 <= int(clist4.get("PasswordExpiryWarning"), 16) <= 14:
@@ -455,9 +455,9 @@ def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
         for obj, value in settings:
             if obj == "State":
                 if value == "ON":
-                    append_array(passed, f"{profile[:-18]} Firewall {obj}", value)
+                    append_array(passed, f"{profile[:-18]} Firewall state", value)
                 else:
-                    append_array(failed, f"{profile[:-18]} Firewall {obj}", value)
+                    append_array(failed, f"{profile[:-18]} Firewall state", value)
             if obj == "Firewall Policy":
                 if "BlockInbound" in value:
                     append_array(passed, f"{profile[:-18]} Inbound connections", value)

@@ -7,282 +7,399 @@ import os
 
 ck1_miti = {
     "Enforce password history": [
-        "Reference: The Enforce password history policy setting determines the number of unique new passwords that must be associated with a user account before. If not defined, users can use the same password for unlimited duration, which enhances the risk of being brute-forced.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Enforce password history to 24.",
+        "The Enforce password history policy setting determines the number of unique new passwords that must be associated with a user account before. If not defined, users can use the same password for unlimited duration, which enhances the risk of being brute-forced.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Enforce password history to 24.",
         "Medium"
     ],
 
     "Maximum password age": [
-        "Reference: The Maximum password age policy setting determines the period that a password can be used before the system requires the user to change it. Setting the age to 0 will never require a password change, posing a security risk.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Maximum password age to between 30 and 90 days to ensure a balance between security and usability.",
+        "The Maximum password age policy setting determines the period that a password can be used before the system requires the user to change it. Setting the age to 0 will never require a password change, posing a security risk.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Maximum password age to between 30 and 90 days to ensure a balance between security and usability.",
         "Medium"
     ],
 
     "Minimum password age": [
-        "Reference: The Minimum password age policy setting determines the period a user must wait before changing their password. A minimum age of 0 allows users to bypass password history requirements.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password age to at least 1 day.",
+        "The Minimum password age policy setting determines the period a user must wait before changing their password. A minimum age of 0 allows users to bypass password history requirements.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password age to at least 1 day.",
         "Medium"
     ],
 
     "Minimum password length": [
-        "Reference: The Minimum password length policy setting specifies the fewest number of characters a password can have. Short passwords are easier to crack.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password length to at least 14 characters.",
+        "The Minimum password length policy setting specifies the fewest number of characters a password can have. Short passwords are easier to crack.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Minimum password length to at least 14 characters.",
         "Medium"
     ],
 
     "Password must meet complexity requirements": [
-        "Reference: The Password must meet complexity requirements policy ensures that passwords contain a combination of uppercase, lowercase, digits, and symbols to increase security.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set this policy to Enabled.",
+        "The Password must meet complexity requirements policy ensures that passwords contain a combination of uppercase, lowercase, digits, and symbols to increase security.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set this policy to Enabled.",
         "Medium"
     ],
 
     "Store passwords using reversible encryption": [
-        "Reference: Storing passwords using reversible encryption is essentially the same as storing plain-text passwords. This is highly discouraged.",
-        "Best practices: Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Store passwords using reversible encryption to Disabled.",
-        "High"
+        "Storing passwords using reversible encryption is essentially the same as storing plain-text passwords. This is highly discouraged.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy and set Store passwords using reversible encryption to Disabled.",
+        "Medium"
+    ],
+    "Account lockout duration": [
+        "The Account lockout duration policy setting determines the number of minutes a locked-out account will remain locked out before it is automatically unlocked. A sufficiently long duration helps prevent brute force attacks by delaying repeated login attempts.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Account Lockout Policy and set Account lockout duration to at least 15 minutes.",
+        "Medium"
+    ],
+
+    "Account lockout threshold": [
+        "The Account lockout threshold policy setting specifies the number of failed sign-in attempts that will trigger a user account to be locked out. A lower threshold increases protection against brute force attacks.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Account Lockout Policy and set Account lockout threshold to a maximum of 5 attempts, ensuring it's greater than 0.",
+        "Medium"
+    ],
+
+    "Reset account lockout counter after": [
+        "The Reset account lockout counter after policy setting determines the time (in minutes) that must elapse after a failed login attempt before the counter resets to zero. A longer reset period discourages automated attacks.",
+        "Navigate to Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Account Lockout Policy and set Reset account lockout counter after to at least 15 minutes.",
+        "Medium"
     ]
+
 }
 
 ck3_miti = {
     "Access this computer from the network": [
-        "Allow only Administrators and Authenticated Users to secure network access while maintaining necessary connectivity.",
+        "This policy setting determines which users or groups can connect to the computer over the network. Granting access to only authenticated users and administrators helps prevent unauthorized access.",
+        "Ensure that only 'Administrators' and 'Authenticated Users' have access.",
         "Medium"
     ],
+
     "Deny access to this computer from the network": [
-        "Deny Guest, Administrators, and Local Account to prevent unauthorized access and ensure security protocols are upheld.",
+        "This policy setting prevents users or groups from connecting to the computer over the network, overriding the ability granted by 'Access this computer from the network'.",
+        "Deny access to 'Guest', 'Administrators', and 'Local Account' to enhance security.",
         "Medium"
     ],
+
     "Deny log on as a batch job": [
-        "Deny Guest, Domain Admins, and Enterprise Admins to prevent unauthorized task execution and protect critical processes.",
+        "This policy setting specifies users or groups that are denied log on as a batch job, which includes tasks such as scheduled tasks.",
+        "Deny this privilege to 'Guest', 'Domain Admins', and 'Enterprise Admins' to limit unauthorized task executions.",
         "Medium"
     ],
+
     "Deny log on as a service": [
-        "Deny Guest, Domain Admins, and Enterprise Admins to restrict service use and prevent misuse by unauthorized accounts.",
+        "This policy setting specifies the users or groups who are not allowed to log on as a service.",
+        "Deny this privilege to 'Guest', 'Domain Admins', and 'Enterprise Admins' to prevent unauthorized service configurations.",
         "Medium"
     ],
+
     "Deny log on through Remote Desktop Services": [
-        "Deny Guest, Administrators, Domain Admins, Enterprise Admins, and Local Account to secure Remote Desktop Services and prevent unauthorized access.",
+        "This policy setting prevents specific users or groups from logging on to the computer through Remote Desktop Services.",
+        "Deny access to 'Guest', 'Administrators', 'Domain Admins', 'Enterprise Admins', and 'Local Account' for increased security.",
         "Medium"
     ],
+
     "Deny log on locally": [
-        "Deny Guest, Domain Admins, and Enterprise Admins to secure local access, ensuring only legitimate users have access.",
+        "This policy setting determines which users are prevented from logging on at the computer's console.",
+        "Deny local logon to 'Guest', 'Domain Admins', and 'Enterprise Admins' to restrict physical access.",
         "Medium"
     ],
+
     "Allow log on locally": [
-        "Allow only Administrators to provide controlled local access and ensure administrative oversight.",
+        "This policy setting specifies which users can log on at the computer's console.",
+        "Allow only 'Administrators' to log on locally to limit physical access.",
         "Medium"
     ],
+
     "Allow log on through Remote Desktop Services": [
-        "Allow only Administrator to maintain secure remote administration capabilities while minimizing risks.",
+        "This policy setting specifies which users can log on to the computer via Remote Desktop Services.",
+        "Allow only 'Administrators' for secure remote access management.",
         "Medium"
     ],
+
     "Shut down the system": [
-        "Allow only Administrators to prevent unauthorized system shutdowns and ensure operational integrity.",
+        "This policy setting specifies which users can shut down the system.",
+        "Restrict this privilege to 'Administrators' to prevent unauthorized system shutdowns.",
         "Medium"
     ],
+
     "Act as part of the operating system": [
-        "Allow none to prevent unauthorized privilege escalation, ensuring system security and integrity.",
+        "This policy setting allows a process to assume the identity of any user and gain access to resources as that user. Very few, if any, services require this right.",
+        "Do not assign this privilege to any users or groups (None) to prevent potential security risks.",
         "High"
     ]
 }
 
 ck4_miti = {
     "Accounts: Administrator account status": [
-        "Ensure the default admin account is renamed and disabled to prevent unauthorized access. The recommended state for this setting is: Disabled.",
+        "This policy setting determines whether the built-in Administrator account is enabled or disabled. Disabling this account reduces the attack surface.",
+        "Set the Administrator account status to 'Disabled' to enhance security.",
         "Low"
     ],
+
     "Domain member: Digitally encrypt or sign secure channel data (always)": [
-        "Require encryption or signing of all secure channel data to ensure integrity and confidentiality. The recommended state for this setting is: Enabled.",
+        "This policy setting ensures that all secure channel data is both signed and encrypted, protecting the integrity and confidentiality of communications.",
+        "Set this policy to 'Enabled' to ensure secure channel data is always protected.",
         "Medium"
     ],
+
     "Domain member: Digitally encrypt secure channel data (when possible)": [
-        "Encrypt secure channel data whenever possible to prevent interception. The recommended state for this setting is: Enabled.",
+        "This policy setting attempts to encrypt secure channel data whenever possible, which guards against eavesdropping attacks.",
+        "Enable this setting to provide additional security for secure channel data.",
         "Medium"
     ],
+
     "Domain member: Digitally sign secure channel data (when possible)": [
-        "Sign channel data for authenticity where possible. The recommended state for this setting is: Enabled.",
+        "This setting applies a digital signature to secure channel data when possible, ensuring authenticity and integrity.",
+        "Enable this setting to protect secure channel data from tampering.",
         "Medium"
     ],
+
     "Domain member: Disable machine account password changes": [
-        "Do not disable; regular password changes should be enabled for security. The recommended state for this setting is: Disabled.",
+        "This policy setting determines whether machine account passwords are automatically changed. Frequent changes can reduce security risks.",
+        "Set to 'Disabled' to allow automatic machine account password changes.",
         "Medium"
     ],
+
     "Domain member: Maximum machine account password age": [
-        "Set to a maximum of 30 days to facilitate timely password updates. The recommended state for this setting is: 30 days.",
+        "This setting specifies the maximum age for machine account passwords, which are less secure if unchanged for long periods.",
+        "Set to 30 days or fewer to ensure passwords are regularly updated.",
         "Medium"
     ],
+
     "Domain member: Require strong (Windows 2000 or later) session key": [
-        "Ensure use of strong session keys to protect data transmission. The recommended state for this setting is: Enabled.",
+        "This policy setting ensures that a strong session key is used, enhancing the security of communications.",
+        "Set to 'Enabled' to require strong session keys.",
         "Medium"
     ],
+
     "Interactive logon: Machine inactivity limit": [
-        "Set a time limit for inactive machines to automatically lock. The recommended state for this setting is: 15 minutes.",
+        "This determines how many seconds of inactivity are allowed before the machine locks the screen.",
+        "Set to 900 seconds or fewer to quickly lock the session after inactivity.",
         "Medium"
     ],
-    "Interactive logon: Number of previous logons to cache": [
-        "Limit cached logons to the required minimum to reduce risk. The recommended state for this setting is: 2 logons.",
+
+    "Interactive logon: Number of previous logons to cache (in case domain controller is not available)": [
+        "This setting specifies how many logon attempts are cached. Excessive caching can be a security risk.",
+        "Set to 4 or fewer to limit cached credentials.",
         "Low"
     ],
+
     "Interactive logon: Prompt user to change password before expiration": [
-        "Prompt 14 days before expiration to ensure uninterrupted access. The recommended state for this setting is: 5-14 days.",
+        "This setting determines how soon users are reminded to change their password before it expires.",
+        "Configure to prompt users 5 to 14 days before password expiration.",
         "Low"
     ],
+
     "Microsoft network client: Digitally sign communications (always)": [
-        "Require digital signing of all client communications for security. The recommended state for this setting is: Enabled.",
+        "This setting ensures that digital signing is always used for SMB communications, enhancing security.",
+        "Set to 'Enabled' to ensure messages are signed.",
         "Medium"
     ],
+
     "Microsoft network client: Digitally sign communications (if server agrees)": [
-        "Sign communications if mutually agreed to enhance security. The recommended state for this setting is: Enabled.",
+        "This setting negotiates SMB signing when possible, protecting against tampering.",
+        "Enable this setting to sign communications if the server agrees.",
         "Medium"
     ],
+
     "Microsoft network client: Send unencrypted password to third-party SMB servers": [
-        "Disable to avoid exposure of passwords. The recommended state for this setting is: Disabled.",
+        "Sending unencrypted passwords is a security risk. This setting should be restricted.",
+        "Set to 'Disabled' to prevent unencrypted passwords from being sent.",
         "High"
     ],
+
     "Microsoft network server: Amount of idle time required before suspending session": [
-        "Suspend sessions after a reasonable idle period (e.g., 15 minutes). The recommended state for this setting is: 15 minutes.",
+        "This setting defines how long a session will remain idle before being suspended.",
+        "Set to 15 minutes or fewer to ensure sessions are suspended during inactivity.",
         "Medium"
     ],
+
     "Microsoft network server: Digitally sign communications (always)": [
-        "Always sign server communications to prevent tampering. The recommended state for this setting is: Enabled.",
+        "This setting requires all SMB communications to be digitally signed, protecting against forgery.",
+        "Set to 'Enabled' for maximum communication security.",
         "Medium"
     ],
+
     "Microsoft network server: Digitally sign communications (if client agrees)": [
-        "Sign communications if mutually agreed to protect integrity. The recommended state for this setting is: Enabled.",
+        "This setting allows SMB signing if the client agrees, enhancing message security when supported.",
+        "Enable this for increased protection if the client supports signing.",
         "Medium"
     ],
+
     "Microsoft network server: Disconnect clients when logon hours expire": [
-        "Automatically disconnect clients past their logon hours to enforce policy. The recommended state for this setting is: Enabled.",
+        "This setting determines whether clients are forcibly disconnected when logon hours expire.",
+        "Set to 'Enabled' to disconnect clients when their logon hours expire.",
         "Low"
     ],
+
     "Microsoft network server: Server SPN target name validation level": [
-        "Require strict SPN validation to prevent spoofing. The recommended state for this setting is: Accept if provided by client.",
+        "This setting determines how strictly the server validates target SPN names.",
+        "Set to 'Accept if provided by client or higher' to ensure proper validation.",
         "Medium"
     ],
+
     "Network security: Allow Local System to use computer identity for NTLM": [
-        "Restrict use of computer identity to prevent improper authorization. The recommended state for this setting is: Enabled.",
+        "This setting allows the Local System to authenticate as a computer account using NTLM.",
+        "Set to 'Enabled' to allow this behaviour, enhancing compatibility.",
         "Medium"
     ],
+
     "Network security: Configure encryption types allowed for Kerberos": [
-        "Allow only strong encryption types like AES for Kerberos. The recommended state for this setting is: AES128_HMAC_SHA1 AES256_HMAC_SHA1 Future encryption types.",
+        "This policy determines the encryption types that Kerberos can use, impacting security and compatibility.",
+        "Configure to support 'AES128_HMAC_SHA1', 'AES256_HMAC_SHA1', and 'Future encryption types' for strong encryption.",
         "High"
     ],
+
     "Network security: Do not store LAN Manager hash value on next password change": [
-        "Disable LM hash storage to protect against easy cracking. The recommended state for this setting is: Enabled.",
+        "Storing LM hash values poses a security risk and should be avoided.",
+        "Set to 'Enabled' to prevent storing LAN Manager hash values.",
         "High"
     ],
+
     "Network security: Force logoff when logon hours expire": [
-        "Enable force logoff to maintain access restrictions. The recommended state for this setting is: Enabled.",
+        "This setting enforces logoff when logon hours expire, preventing unauthorized access.",
+        "Set to 'Enabled' to force logoff upon logon hour expiration.",
         "Medium"
     ],
+
     "Network security: LAN Manager authentication level": [
-        "Set to NTLMv2 only to avoid weak authentication methods. The recommended state for this setting is: Send NTLMv2 response only. Refuse LM & NTLM.",
+        "This setting determines the challenges and responses to use for network authentication, impacting security.",
+        "Set to 'Send NTLMv2 response only. Refuse LM & NTLM' to enhance authentication security.",
         "High"
     ],
+
     "Network security: LDAP client signing requirements": [
-        "Require signing to ensure LDAP transaction integrity and security. The recommended state for this setting is: Negotiating.",
+        "This setting specifies whether LDAP client signing is negotiated or required, affecting data integrity.",
+        "Set to 'Negotiate signing or higher' to ensure data integrity with LDAP communications.",
         "Medium"
     ],
+
     "Network security: Minimum session security for NTLM SSP based (including secure RPC) clients": [
-        "Set robust security policies for client sessions to safeguard data. The recommended state for this setting is: Require NTLMv2 session security and Require 128-bit encryption.",
+        "This setting determines the minimum security level for NTLM SSP sessions on clients.",
+        "Configure to 'Require NTLMv2 session security and Require 128-bit encryption' for strong security.",
         "Medium"
     ],
+
     "Network security: Minimum session security for NTLM SSP based (including secure RPC) servers": [
-        "Implement strict security measures for server sessions to protect data. The recommended state for this setting is: Require NTLMv2 session security and Require 128-bit encryption.",
+        "This setting determines the minimum session security level for NTLM SSP sessions on servers.",
+        "Configure to 'Require NTLMv2 session security and Require 128-bit encryption' for strong security.",
         "Medium"
     ]
 }
 
 ck5_miti = {
-    "Domain Firewall State": [
-        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+    "Domain Firewall state": [
+        "The firewall state setting determines whether the Windows firewall is enabled or disabled. A properly configured firewall is essential for protecting the system from unauthorized access.",
+        "Set the firewall state to 'On' to ensure the system is protected by the firewall.",
         "Medium"
     ],
-    "Private Firewall State": [
-        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+    "Private Firewall state": [
+        "The firewall state setting determines whether the Windows firewall is enabled or disabled. A properly configured firewall is essential for protecting the system from unauthorized access.",
+        "Set the firewall state to 'On' to ensure the system is protected by the firewall.",
         "Medium"
     ],
-    "Public Firewall State": [
-        "An inactive firewall exposes the system to malicious attacks and unauthorized access. Always enable the firewall to block inbound threats and monitor network traffic. ",
+    "Public Firewall state": [
+        "The firewall state setting determines whether the Windows firewall is enabled or disabled. A properly configured firewall is essential for protecting the system from unauthorized access.",
+        "Set the firewall state to 'On' to ensure the system is protected by the firewall.",
         "Medium"
     ],
     "Domain Inbound connections": [
-        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
+        "This setting determines what happens to inbound connections that do not match an allowed rule. Blocking inbound connections by default protects the system from unsolicited and potentially harmful incoming traffic.",
+        "Set inbound connections to 'Block (Default)' to prevent unauthorized access.",
         "Medium"
     ],
     "Private Inbound connections": [
-        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
+        "This setting determines what happens to inbound connections that do not match an allowed rule. Blocking inbound connections by default protects the system from unsolicited and potentially harmful incoming traffic.",
+        "Set inbound connections to 'Block (Default)' to prevent unauthorized access.",
         "Medium"
     ],
     "Public Inbound connections": [
-        "Allowing all inbound connections can lead to network breaches and exploitation. Default to blocking inbound connections and create specific rules for necessary exceptions.",
+        "This setting determines what happens to inbound connections that do not match an allowed rule. Blocking inbound connections by default protects the system from unsolicited and potentially harmful incoming traffic.",
+        "Set inbound connections to 'Block (Default)' to prevent unauthorized access.",
         "Medium"
     ],
     "Domain Log file maximum size (KB)": [
-        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "This setting specifies the maximum size of the firewall log file. A larger log file can capture more data, which is helpful for monitoring and auditing purposes.",
+        "Set the log file maximum size to 16,384 KB or greater to ensure sufficient logging capacity.",
         "Medium"
     ],
     "Private Log file maximum size (KB)": [
-        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "This setting specifies the maximum size of the firewall log file. A larger log file can capture more data, which is helpful for monitoring and auditing purposes.",
+        "Set the log file maximum size to 16,384 KB or greater to ensure sufficient logging capacity.",
         "Medium"
     ],
     "Public Log file maximum size (KB)": [
-        "Insufficient log size may lead to loss of critical logging data during peak activities. Configure a reasonable log size and implement log rotation to store all necessary data.",
+        "This setting specifies the maximum size of the firewall log file. A larger log file can capture more data, which is helpful for monitoring and auditing purposes.",
+        "Set the log file maximum size to 16,384 KB or greater to ensure sufficient logging capacity.",
         "Medium"
     ],
     "Domain Log dropped packets": [
-        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Logging dropped packets allows administrators to monitor and analyze unsuccessful connection attempts, which can provide insights into potential security threats.",
+        "Set to 'Yes' to enable logging of all dropped packets.",
         "Medium"
     ],
     "Private Log dropped packets": [
-        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Logging dropped packets allows administrators to monitor and analyze unsuccessful connection attempts, which can provide insights into potential security threats.",
+        "Set to 'Yes' to enable logging of all dropped packets.",
         "Medium"
     ],
     "Public Log dropped packets": [
-        "Without logging dropped packets, suspicious activities may go unnoticed. Enable dropped packet logging to review and analyze potential threats regularly.",
+        "Logging dropped packets allows administrators to monitor and analyze unsuccessful connection attempts, which can provide insights into potential security threats.",
+        "Set to 'Yes' to enable logging of all dropped packets.",
         "Medium"
     ],
     "Domain Log successful connections": [
-        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Logging successful connections helps in tracking allowed traffic, providing an audit trail for security monitoring.",
+        "Set to 'Yes' to enable logging of all successful connections.",
         "Medium"
     ],
     "Private Log successful connections": [
-        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Logging successful connections helps in tracking allowed traffic, providing an audit trail for security monitoring.",
+        "Set to 'Yes' to enable logging of all successful connections.",
         "Medium"
     ],
     "Public Log successful connections": [
-        "Failing to log successful connections may prevent detecting unauthorized access. Enable logging for successful connections to monitor and audit network access.",
+        "Logging successful connections helps in tracking allowed traffic, providing an audit trail for security monitoring.",
+        "Set to 'Yes' to enable logging of all successful connections.",
         "Medium"
     ]
 }
 
+
 ck6_miti = {
     "Audit account logon event": [
-        "Audit for both Success and Failure to ensure detection of all account logon attempts, whether successful or failed.",
+        "This setting audits each instance of a user's account logon or logoff event on a domain controller. This helps in tracking account usage.",
+        "Enable both 'Success' and 'Failure' auditing to ensure comprehensive monitoring of account logon events.",
         "Medium"
     ],
+
     "Audit account management": [
-        "Audit for Success and Failure to capture all account management activities, enhancing visibility into changes made to user accounts.",
+        "This audits changes to user accounts and groups, including the creation, modification, or deletion. Monitoring these events is crucial for security and compliance.",
+        "Enable 'Success and Failure' auditing to track all account management activities.",
         "Medium"
     ],
+
     "Audit process tracking": [
-        "Audit for Success Only to track all process creation and termination, providing insights into application usage and potential issues.",
+        "This setting audits detailed tracking information for events such as a program activation, process exit, handle duplication, and indirect object access.",
+        "Enable 'Success' auditing to monitor and analyze process-related activities.",
         "Medium"
     ],
+
     "Audit Directory Service Access": [
-        "Audit for both Success and Failure to monitor access attempts to directory services, detecting potential unauthorized access.",
+        "This audits user access to an Active Directory object that has its own system access control list (SACL) specified. It's important for monitoring attempts to access directory services.",
+        "Enable both 'Success' and 'Failure' auditing to keep track of access to directory services.",
         "Medium"
     ],
+
     "Audit logon events": [
-        "Audit for both Success and Failure to capture all logon attempts, aiding in the identification of unauthorized access attempts.",
+        "This setting audits each instance of user logon or logoff, which helps in tracking who logged on to the system.",
+        "Enable both 'Success' and 'Failure' auditing to capture a full spectrum of logon activity.",
         "Medium"
     ],
+
     "Audit Policy Change": [
-        "Audit for Success Only to track successful changes to security policies, ensuring accountability for policy modifications.",
+        "This setting audits changes to user rights, audit policies, and trust policies, which are critical for maintaining security configurations.",
+        "Enable 'Success' auditing to track modifications to important security policies.",
         "Medium"
     ],
+
     "Audit Privilege Use": [
-        "Audit for both Success and Failure to monitor all attempts to use privileges, identifying potential misuse of elevated permissions.",
+        "This audits each instance of a user exercising a user right. Monitoring privileged use is crucial for preventing unauthorized actions.",
+        "Enable both 'Success' and 'Failure' auditing to monitor the usage of privileges.",
         "Medium"
     ]
 }
@@ -507,8 +624,9 @@ def export_json(arr, ck_mitigation, checklist_name, status):
                      "name": i,
                      "checklist_name": checklist_name,
                      "status": status,
-                     "mitigation": mitigation[0],
-                     "severity": mitigation[1]})
+                     "Reference": mitigation[0],
+                     "Best practices": mitigation[1],
+                     "Severity": mitigation[2]})
     with open(f".\\results\\{json_name}", 'w') as f:
         json.dump(result, f, indent=4)
 
@@ -520,7 +638,7 @@ def export_csv_table(csv_table_name=None):
         csv_table_name = f"3AD_result.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'mitigation', 'severity']
+    fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'Reference', 'Best practices', 'Severity']
     file_exists = os.path.isfile(f".\\results\\{csv_table_name}")
     with open(f".\\results\\{csv_table_name}", 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
