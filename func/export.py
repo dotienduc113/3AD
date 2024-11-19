@@ -585,63 +585,125 @@ ck11_miti = {
     ]
 }
 
-
 ck12_miti = {
     "Turn on PowerShell Script Block Logging": [
-        "Without script block logging, potential threats may not be identified. Enable for security auditing and threat analysis.",
+        "PowerShell Script Block Logging records detailed information about commands executed, assisting in identifying potentially malicious activity through comprehensive auditing.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows PowerShell and set 'Turn on PowerShell Script Block Logging' to 'Enabled' to enhance auditing and monitoring capabilities.",
         "Medium"
     ],
+
     "Turn on PowerShell Transcription": [
-        "Without transcription, command activities remain unchecked. Enable to capture command outputs for detailed analysis.",
+        "PowerShell Transcription creates records of all PowerShell command input and output, which can be essential for auditing and detecting suspicious activities.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows PowerShell and set 'Turn on PowerShell Transcription' to 'Enabled' to facilitate detailed session auditing.",
         "High"
     ],
+
     "Turn on Script Execution": [
-        "Unrestricted execution can lead to security vulnerabilities. Restrict to signed scripts to ensure credibility.",
+        "This setting determines which PowerShell scripts are allowed to run. Allowing only signed scripts ensures that execution is limited to scripts from trusted sources, mitigating the risk of executing malicious code.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows PowerShell and set 'Turn on Script Execution' to 'Enabled: Allow only signed scripts or higher' to enforce script security policies.",
         "Medium"
     ]
 }
 
 ck13_miti = {
     "Allow Basic authentication": [
-        "Basic authentication is insecure as it exposes credentials. Disable or ensure secure practices are used.",
+        "Basic authentication sends credentials in an unencrypted manner and is considered insecure unless used over a secure channel such as HTTPS. Disabling it helps prevent credential compromise.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Remote Management (WinRM)\\WinRM Client or Service, depending on the context, and set 'Allow Basic authentication' to 'Disabled' to avoid insecure authentication methods.",
         "High"
     ],
+
     "Allow unencrypted traffic": [
-        "Unencrypted traffic is vulnerable to interception. Disable to protect data integrity and confidentiality.",
+        "Allowing unencrypted traffic can expose sensitive data to interception. It's crucial to ensure all traffic is encrypted to maintain data confidentiality and integrity.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Remote Management (WinRM)\\WinRM Client or Service, depending on the context, and set 'Allow unencrypted traffic' to 'Disabled'.",
         "High"
     ],
+
     "Disallow Digest authentication": [
-        "Digest authentication may not sufficiently secure credentials. Disable to prevent potential vulnerabilities.",
+        "Digest authentication, though more secure than Basic, still poses risks if the transmission or storage of user credentials is intercepted. Disabling it can enhance credential security.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Remote Management (WinRM)\\WinRM Client and set 'Disallow Digest authentication' to 'Enabled' to prevent use of weaker authentication methods.",
         "High"
     ],
+
     "Disallow WinRM from storing RunAs credentials": [
-        "Storing credentials can result in unauthorized access. Prevent storage to enhance security.",
+        "Storing RunAs credentials can increase the risk of credential misuse or exposure. Ensuring credentials are not stored enhances security.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Remote Management (WinRM)\\WinRM Service and set 'Disallow WinRM from storing RunAs credentials' to 'Enabled'.",
         "Medium"
     ],
+
     "Allow remote server management through WinRM": [
-        "Improper configurations may lead to unauthorized access. Enable securely with authentication controls.",
+        "Restricting remote server management through WinRM can limit remote administrative access, minimizing potential attack vectors. This setting should be carefully configured based on organizational requirements.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Windows Remote Management (WinRM)\\WinRM Service and set 'Allow remote server management through WinRM' to 'Disabled' unless absolutely necessary for administrative purposes.",
         "Medium"
     ]
 }
 
 ck14_miti = {
-    "Allow Remote Shell Access": [
-        "Unrestricted remote shell access can lead to unauthorized control and exploitation. Restrict access with strict controls.",
-        "Medium"
-    ]
+	"Allow Remote Shell Access": [
+    	"Allowing remote shell access can pose security risks by enabling remote execution and potentially exposing systems to unauthorized access and malicious activities.",
+    	"Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Shell and set 'Allow Remote Shell Access' to 'Disabled' to prevent remote users from accessing shell environments.",
+    	"Medium"
+	]
 }
+
 
 ck15_miti = {
-    "Print Spooler (Spooler)": [
-        "An enabled spooler is at risk for exploits, such as remote code execution. Monitor and restrict spooler usage.",
-        "Medium"
-    ]
+	"Print Spooler (Spooler)": [
+    	"The Print Spooler service manages print jobs and is a known security target for various vulnerabilities. Disabling it on servers where printing is unnecessary can mitigate potential security risks.",
+    	"If printing is not required on the server, navigate to Services (services.msc), locate 'Print Spooler', and set the service to 'Disabled' to reduce the attack surface.",
+    	"Medium"
+	]
 }
 
+
 ck16_miti = {
-    "Turn off local group policy processing": [
-        "Local policy processing can lead to inconsistent security settings. Keep central domain policy control to maintain uniform security standards.",
+	"Turn off local group policy processing": [
+    	"Enabling the option to turn off local Group Policy processing ensures that local policies on the machine do not override or conflict with domain-level policies. This helps maintain consistent policy enforcement across the network.",
+    	"Navigate to Computer Configuration\\Administrative Templates\\System\\Group Policy and set 'Turn off local group policy objects processing' to 'Enabled' to enforce domain-based policies uniformly without local policy interference.",
+    	"Medium"
+	]
+}
+
+ck17_miti = {
+    "Password Configuration": [
+        "Ensuring all active accounts have a configured password is crucial for security, preventing unauthorized access and potential exploitation.",
+        "\n1. Access Active Directory Users and Computers, navigate to the Users folder, right-click on the specific account (e.g., USER$), select Reset Password, set a new password, and click OK.\n2. Alternatively, configure the requirement using PowerShell: \n> Set-ADUser -Identity ‘USER$’ -PasswordNotRequired $false",
+        "High"
+    ],
+
+    "Check Unused Accounts": [
+        "Accounts that have not been used for an extended period may present security risks. Disabling inactive accounts helps reduce the attack surface.",
+        "\n1. For accounts without LastLogonTimestamp, exclude non-interactive logon types such as Service Accounts or accounts running scheduled tasks. \n2. For accounts not used in the past 45 days, consider disabling or removing unnecessary accounts.",
         "Medium"
+    ],
+
+    "Check Accounts Not Changing Passwords Periodically": [
+        "Periodic password changes are essential to mitigate the risk of password compromise. Ensuring that active accounts change passwords regularly helps maintain security integrity.",
+        "\n1. For accounts with no PasswordLastSet information, require immediate password change or disable if unused. \n2. For accounts not changed in the past 365 days, require a password change. \nTo enforce: Access Active Directory Users and Computers, select the user account, go to Account options, and check 'User must change password at next logon'.",
+        "Medium"
+    ],
+
+    "Check Accounts Used for Services": [
+        "Using privileged accounts for services can expose critical credentials to unnecessary risk. Service accounts should have the least privilege necessary.",
+        "Create dedicated service accounts with appropriate limited privileges. Avoid using domain admin accounts for services, as exploitation could grant attackers access to the entire domain.",
+        "High"
+    ],
+
+    "Change krbtgt Account Password": [
+        "The krbtgt account is critical for Kerberos authentication. Regular password changes help protect against replay attacks and ticket reuse.",
+        "Change the krbtgt account password twice with a 10-hour interval between changes to ensure expiration of old tickets, effectively nullifying any potential reuse.",
+        "Medium"
+    ],
+
+    "Configure NTFS Permissions for AdminSDHolder Folder": [
+        "The AdminSDHolder container helps protect administrative accounts and groups by enforcing secure permissions. Ensure permissions are strictly controlled.",
+        "Ensure that NTFS permissions of the AdminSDHolder folder are restricted to default users only, with no additional user configurations.",
+        "Medium"
+    ],
+
+    "Configure 'Protected Users' Group for High-Privilege Domain Accounts": [
+        "Adding high-privilege domain accounts to the 'Protected Users' group enhances security by applying stringent account protection policies.",
+        "Ensure that all high-privilege domain accounts, such as Administrators, Domain Admins, and Enterprise Admins, are added to the 'Protected Users' group for elevated security protection.",
+        "High"
     ]
 }
 
@@ -656,7 +718,7 @@ def get_ip():
 
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
-timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
+timestamp = datetime.datetime.now().strftime('%d/%m/%Y %I:%M:%S %p')
 json_name = f"3AD_result.json"
 # csv_table_name = f"3AD_result_{current_time}.csv"
 # csv_line_name = f"3AD_line_{current_time}.csv"

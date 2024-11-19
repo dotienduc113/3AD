@@ -26,26 +26,26 @@ def compare_checklist():
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-    #checklist_1(clist1, current_time)
-    #checklist_3(clist3, current_time)
-    #checklist_4(clist4, current_time)
-    #checklist_5(clist5, current_time)
-    #checklist_6(clist6, current_time)
-    #checklist_7(clist7, current_time)
-    #checklist_8(clist8, current_time)
-    #checklist_9(clist9, current_time)
-    #checklist_10(clist10, current_time)
+    checklist_1(clist1, current_time)
+    checklist_3(clist3, current_time)
+    checklist_4(clist4, current_time)
+    checklist_5(clist5, current_time)
+    checklist_6(clist6, current_time)
+    checklist_7(clist7, current_time)
+    checklist_8(clist8, current_time)
+    checklist_9(clist9, current_time)
+    checklist_10(clist10, current_time)
     checklist_11(clist11, current_time)
-    #checklist_12(clist12, current_time)
-    #checklist_13(clist13, current_time)
-    #checklist_14(clist14, current_time)
-    #checklist_15(clist15, current_time)
-    #checklist_16(clist16, current_time)
-    #checklist_17_1()
-    #checklist_17_2()
-    #checklist_17_3()
-    #checklist_17_4()
-    #checklist_17_5()
+    checklist_12(clist12, current_time)
+    checklist_13(clist13, current_time)
+    checklist_14(clist14, current_time)
+    checklist_15(clist15, current_time)
+    checklist_16(clist16, current_time)
+    checklist_17_1()
+    checklist_17_2()
+    checklist_17_3()
+    checklist_17_4()
+    checklist_17_5()
 
 
 def result_table(passed, failed, width=100):
@@ -478,7 +478,7 @@ def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
                     append_array(passed, f"{profile[:-18]} Log file maximum size (KB)", value)
                 else:
                     append_array(failed, f"{profile[:-18]} Log file maximum size (KB)", value)
-    str = "\nWindows Defender Firewall with Advanced Security result"
+    str = "\nWindows Defender Firewall with Advanced Security"
     print(str)
     t = result_table(passed, failed)
     export_json(passed, ck5_miti, str.strip(), "passed")
@@ -748,7 +748,7 @@ def checklist_10(clist10, current_time):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, "Scan removable drives", "Not configure/Disabled")
-    str = "\nWindows Defender:"
+    str = "\nWindows Defender"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -863,7 +863,7 @@ def checklist_11(clist11, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Do not use temporary folders per session", "Not configured")
-    str = "\nRemote Desktop Services:"
+    str = "\nRemote Desktop Services"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -910,7 +910,7 @@ def checklist_12(clist12, current_time):
     if "EnableScripts" not in clist12:
         s = "Turn on Script Execution"
         append_array(failed, s, "Default - Not configured/Disable")
-    str = "\nWindows PowerShell:"
+    str = "\nWindows PowerShell"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -977,7 +977,7 @@ def checklist_13(clist13, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, "Service Allow remote server management through WinRM", "Not configured")
-    str = "\nWinRM:"
+    str = "\nWinRM"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -996,7 +996,7 @@ def checklist_14(clist14, current_time):
             append_array(failed, s, "Enabled")
     else:
         append_array(failed, s, "Not configured")
-    str = "\nWindows Remote Shell:"
+    str = "\nWindows Remote Shell"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -1017,7 +1017,7 @@ def checklist_15(clist15, current_time):
             append_array(failed, s, "Automatic")
     else:
         append_array(failed, s, "Not configured")
-    str = "\nSystem Services:"
+    str = "\nSystem Services"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
@@ -1037,7 +1037,7 @@ def checklist_16(clist16, current_time):
             append_array(failed, s, "Disabled")
     else:
         append_array(failed, s, "Not configured")
-    str = "\nGroup Policy:"
+    str = "\nGroup Policy"
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
