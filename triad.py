@@ -7,6 +7,7 @@ import argparse
 from func.query import run_query
 from func.checklist import compare_checklist
 from func.export import delete_json, export_csv_table
+from sys import exit
 
 
 def display_banner():
@@ -34,7 +35,7 @@ def menu():
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
-                #run_query()
+                run_query()
                 compare_checklist()
             elif choice == 2:
                 file_name = input("Input file name (blank for default):")

@@ -4,8 +4,7 @@ from itertools import zip_longest
 import datetime
 from func.filter import *
 import json
-from func.export import ck1_miti, ck3_miti, ck4_miti, ck5_miti, ck6_miti, ck7_miti, ck8_miti, ck9_miti, ck10_miti, \
-    ck11_miti, ck12_miti, ck13_miti, ck14_miti, ck15_miti, ck16_miti, export_json, export_csv_table
+from func.export import *
 
 
 def compare_checklist():
@@ -41,12 +40,7 @@ def compare_checklist():
     checklist_14(clist14, current_time)
     checklist_15(clist15, current_time)
     checklist_16(clist16, current_time)
-    checklist_17_1()
-    checklist_17_2()
-    checklist_17_3()
-    checklist_17_4()
-    checklist_17_5()
-    checklist_17_6()
+    checklist_17()
 
 
 def result_table(passed, failed, width=100):
@@ -1075,25 +1069,17 @@ def checklist_misc(clistmisc, passed, failed, i):
             append_array(passed, "Network security: Force logoff when logon hours expire", "Default/Enabled")
 
 
-def checklist_17_1():
-    passed = []
-    failed = []
-
+def checklist_17_1(passed, failed):
     data = filter_info_17(".\\logs\\result17_1.txt")
     s = "Password Configuration"
     if "True" in data.values():
         name = [k for k, v in data.items() if v == "True"]
-        append_array(failed, s, "True - Account: " + ", ".join(name))
+        append_array(failed, s, "Account (" + ", ".join(name) + ")")
     else:
         append_array(passed, s, "None")
-    str = "\nAD user account:"
-    print(str)
-    t = result_table(passed, failed)
 
 
-def checklist_17_2():
-    passed = []
-    failed = []
+def checklist_17_2(passed, failed):
     data = filter_info_17_2(".\\logs\\result17_2.txt")
     s = "Check Unused Accounts"
     if "none" in data.values():
@@ -1101,13 +1087,10 @@ def checklist_17_2():
         append_array(failed, s, "Account (" + ", ".join(name) + ")")
     else:
         append_array(passed, s, "None")
-    t = result_table(passed, failed)
 
 
-def checklist_17_3():
+def checklist_17_3(passed, failed):
     data = filter_info_17(".\\logs\\result17_3.txt")
-    passed = []
-    failed = []
     failed_user = {}
     s = "Check Accounts Not Changing Passwords Periodically"
     for date in data.values():
@@ -1121,15 +1104,12 @@ def checklist_17_3():
         append_array(failed, s, "Account (" + failed_user + ")")
     else:
         append_array(passed, s, "None")
-    t = result_table(passed, failed)
 
 
-def checklist_17_4():
+def checklist_17_4(passed, failed):
     data = filter_info_17(".\\logs\\result17_4.txt")
-    passed = []
-    failed = []
     failed_user = {}
-    s = "Check Accounts Used for Services"
+    s = "Check Privileged Accounts Used for Services"
     for value in data.values():
         if value != "{}":
             name = [k for k, v in data.items() if v != "{}"]
@@ -1138,13 +1118,10 @@ def checklist_17_4():
         append_array(failed, s, "Account (" + failed_user + ")")
     else:
         append_array(passed, s, "None")
-    t = result_table(passed, failed)
 
 
-def checklist_17_5():
+def checklist_17_5(passed, failed):
     data = filter_info_17(".\\logs\\result17_5.txt")
-    passed = []
-    failed = []
     s = "Change krbtgt Account Password"
     for date in data.values():
         date_object = datetime.datetime.strptime(date, "%d/%m/%Y").date()
@@ -1154,13 +1131,10 @@ def checklist_17_5():
             append_array(failed, s, "(" + date + ")")
         else:
             append_array(passed, s, "(" + date + ")")
-    t = result_table(passed, failed)
 
 
-def checklist_17_6():
+def checklist_17_6(passed, failed):
     data = filter_info_17_6(".\\logs\\result17_6.txt")
-    passed = []
-    failed = []
     s = "Configure NTFS Permissions for AdminSDHolder Folder"
     failed_arr = []
     domain_name = data[1].upper()
@@ -1178,5 +1152,19 @@ def checklist_17_6():
         append_array(failed, s, "Account (" + failed_user + ")")
     else:
         append_array(passed, s, "None")
-    t = result_table(passed, failed)
 
+
+def checklist_17():
+    passed = []
+    failed = []
+    checklist_17_1(passed, failed)
+    checklist_17_2(passed, failed)
+    checklist_17_3(passed, failed)
+    checklist_17_4(passed, failed)
+    checklist_17_5(passed, failed)
+    checklist_17_6(passed, failed)
+    str = "\nAD user account"
+    print(str)
+    t = result_table(passed, failed)
+    export_json(passed, ck17_miti, str.strip(), "passed")
+    export_json(failed, ck17_miti, str.strip(), "failed")

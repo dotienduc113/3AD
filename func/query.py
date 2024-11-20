@@ -22,6 +22,7 @@ query = r"""
 (powershell.exe "Get-ADUser -Filter {Enabled -eq $true} -Properties LastLogonTimestamp | Format-Table Name, LastLogonTimestamp") > .\logs\result17_2.txt
 (powershell.exe "Get-ADUser -Filter {Enabled -eq $true} -Properties pwdLastSet | Select-Object Name, @{Name='pwdLastSetReadable';Expression={[datetime]::FromFileTime($_.pwdLastSet).ToString('dd/MM/yyyy')}}") > .\logs\result17_3.txt
 (powershell.exe "Get-ADUser -Filter {Enabled -eq $true -and AdminCount -eq 1} -Properties servicePrincipalName | Format-Table Name, servicePrincipalName") > .\logs\result17_4.txt
+(powershell.exe "(Get-ADDomain).Name; (Get-ACL ('AD:CN=AdminSDHolder,CN=System,' + (Get-ADDomain).DistinguishedName)).Access | Select-Object IdentityReference -Unique") > .\logs\result17.txt
 """
 
 

@@ -666,23 +666,23 @@ ck16_miti = {
 ck17_miti = {
     "Password Configuration": [
         "Ensuring all active accounts have a configured password is crucial for security, preventing unauthorized access and potential exploitation.",
-        "\n1. Access Active Directory Users and Computers, navigate to the Users folder, right-click on the specific account (e.g., USER$), select Reset Password, set a new password, and click OK.\n2. Alternatively, configure the requirement using PowerShell: \n> Set-ADUser -Identity ‘USER$’ -PasswordNotRequired $false",
+        "Access Active Directory Users and Computers, navigate to the Users folder, right-click on the specific account (e.g., USER$), select Reset Password, set a new password, and click OK. Alternatively, configure the requirement using PowerShell: > Set-ADUser -Identity ‘USER$’ -PasswordNotRequired $false",
         "High"
     ],
 
     "Check Unused Accounts": [
         "Accounts that have not been used for an extended period may present security risks. Disabling inactive accounts helps reduce the attack surface.",
-        "\n1. For accounts without LastLogonTimestamp, exclude non-interactive logon types such as Service Accounts or accounts running scheduled tasks. \n2. For accounts not used in the past 45 days, consider disabling or removing unnecessary accounts.",
+        "For accounts without LastLogonTimestamp, exclude non-interactive logon types such as Service Accounts or accounts running scheduled tasks. For accounts not used in the past 45 days, consider disabling or removing unnecessary accounts.",
         "Medium"
     ],
 
     "Check Accounts Not Changing Passwords Periodically": [
         "Periodic password changes are essential to mitigate the risk of password compromise. Ensuring that active accounts change passwords regularly helps maintain security integrity.",
-        "\n1. For accounts with no PasswordLastSet information, require immediate password change or disable if unused. \n2. For accounts not changed in the past 365 days, require a password change. \nTo enforce: Access Active Directory Users and Computers, select the user account, go to Account options, and check 'User must change password at next logon'.",
+        "For accounts with no PasswordLastSet information, require immediate password change or disable if unused. For accounts not changed in the past 365 days, require a password change. To enforce: Access Active Directory Users and Computers, select the user account, go to Account options, and check 'User must change password at next logon'.",
         "Medium"
     ],
 
-    "Check Accounts Used for Services": [
+    "Check Privileged Accounts Used for Services": [
         "Using privileged accounts for services can expose critical credentials to unnecessary risk. Service accounts should have the least privilege necessary.",
         "Create dedicated service accounts with appropriate limited privileges. Avoid using domain admin accounts for services, as exploitation could grant attackers access to the entire domain.",
         "High"
