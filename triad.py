@@ -35,7 +35,7 @@ def menu():
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
-                #run_query()
+                run_query()
                 compare_checklist()
             elif choice == 2:
                 file_name = input("Input file name (blank for default):")
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     if args.nogui:
         condition_met = True
-        #run_query()
+        run_query()
         compare_checklist()
     if args.nogui and (args.filename or args.filename is None):
         condition_met = True
