@@ -35,7 +35,7 @@ def menu():
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
-                run_query()
+                #run_query()
                 compare_checklist()
             elif choice == 2:
                 file_name = input("Input file name (blank for default):")
@@ -58,8 +58,6 @@ if __name__ == "__main__":
     display_banner()
     parser = argparse.ArgumentParser()
     parser.add_argument('-nogui', action='store_true', help='Run without GUI')
-    parser.add_argument('-i', '--intensive', action='store_true', help='Intensive mode')
-    parser.add_argument('-b', '--basic', action='store_true', help='Basic mode')
     parser.add_argument('-n', '--filename', nargs='?', default=None, help='Specify the name of the csv file')
     parser.add_argument('-csv', '--onlycsv', action='store_true', help='Return only cvs file')
     parser.add_argument('-vb', '--verbose', action='store_true', help='Verbose mode')
@@ -77,7 +75,7 @@ if __name__ == "__main__":
 
     if args.nogui:
         condition_met = True
-        run_query()
+        #run_query()
         compare_checklist()
     if args.nogui and (args.filename or args.filename is None):
         condition_met = True
