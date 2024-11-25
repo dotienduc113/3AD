@@ -26,22 +26,23 @@ def display_banner():
 
 # gui function
 def menu():
-    # print("0. Install requirements")
-    print("1. Auto Audit")
-    print("2. Export CSV")
-    print("3. Exit")
     while True:
+        print("\n1. Auto Audit")
+        print("2. Export CSV")
+        print("3. Exit")
         user_input = input("\nInput: ")
+
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
-                run_query()
+                run_query()  # Call your functions
                 compare_checklist()
             elif choice == 2:
-                file_name = input("Input file name (blank for default):")
+                file_name = input("Input file name (blank for default): ")
                 export_csv_table(file_name)
             elif choice == 3:
-                exit()
+                print("Exiting program...")
+                break  # Exit the loop, and the program ends
             else:
                 print("Invalid input! Try again.")
         else:

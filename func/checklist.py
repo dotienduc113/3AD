@@ -1137,21 +1137,25 @@ def checklist_17_6(passed, failed):
     data = filter_info_17_6(".\\logs\\result17_6.txt")
     s = "Configure NTFS Permissions for AdminSDHolder Folder"
     failed_arr = []
-    domain_name = data[1].upper()
-    approved_account = [r'NT AUTHORITY\Authenticated Users', r'NT AUTHORITY\SYSTEM', r'BUILTIN\Administrators',
-                        rf'{domain_name}\Domain Admins', rf'{domain_name}\Enterprise Admins', 'Everyone',
-                        r'NT AUTHORITY\SELF', r'BUILTIN\Pre-Windows 2000 Compatible Access',
-                        r'BUILTIN\Windows Authorization Access Group', r'BUILTIN\Terminal Server License Servers',
-                        rf'{domain_name}\Cert Publishers']
-    for name in data[0]:
-        name = name.strip()
-        if name not in approved_account:
-            failed_arr.append(name)
-    failed_user = ", ".join(failed_arr)
-    if len(failed_arr) != 0:
-        append_array(failed, s, "Account (" + failed_user + ")")
-    else:
-        append_array(passed, s, "None")
+    try:
+        domain_name = data[1].upper()
+        approved_account = [r'NT AUTHORITY\Authenticated Users', r'NT AUTHORITY\SYSTEM', r'BUILTIN\Administrators',
+                            rf'{domain_name}\Domain Admins', rf'{domain_name}\Enterprise Admins', 'Everyone',
+                            r'NT AUTHORITY\SELF', r'BUILTIN\Pre-Windows 2000 Compatible Access',
+                            r'BUILTIN\Windows Authorization Access Group', r'BUILTIN\Terminal Server License Servers',
+                            rf'{domain_name}\Cert Publishers']
+        for name in data[0]:
+            name = name.strip()
+            if name not in approved_account:
+                failed_arr.append(name)
+        failed_user = ", ".join(failed_arr)
+        if len(failed_arr) != 0:
+            append_array(failed, s, "Account (" + failed_user + ")")
+        else:
+            append_array(passed, s, "None")
+    except:
+        pass
+        append_array(failed, s, "")
 
 
 def checklist_17():
