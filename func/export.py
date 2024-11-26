@@ -359,7 +359,6 @@ ck5_miti = {
     ]
 }
 
-
 ck6_miti = {
     "Audit account logon event": [
         "This setting audits each instance of a user's account logon or logoff event on a domain controller. This helps in tracking account usage.",
@@ -424,7 +423,6 @@ ck7_miti = {
     ]
 }
 
-
 ck8_miti = {
     "Hardened UNC Paths - SYSVOL": [
         "This security setting configures the hardening of UNC paths, specifically for NETLOGON and SYSVOL, to strengthen security through additional authentication and integrity checks.",
@@ -432,7 +430,6 @@ ck8_miti = {
         "Medium"
     ]
 }
-
 
 ck8_miti = {
     "Hardened UNC Paths - SYSVOL": [
@@ -448,11 +445,11 @@ ck8_miti = {
 }
 
 ck9_miti = {
-	"Encryption Oracle Remediation": [
-    	"The Encryption Oracle Remediation policy setting rectifies potential vulnerabilities within the Credential Security Support Provider (CredSSP) protocol, which could be exploited in man-in-the-middle attacks. This setting is crucial for ensuring secure communications between client and server.",
-    	"Navigate to Computer Configuration\\Administrative Templates\\System\\Credentials Delegation and set Encryption Oracle Remediation to 'Enabled: Force Updated Clients'. This configuration mandates that only clients with up-to-date security updates are able to establish connections, thus reducing the risk of exploitation through outdated encryption methods.",
-    	"High"
-	]
+    "Encryption Oracle Remediation": [
+        "The Encryption Oracle Remediation policy setting rectifies potential vulnerabilities within the Credential Security Support Provider (CredSSP) protocol, which could be exploited in man-in-the-middle attacks. This setting is crucial for ensuring secure communications between client and server.",
+        "Navigate to Computer Configuration\\Administrative Templates\\System\\Credentials Delegation and set Encryption Oracle Remediation to 'Enabled: Force Updated Clients'. This configuration mandates that only clients with up-to-date security updates are able to establish connections, thus reducing the risk of exploitation through outdated encryption methods.",
+        "High"
+    ]
 }
 
 ck10_miti = {
@@ -638,29 +635,27 @@ ck13_miti = {
 }
 
 ck14_miti = {
-	"Allow Remote Shell Access": [
-    	"Allowing remote shell access can pose security risks by enabling remote execution and potentially exposing systems to unauthorized access and malicious activities.",
-    	"Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Shell and set 'Allow Remote Shell Access' to 'Disabled' to prevent remote users from accessing shell environments.",
-    	"Medium"
-	]
+    "Allow Remote Shell Access": [
+        "Allowing remote shell access can pose security risks by enabling remote execution and potentially exposing systems to unauthorized access and malicious activities.",
+        "Navigate to Computer Configuration\\Administrative Templates\\Windows Components\\Remote Shell and set 'Allow Remote Shell Access' to 'Disabled' to prevent remote users from accessing shell environments.",
+        "Medium"
+    ]
 }
-
 
 ck15_miti = {
-	"Print Spooler (Spooler)": [
-    	"The Print Spooler service manages print jobs and is a known security target for various vulnerabilities. Disabling it on servers where printing is unnecessary can mitigate potential security risks.",
-    	"If printing is not required on the server, navigate to Services (services.msc), locate 'Print Spooler', and set the service to 'Disabled' to reduce the attack surface.",
-    	"Medium"
-	]
+    "Print Spooler (Spooler)": [
+        "The Print Spooler service manages print jobs and is a known security target for various vulnerabilities. Disabling it on servers where printing is unnecessary can mitigate potential security risks.",
+        "If printing is not required on the server, navigate to Services (services.msc), locate 'Print Spooler', and set the service to 'Disabled' to reduce the attack surface.",
+        "Medium"
+    ]
 }
 
-
 ck16_miti = {
-	"Turn off local group policy processing": [
-    	"Enabling the option to turn off local Group Policy processing ensures that local policies on the machine do not override or conflict with domain-level policies. This helps maintain consistent policy enforcement across the network.",
-    	"Navigate to Computer Configuration\\Administrative Templates\\System\\Group Policy and set 'Turn off local group policy objects processing' to 'Enabled' to enforce domain-based policies uniformly without local policy interference.",
-    	"Medium"
-	]
+    "Turn off local group policy processing": [
+        "Enabling the option to turn off local Group Policy processing ensures that local policies on the machine do not override or conflict with domain-level policies. This helps maintain consistent policy enforcement across the network.",
+        "Navigate to Computer Configuration\\Administrative Templates\\System\\Group Policy and set 'Turn off local group policy objects processing' to 'Enabled' to enforce domain-based policies uniformly without local policy interference.",
+        "Medium"
+    ]
 }
 
 ck17_miti = {
@@ -724,6 +719,7 @@ json_name = f"3AD_result.json"
 # csv_line_name = f"3AD_line_{current_time}.csv"
 # zip_file_name = f"3AD_{current_time}.zip"
 ip_address = get_ip()
+id = 0
 
 
 def file_name(csv_table_name=None):
@@ -734,12 +730,15 @@ def file_name(csv_table_name=None):
 
 
 def export_json(arr, ck_mitigation, checklist_name, status):
+    global id
     for i in arr:
         for v in ck_mitigation.keys():
             if v in i:
                 mitigation = ck_mitigation.get(v)
+                id = id + 1
                 result.append(
                     {"timestamp": timestamp,
+                     "id": id,
                      "ip_address": ip_address,
                      "name": i,
                      "checklist_name": checklist_name,
@@ -758,7 +757,8 @@ def export_csv_table(csv_table_name=None):
         csv_table_name = f"3AD_result.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp', 'ip_address', 'name', 'checklist_name', 'status', 'Reference', 'Best practices', 'Severity']
+    fieldnames = ['timestamp','id', 'ip_address', 'name', 'checklist_name', 'status', 'Reference', 'Best practices',
+                  'Severity']
     file_exists = os.path.isfile(f".\\results\\{csv_table_name}")
     with open(f".\\results\\{csv_table_name}", 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
