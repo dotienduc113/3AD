@@ -1131,6 +1131,8 @@ def checklist_17_5(passed, failed):
             append_array(failed, s, "(" + date + ")")
         else:
             append_array(passed, s, "(" + date + ")")
+    if len(data) == 0:
+        append_array(failed, s, "None")
 
 
 def checklist_17_6(passed, failed):
