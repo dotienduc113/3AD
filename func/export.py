@@ -738,14 +738,15 @@ def export_json(arr, ck_mitigation, checklist_name, status):
                 id = id + 1
                 result.append(
                     {"timestamp": timestamp,
-                     "id": id,
-                     "ip_address": ip_address,
-                     "name": i,
-                     "checklist_name": checklist_name,
+                     "ID": id,
+                     #"ip_address": ip_address,
+                     "Name": i,
+                     "Checklist": checklist_name,
                      "status": status,
                      "Reference": mitigation[0],
                      "Best practices": mitigation[1],
-                     "Severity": mitigation[2]})
+                     "Severity": mitigation[2]}
+                    )
     with open(f".\\results\\{json_name}", 'w') as f:
         json.dump(result, f, indent=4)
 
@@ -757,7 +758,7 @@ def export_csv_table(csv_table_name=None):
         csv_table_name = f"3AD_result.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp','id', 'ip_address', 'name', 'checklist_name', 'status', 'Reference', 'Best practices',
+    fieldnames = ['timestamp', 'ID', 'ip_address', 'Name', 'Checklist', 'status', 'Reference', 'Best practices',
                   'Severity']
     file_exists = os.path.isfile(f".\\results\\{csv_table_name}")
     with open(f".\\results\\{csv_table_name}", 'a', newline='') as csvfile:
@@ -766,6 +767,21 @@ def export_csv_table(csv_table_name=None):
             writer.writeheader()
         for row in data:
             writer.writerow(row)
+
+
+def export_csv_failed():
+    csv_table_failed = f"3AD_result_failed.csv"
+    with open(f'.\\results\\{json_name}', 'r') as f:
+        data = json.load(f)
+    fieldnames = ['timestamp', 'ID', 'Name', 'Stage']
+    file_exists = os.path.isfile(f".\\results\\{csv_table_failed}")
+    with open(f".\\results\\{csv_table_failed}", 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        if not file_exists or os.path.getsize(f".\\results\\{csv_table_failed}") == 0:
+            writer.writeheader()
+        for row in data:
+            if row["status"] == "failed":
+                writer.writerow({'timestamp': row['timestamp'], 'ID': row['ID'], 'Name': row['Name'], 'Stage': 'Pending'})
 
 
 def delete_json():

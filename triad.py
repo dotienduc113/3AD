@@ -6,7 +6,7 @@ import datetime
 import argparse
 from func.query import run_query
 from func.checklist import compare_checklist
-from func.export import delete_json, export_csv_table
+from func.export import delete_json, export_csv_table, export_csv_failed
 from sys import exit
 
 
@@ -21,7 +21,7 @@ def display_banner():
 
     print(banner)
     print("Welcome to TriAD! Starting up...\n")
-    print("\033[0m")  # Reset text color to default
+    # print("\033[0m")  # Reset text color to default
 
 
 # gui function
@@ -35,14 +35,15 @@ def menu():
         if user_input.isdigit():
             choice = int(user_input)
             if choice == 1:
-                run_query()  # Call your functions
+                run_query()
                 compare_checklist()
             elif choice == 2:
                 file_name = input("Input file name (blank for default): ")
                 export_csv_table(file_name)
+                export_csv_failed()
             elif choice == 3:
                 print("Exiting program...")
-                break  # Exit the loop, and the program ends
+                break
             else:
                 print("Invalid input! Try again.")
         else:
@@ -81,6 +82,7 @@ if __name__ == "__main__":
     if args.nogui and (args.filename or args.filename is None):
         condition_met = True
         export_csv_table(args.filename)
+        export_csv_failed()
     if args.nogui and args.onlycsv:
         condition_met = True
         delete_json()
