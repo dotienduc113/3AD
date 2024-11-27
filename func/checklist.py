@@ -702,6 +702,8 @@ def checklist_10(clist10, current_time):
             append_array(passed, s, "Enabled")
         else:
             append_array(failed, s, "Disabled")
+    else:
+        append_array(passed, "Scan all downloaded files and attachments", "Not configure/Enabled")
     if "DisableScanOnRealtimeEnable" in clist10:
         s = "Turn on process scanning whenever real-time protection is enabled"
         if clist10.get("DisableScanOnRealtimeEnable") == "0x0":
@@ -897,7 +899,7 @@ def checklist_12(clist12, current_time):
             else:
                 append_array(failed, s, f"Enabled {value}")
     if "EnableScriptBlockLogging" not in clist12:
-        s = "Turn on PowerShell Script Block Execution Logging"
+        s = "Turn on PowerShell Script Block Logging"
         append_array(passed, s, "Default - Not configured/Enable")
     if "EnableTranscripting" not in clist12:
         s = "Turn on PowerShell Transcription"
