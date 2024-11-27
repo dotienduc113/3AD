@@ -713,7 +713,7 @@ def get_ip():
 
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
-timestamp = datetime.datetime.now().strftime('%d/%m/%Y %I:%M:%S %p')
+timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
 json_name = f"3AD_result.json"
 # csv_table_name = f"3AD_result_{current_time}.csv"
 # csv_line_name = f"3AD_line_{current_time}.csv"
