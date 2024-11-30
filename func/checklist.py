@@ -1,9 +1,7 @@
 from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
-import datetime
 from func.filter import *
-import json
 from func.export import *
 
 
@@ -51,7 +49,6 @@ def result_table(passed, failed, width=100):
     # Create the table with two columns
     table = [[p, f] for p, f in zip_longest(passed_wrapped, failed_wrapped, fillvalue='')]
 
-    # Print the table
     print(tabulate(table, headers=["Passed", "Failed"], tablefmt="grid"))
 
     return tabulate(table, headers=["Passed", "Failed"], tablefmt="grid")

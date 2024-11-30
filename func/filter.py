@@ -5,11 +5,6 @@ def remove_extra_spaces(text):
     # Replace multiple spaces with a single space
     return re.sub(r'\s+', ' ', text).strip()
 
-    # Iterate over the lines and extract settings
-
-
-# add value to passed and failed array
-
 
 def filter_info_1():
     file = open(".\\logs\\result1.txt", "r")
@@ -25,7 +20,7 @@ def filter_info_1():
 # loc du lieu trong trong query checklist 5
 def filer_info_5():
     file = open(".\\logs\\result5.txt", "r")
-    profiles = {}  # Dictionary to store settings for each profile
+    profiles = {}  
     current_profile = None
     settings = []
     for line in file:
@@ -37,7 +32,6 @@ def filer_info_5():
                 settings = []
             current_profile = line
         else:
-            # Split the setting and value based on multiple spaces
             parts = line.rsplit(maxsplit=1)
             if len(parts) == 2:
                 setting_name = parts[0].strip()
@@ -53,10 +47,8 @@ def filer_info_5():
 def filter_info_6():
     file = open(".\\logs\\result6.txt", "r")
     lines = file.read().split('\n')
-    # Initialize dictionaries to store settings
     settings = {}
 
-    # Iterate over the lines and extract settings
     for line in lines:
         if line.strip():
             match = re.match(r'(.+?)\s{2,}(.+)', line)
@@ -68,7 +60,6 @@ def filter_info_6():
 
 def filter_info_7():
     file = open(".\\logs\\result7.txt", "r")
-    # Initialize dictionaries to store settings
     settings = {}
     for line in file:
         line = remove_extra_spaces(line.strip().replace(":", ""))
@@ -231,12 +222,12 @@ def filter_info_17(path):
         lines = file.readlines()
     data = {}
     try:
-        for line in lines[3:]:  # skip the header line
-            line = line.strip()  # strip newline character
+        for line in lines[3:]:
+            line = line.strip()
             values = line.split()
-            if len(values) > 1:  # check if line has at least two values
+            if len(values) > 1:
                 account_name = ' '.join(values[:-1])
-                value = values[-1]  # use the last value, not the second one
+                value = values[-1]
                 data[account_name] = value
     except:
         pass
@@ -248,12 +239,12 @@ def filter_info_17_2(path):
     data = {}
     black_list = [""]
     try:
-        for line in file[3:]:  # skip the header line
+        for line in file[3:]:
             values = line.split()
-            if len(values) >= 2 and values[-1].isdigit():  # check if the line has at least 2 values and the last value is a digit
-                name = ' '.join(values[:-1])  # join all values except the last one
+            if len(values) >= 2 and values[-1].isdigit():
+                name = ' '.join(values[:-1])
                 if name not in black_list:
-                    value = values[-1]  # get the last value
+                    value = values[-1]
                     data[name] = value
             else:
                  name = line.strip()

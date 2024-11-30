@@ -1,8 +1,6 @@
 import json
 import datetime
 import csv
-import socket
-import zipfile
 import os
 
 ck1_miti = {
@@ -703,22 +701,10 @@ ck17_miti = {
 }
 
 
-def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
-    s.close()
-    return ip
-
-
 result = []
 current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 timestamp = datetime.datetime.now().strftime('%m/%d/%Y %I:%M:%S %p')
 json_name = f"3AD_result.json"
-# csv_table_name = f"3AD_result_{current_time}.csv"
-# csv_line_name = f"3AD_line_{current_time}.csv"
-# zip_file_name = f"3AD_{current_time}.zip"
-ip_address = get_ip()
 id = 0
 
 
@@ -739,7 +725,6 @@ def export_json(arr, ck_mitigation, checklist_name, status):
                 result.append(
                     {"timestamp": timestamp,
                      "ID": id,
-                     #"ip_address": ip_address,
                      "Name": i,
                      "Checklist": checklist_name,
                      "status": status,
@@ -773,7 +758,7 @@ def export_csv_failed():
     csv_table_failed = f"3AD_result_failed.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp', 'ID', 'Name', 'Stage']
+    fieldnames = ['ID', 'Name', 'Stage']
     file_exists = os.path.isfile(f".\\results\\{csv_table_failed}")
     with open(f".\\results\\{csv_table_failed}", 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -781,7 +766,7 @@ def export_csv_failed():
             writer.writeheader()
         for row in data:
             if row["status"] == "failed":
-                writer.writerow({'timestamp': row['timestamp'], 'ID': row['ID'], 'Name': row['Name'], 'Stage': 'Pending'})
+                writer.writerow({'ID': row['ID'], 'Name': row['Name'], 'Stage': 'Pending'})
 
 
 def delete_json():
@@ -790,40 +775,3 @@ def delete_json():
         os.remove(file_path)
 
 
-'''
-def export_csv_line():
-    with open(f'.\\results\\{json_name}', 'r') as f:
-        data = json.load(f)
-    fieldnames = ['timestamp', 'severity', 'count']
-    low = 0
-    medium = 0
-    high = 0
-    with open(f".\\results\\{csv_line_name}", 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in data:
-            if row['status'] == "failed":
-                if row['severity'] == "High":
-                    high += 1
-                elif row['severity'] == "Medium":
-                    medium += 1
-                elif row['severity'] == "Low":
-                    low += 1
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "high", 'count': high})
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "medium", 'count': medium})
-        writer.writerow({'timestamp': data[0]['timestamp'], 'severity': "low", 'count': low})
-
-
-def export_zip_files():
-    # Create a zip file
-    with zipfile.ZipFile(f".\\results\\{zip_file_name}", 'w') as zip_file:
-        # Add files to the zip file
-        for file_name in [f".\\results\\{json_name}", f".\\results\\{csv_table_name}",
-                          f".\\results\\{csv_line_name}"]:
-            zip_file.write(file_name, arcname=os.path.basename(file_name))
-
-    # Remove the original files
-    for file_name in [f".\\results\\{json_name}", f".\\results\\{csv_table_name}",
-                      f".\\results\\{csv_line_name}"]:
-        os.remove(file_name)
-'''

@@ -34,10 +34,8 @@ def run_query():
     for line in query.strip().splitlines():
         count = count + 1
         cmd = '{0}'.format(line.strip())
-        # print(cmd)
         try:
             result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-            # print(result.stdout)  # Output the command result
-            print(result.stderr)  # Print any errors
+            print(result.stderr)
         except Exception as e:
             print(f"Error running command: {e}")
