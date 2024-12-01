@@ -440,7 +440,7 @@ def checklist_4(clist4, current_time):
     #export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_5(clist5, current_time):  # checklist 5 lay du lieu va so sanh
+def checklist_5(clist5, current_time):
     passed = []
     failed = []
     for profile, settings in clist5.items():
