@@ -22,12 +22,12 @@ options:
   -csv, --onlycsv       Return only cvs file
   -vb, --verbose        Verbose mode
 ```  
-# Introduction
+## Introduction
 ### I. What is TriAD?
 
 TriAD also known as 3AD is a Python program designed to evaluate security configurations in Active Directory environments, providing detailed reports based on various security policies. 
 
-II. Workflow
+### II. Workflow
 
 Fig. 1 describes in detail the tool’s workflow, designed to automate the process of auditing Active Directory (AD) security compliance
 
@@ -36,7 +36,7 @@ Fig. 1 describes in detail the tool’s workflow, designed to automate the proce
 Fig. 2. TriAD process flow
 
 ![processflow.png](misc/processflow.png)
-# Download
+## Download
 
 Download the latest version of TriAD from the [Release](https://github.com/dotienduc113/3AD/releases) page
 ## Install 
