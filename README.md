@@ -22,10 +22,28 @@ options:
   -csv, --onlycsv       Return only cvs file
   -vb, --verbose        Verbose mode
 ```  
-   
+## Introduction
+I. What is Triad?
+
+Triad also know as 3AD is a Python program designed to evaluate security configurations in Active Directory environments, providing detailed reports based on various security policies. 
+
+## Download
+
+Download the latest version of TriAD from the [Release](https://github.com/dotienduc113/3AD/releases) page
+## Install 
+```git clone``` this repository
+```
+git clone https://github.com/dotienduc113/3AD
+```
+Requirement: Using Python3 and install all required dependencies
+```commandline
 pip install -r requirements.txt
+```
 
 basic command:
-1. To run audit and export to json: triad.py -nogui
-2. To run audit and export to json and csv: triad.py -nogui -n=[file_name]
-3. To export only csv file: triad.py -nogui -csv
+1. To run audit and export to json: 
+```triad.py -nogui```
+2. To run audit and export to json and csv: 
+```triad.py -nogui -n [file_name]```
+3. To export only csv file: 
+```triad.py -nogui -csv```
