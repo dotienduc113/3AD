@@ -31,6 +31,7 @@ II. Workflow
 
 Fig. 1: Illustrates the detailed workflow of the TriAD
 
+![img_4.png](img_4.png)
 # Download
 
 Download the latest version of TriAD from the [Release](https://github.com/dotienduc113/3AD/releases) page
