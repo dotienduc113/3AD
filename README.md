@@ -29,9 +29,13 @@ TriAD also known as 3AD is a Python program designed to evaluate security config
 
 II. Workflow
 
-Fig. 1: Illustrates the detailed workflow of the TriAD
+Fig. 1 describes in detail the tool’s workflow, designed to automate the process of auditing Active Directory (AD) security compliance
 
-![img_4.png](img_4.png)
+![workflow.png](misc/workflow.png)
+
+Fig. 2. TriAD process flow
+
+![processflow.png](misc/processflow.png)
 # Download
 
 Download the latest version of TriAD from the [Release](https://github.com/dotienduc113/3AD/releases) page
