@@ -21,7 +21,6 @@ def display_banner():
 
     print(banner)
     print("Welcome to TriAD! Starting up...\n")
-    # print("\033[0m")  # Reset text color to default
 
 
 # gui function
