@@ -33,7 +33,7 @@ Follow the steps below to set up the application locally:
 
 4. Open your browser and navigate to:
    ```
-   http://localhost:8000
+   http://localhost:5000
    ```
 
 ---
