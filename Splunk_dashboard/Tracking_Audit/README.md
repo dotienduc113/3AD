@@ -1,6 +1,6 @@
 
 # Tracking_Audit
-![Description of pic1](../assets/pic2.png "Optional title")
+![Description of pic1](../assets/pic2.png "Tracking_Audit")
 
 
 Tracking_Audit is a JavaScript-based web application designed to assist users in monitoring and updating the status of failed items in the `Tracking_List` of Domain Controllers (DCs) under active monitoring. This tool provides a convenient way to track and manage audit statuses directly through an interactive interface.
