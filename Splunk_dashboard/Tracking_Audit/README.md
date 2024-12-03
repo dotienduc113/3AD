@@ -95,5 +95,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 ## Contact
 
 If you have any questions or feedback, feel free to reach out:
-- **Author**: Hieu Vu
-- **Email**: hieu.vu@example.com
+- **Author**: HieuVu2402
+- **Email**: vuhieu.forwork@gmail.com
