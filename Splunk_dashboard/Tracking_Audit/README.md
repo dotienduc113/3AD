@@ -10,7 +10,7 @@ Tracking_Audit is a JavaScript-based web application designed to assist users in
 ## Features
 
 - **CSV Integration**: Automatically loads CSV files containing the tracking list for failed items from multiple Domain Controllers.
-- **Status Update**: Enables users to change the status of items (`Failed`, `In Progress`, or `Resolved`) directly in the interface.
+- **Status Update**: Enables users to change the status of items (`Pending`, `InProgress`, or `Solved`) directly in the interface.
 - **Real-Time Updates**: Reflects changes in the tracking list instantly without needing to refresh the page.
 - **User-Friendly Interface**: Simple and intuitive design for seamless operation.
 
@@ -30,7 +30,8 @@ Follow the steps below to set up the application locally:
 
 3. Start the server. For example, using Python:
    ```bash
-   python -m http.server
+   cd <Audit Tracking file location>
+   start /min "Flask App" python app.py
    ```
 
 4. Open your browser and navigate to:
