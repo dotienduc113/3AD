@@ -5,7 +5,7 @@ from tabulate import tabulate
 from itertools import zip_longest
 import glob
 import zipfile
-from func.apv_export import export_json, export_csv_table
+from func.export import export_json, export_csv_table
 import pyfiglet
 import random
 from func.service import *
