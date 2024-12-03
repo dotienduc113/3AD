@@ -1,0 +1,67 @@
+ID,Name,Stage
+7,Store passwords using reversible encryption: Enabled,Solved
+8,Minimum password length: 7,Solved
+9,Account lockout threshold: Never,Solved
+12,Access this computer from the network: Misconfigured,InProgress
+13,Deny access to this computer from the network: Misconfigured,Solved
+14,Deny log on as a batch job: Default,Solved
+15,Deny log on as a service: Default,Pending
+16,Deny log on through Remote Desktop Services: Default,Pending
+17,Deny log on locally: Default,Pending
+18,Allow log on locally: Misconfigured,Pending
+19,Shut down the system: Misconfigured,Pending
+36,Network security: Force logoff when logon hours expire: Disabled,Pending
+37,Accounts: Administrator account status: Enabled,Pending
+38,Interactive logon: Machine inactivity limit: Default/not enforced,Pending
+39,Interactive logon: Number of previous logons to cache (in case domain controller is not available): 10 logon(s),Pending
+40,Microsoft network client: Digitally sign communications (always): Disabled,Pending
+41,Microsoft network server: Server SPN target name validation level: Default/Off,Pending
+42,Network security: Configure encryption types allowed for Kerberos: Default/Not defined,Pending
+43,Network security: LAN Manager authentication level: Default/Depends on OS,Pending
+44,Network security: Minimum session security for NTLM SSP based (including secure RPC) clients: Misconfigured,Pending
+45,Network security: Minimum session security for NTLM SSP based (including secure RPC) servers: Misconfigured,Pending
+52,Domain Log successful connections: Disable,Pending
+53,Domain Log dropped packets: Disable,Pending
+54,Domain Log file maximum size (KB): 4096,Pending
+55,Private Log successful connections: Disable,Pending
+56,Private Log dropped packets: Disable,Pending
+57,Private Log file maximum size (KB): 4096,Pending
+58,Public Log successful connections: Disable,Pending
+59,Public Log dropped packets: Disable,Pending
+60,Public Log file maximum size (KB): 4096,Pending
+61,Audit account logon event: Misconfigure,Pending
+62,Audit account management: Default,Pending
+63,Audit process tracking: Misconfigure,Pending
+64,Audit Directory Service Access: Default/Misconfigure,Pending
+65,Audit logon events: Misconfigure,Pending
+66,Audit Policy Change: Misconfigure,Pending
+67,Audit Privilege Use: Misconfigure,Pending
+68,Configure SMB v1 server: Not configured/Default Enabled,Pending
+69,Configure SMB v1 client driver: Automatic start,Pending
+70,WDigest Authentication: Not configured/Enabled,Pending
+71,Hardened UNC Paths - SYSVOL: Default - Not configured,Pending
+72,Hardened UNC Paths - NETLOGON: Default - Not configured,Pending
+73,Encryption Oracle Remediation: Default - Not configured,Pending
+82,Scan removable drives: Not configure/Disabled,Pending
+85,Do not allow Clipboard redirection: Not configured/Disabled,Pending
+86,Do not allow drive redirection: Not configured/Disabled,Pending
+87,Always prompt for password upon connection: Not configured/Disabled,Pending
+88,Require secure RPC communication: Not configured/Disabled,Pending
+89,Require use of specific security layer for remote (RDP) connections: Not configured/Disabled,Pending
+90,Require user authentication for remote connections by using Network Level Authentication: Not configured/,Pending
+91,Set time limit for disconnected sessions: Not configured/Disabled,Pending
+92,Set time limit for active but idle Remote Desktop Services sessions: Not configured/Disabled,Pending
+93,Do not delete temp folders upon exit: Not configured,Pending
+94,Do not use temporary folders per session: Not configured,Pending
+96,Turn on PowerShell Transcription: Default - Not configured,Pending
+97,Turn on Script Execution: Default - Not configured/Disable,Pending
+98,Client Allow Basic authentication: Not configured,Pending
+99,Client Allow unencrypted traffic: Not configured,Pending
+100,Client Disallow Digest authentication: Not configured,Pending
+101,Service Allow Basic authentication: Not configured,Pending
+102,Service Allow unencrypted traffic: Not configured,Pending
+103,Service Disallow WinRM from storing RunAs credentials: Not configured,Pending
+104,Service Allow remote server management through WinRM: Not configured,Pending
+105,Allow Remote Shell Access: Not configured,Pending
+106,Print Spooler (Spooler): Automatic,Pending
+107,Turn off local group policy processing: Not configured,Pending

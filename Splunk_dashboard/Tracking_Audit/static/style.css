@@ -1,0 +1,183 @@
+/* Thiết lập nền với ảnh */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url("/static/monitoring-background.png") no-repeat center center fixed; /* Thêm ảnh nền */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ màn hình */
+    color: #f0f0f0; /* Chữ sáng để nổi bật trên nền tối */
+}
+
+/* Tiêu đề */
+h1 {
+    text-align: center;
+    color: #4CAF50; /* Màu xanh lá */
+    margin: 20px 0;
+    text-shadow: 2px 2px 5px #000; /* Thêm bóng cho chữ */
+}
+
+h2 {
+    color: #f0f0f0;
+    text-align: left;
+    margin: 20px; /* Khoảng cách trên dưới */
+    margin-bottom: 30px; /* Khoảng cách giữa tiêu đề và bảng */
+    text-shadow: 1px 1px 3px #000; /* Bóng nhẹ cho chữ */
+}
+
+/* Dropdown lựa chọn bảng */
+#tableSelector,
+#stageFilter {
+    font-size: 16px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 0.8); /* Nền đen mờ */
+    color: #f0f0f0;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi chỉ vào dropdown */
+#tableSelector,
+#stageFilter :hover {
+    border-color: #f0f0f0;
+}
+
+/* Hiệu ứng khi focus vào dropdown */
+#tableSelector,
+#stageFilter :focus {
+    border-color: #4CAF50;
+    background-color: rgba(44, 44, 44, 0.8);
+}
+
+/* Định dạng bảng */
+table {
+    width: 90%;
+    margin: 20px auto 30px auto; /* Tạo khoảng cách dưới bảng */
+    border-collapse: collapse;
+    background-color: rgba(30, 30, 30, 0.9); /* Nền đen mờ */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table th, table td {
+    border: 1px solid rgba(44, 44, 44, 0.9);
+    padding: 12px 16px;
+    text-align: left;
+    color: #f0f0f0;
+}
+
+table th {
+    background-color: rgba(76, 175, 80, 0.9); /* Màu xanh lá đậm */
+    color: white;
+    text-transform: uppercase;
+}
+
+table tr:hover {
+    background-color: rgba(44, 44, 44, 0.8);
+}
+
+/* Dropdown trong bảng */
+table td select {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 0.9); /* Nền đen mờ */
+    color: #f0f0f0;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi chỉ vào dropdown */
+table td select:hover {
+    border-color: #f0f0f0;
+}
+
+/* Hiệu ứng khi chọn option */
+table td select option {
+    background-color: rgba(30, 30, 30, 0.9);
+    color: #f0f0f0;
+    font-weight: normal;
+}
+
+table td select option:hover {
+    background-color: rgba(76, 175, 80, 0.9);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Hiệu ứng trạng thái từng dropdown */
+select[value="Pending"] {
+    background-color: rgba(255, 0, 0, 0.8); /* Màu đỏ mờ */
+    color: #ffffff;
+}
+
+select[value="InProgress"] {
+    background-color: rgba(255, 255, 0, 0.8); /* Màu vàng mờ */
+    color: #000000;
+}
+
+select[value="Solved"] {
+    background-color: rgba(76, 175, 80, 0.9); /* Màu xanh lá mờ */
+    color: #ffffff;
+}
+
+/* Định dạng responsive */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+
+    #tableSelector,
+    #stageFilter  {
+        width: 90%;
+    }
+}
+
+/* Toast Notification Styles */
+.toast {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    background-color: #79d07c; /* Màu xanh cho thành công */
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s, fadeOut 0.5s 3s; /* Hiệu ứng mờ dần */
+}
+
+.toast-error {
+    background-color: #f44336; /* Màu đỏ cho lỗi */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
