@@ -1,0 +1,114 @@
+ID,Name,Stage
+1,Password must meet complexity requirements: Enabled,Solved
+2,Minimum password age (days): 30,Solved
+3,Maximum password age (days): 45,InProgress
+4,Minimum password length: 14,InProgress
+5,Enforce password history: 24,InProgress
+6,Account lockout threshold: 5,InProgress
+7,Account lockout duration (minutes): 15,Solved
+8,Reset account lockout counter after (minutes): 15,Solved
+9,Store passwords using reversible encryption: Enabled,Solved
+10,Allow log on through Remote Desktop Services: Administrator,Solved
+11,Act as part of the operating system: Default,Solved
+12,Access this computer from the network: Misconfigured,Solved
+13,Deny access to this computer from the network: Misconfigured,Solved
+14,Deny log on as a batch job: Default,Solved
+15,Deny log on as a service: Default,Solved
+16,Deny log on through Remote Desktop Services: Default,Solved
+17,Deny log on locally: Default,Solved
+18,Allow log on locally: Misconfigured,Solved
+19,Shut down the system: Misconfigured,Solved
+20,Domain member: Digitally encrypt or sign secure channel data (always): Enabled,Solved
+21,Domain member: Digitally encrypt secure channel data (when possible): Enabled,Solved
+22,Domain member: Digitally sign secure channel data (when possible): Enabled,Solved
+23,Domain member: Disable machine account password changes: Disabled,Solved
+24,Domain member: Maximum machine account password age: 30 days,Solved
+25,Domain member: Require strong (Windows 2000 or later) session key: Enabled,Solved
+26,Interactive logon: Prompt user to change password before expiration: 5 days,Solved
+27,Microsoft network client: Digitally sign communications (if server agrees): Enabled,Solved
+28,Microsoft network client: Send unencrypted password to third-party SMB servers: Disabled,Solved
+29,Microsoft network server: Amount of idle time required before suspending session: 15 minute(s),Solved
+30,Microsoft network server: Digitally sign communications (always): Enabled,Solved
+31,Microsoft network server: Digitally sign communications (if client agrees): Enabled,Solved
+32,Microsoft network server: Disconnect clients when logon hours expire: Enabled,Solved
+33,Network security: Allow Local System to use computer identity for NTLM: Default/Enabled,Solved
+34,Network security: Do not store LAN Manager hash value on next password change: Enabled,Solved
+35,Network security: LDAP client signing requirements: Negotiate signing,Solved
+36,Network security: Force logoff when logon hours expire: Disabled,InProgress
+37,Accounts: Administrator account status: Enabled,InProgress
+38,Interactive logon: Machine inactivity limit: Default/not enforced,Solved
+39,Interactive logon: Number of previous logons to cache (in case domain controller is not available): 10 logon(s),InProgress
+40,Microsoft network client: Digitally sign communications (always): Disabled,Solved
+41,Microsoft network server: Server SPN target name validation level: Default/Off,InProgress
+42,Network security: Configure encryption types allowed for Kerberos: Default/Not defined,Solved
+43,Network security: LAN Manager authentication level: Default/Depends on OS,InProgress
+44,Network security: Minimum session security for NTLM SSP based (including secure RPC) clients: Misconfigured,InProgress
+45,Network security: Minimum session security for NTLM SSP based (including secure RPC) servers: Misconfigured,InProgress
+46,Domain Firewall state: ON,InProgress
+47,"Domain Inbound connections: BlockInbound,AllowOutbound",InProgress
+48,Private Firewall state: ON,InProgress
+49,"Private Inbound connections: BlockInbound,AllowOutbound",InProgress
+50,Public Firewall state: ON,Solved
+51,"Public Inbound connections: BlockInbound,AllowOutbound",InProgress
+52,Domain Log successful connections: Disable,Solved
+53,Domain Log dropped packets: Disable,InProgress
+54,Domain Log file maximum size (KB): 4096,Solved
+55,Private Log successful connections: Disable,InProgress
+56,Private Log dropped packets: Disable,Solved
+57,Private Log file maximum size (KB): 4096,Solved
+58,Public Log successful connections: Disable,Solved
+59,Public Log dropped packets: Disable,Solved
+60,Public Log file maximum size (KB): 4096,InProgress
+61,Audit account logon event: Success and Failure,Solved
+62,Audit process tracking: Success,Pending
+63,Audit Directory Service Access: Success and Failure,Pending
+64,Audit logon events: Success and Failure,Pending
+65,Audit Privilege Use: Success and Failure,Pending
+66,Audit account management: Default,Pending
+67,Audit Policy Change: Misconfigure,Pending
+68,Configure SMB v1 client driver: Disabled,Pending
+69,Configure SMB v1 server: Enabled,Pending
+70,WDigest Authentication: Enabled,Pending
+71,"Hardened UNC Paths - SYSVOL: RequireMutualAuthentication=1,RequireIntegrity=1",Solved
+72,"Hardened UNC Paths - NETLOGON: RequireMutualAuthentication=1,RequireIntegrity=1",Pending
+73,Encryption Oracle Remediation: Enabled Force Updated Clients,Pending
+74,Turn off Windows Defender: Disabled,Pending
+75,Turn off real-time protection: Disabled,Pending
+76,Turn on behavior monitoring: Enabled,Pending
+77,Scan all downloaded files and attachments: Enabled,Pending
+78,Turn on process scanning whenever real-time protection is enabled: Enabled,Pending
+79,Monitor file and program activity on your computer: Enabled,Pending
+80,Scan archive files: Enabled,Pending
+81,Scan packed executables: Enabled,Pending
+82,Scan removable drives: Enabled,Pending
+83,Restrict Remote Desktop Services users to a single Remote Desktop Services session: Disabled,Pending
+84,Do not allow Clipboard redirection: Enabled,Pending
+85,Do not allow drive redirection: Enabled,Pending
+86,Set client connection encryption level: High Level,Pending
+87,Always prompt for password upon connection: Enabled,Pending
+88,Require secure RPC communication: Enabled,Pending
+89,Require use of specific security layer for remote (RDP) connections: SSL,Pending
+90,Require user authentication for remote connections by using Network Level Authentication: Enabled,Pending
+91,Set time limit for disconnected sessions: 1 minutes,Pending
+92,Set time limit for active but idle Remote Desktop Services sessions: <= 15 minutes,Pending
+93,Do not use temporary folders per session: Disabled,Pending
+94,Do not delete temp folders upon exit: Not configured,Pending
+95,Turn on Script Execution: Enabled Allow only signed scripts,Pending
+96,Turn on PowerShell Script Block Logging: Enabled,Pending
+97,Turn on PowerShell Transcription: Disabled,Pending
+98,Client Allow Basic authentication: Not configured,Pending
+99,Client Allow unencrypted traffic: Not configured,Pending
+100,Client Disallow Digest authentication: Not configured,Pending
+101,Service Allow Basic authentication: Not configured,Pending
+102,Service Allow unencrypted traffic: Not configured,Pending
+103,Service Disallow WinRM from storing RunAs credentials: Not configured,Pending
+104,Service Allow remote server management through WinRM: Not configured,Pending
+105,Allow Remote Shell Access: Not configured,Pending
+106,Print Spooler (Spooler): Disabled,Pending
+107,Turn off local group policy processing: Enabled,Pending
+108,Check Privileged Accounts Used for Services: None,Pending
+109,Change krbtgt Account Password: (21/09/2024),Pending
+110,Configure NTFS Permissions for AdminSDHolder Folder: None,InProgress
+111,"Password Configuration: Account (Guest, Duc)",Pending
+112,"Check Unused Accounts: Account (teaaaaa, abc)",Pending
+113,Check Accounts Not Changing Passwords Periodically: Account (Guest),Pending
