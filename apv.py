@@ -34,9 +34,6 @@ def run_bloodhound(domain, username, password):
 
 
 def get_zip_file():
-    """
-    Returns the latest BloodHound zip file created.
-    """
     zip_files = glob.glob('.\\logs\\*_BloodHound.zip')
     if not zip_files:
         return None
