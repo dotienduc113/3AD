@@ -1,8 +1,0 @@
-pyfiglet
-tabulate
-bloodhound
-impacket
-ldap3
-dnspython
-pywin32
-ftplib
