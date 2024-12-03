@@ -2,7 +2,7 @@ from textwrap import fill
 from tabulate import tabulate
 from itertools import zip_longest
 from func.filter import *
-from func.triad_export import *
+from func.export import *
 
 
 def compare_checklist():

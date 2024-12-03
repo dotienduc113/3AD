@@ -6,7 +6,7 @@ import datetime
 import argparse
 from func.query import run_query
 from func.checklist import compare_checklist
-from func.triad_export import delete_json, export_csv_table, export_csv_failed
+from func.export import delete_json, export_csv_table, export_csv_failed
 from sys import exit
 
 
