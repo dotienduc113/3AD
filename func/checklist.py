@@ -6,7 +6,6 @@ from func.export import *
 
 
 def compare_checklist():
-    current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
 
     clist1_2 = filter_Password_Account_lockout()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
@@ -118,8 +117,8 @@ def Password_Account_lockout(clist1):  # checklist 1 va 2 lay du lieu va so sanh
     str = "\nPassword Policy and Account Lockout Policy"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck1_miti, str.strip(), "passed")
-    export_json(failed, ck1_miti, str.strip(), "failed")
+    export_json(passed, Password_Account_lockout_miti, str.strip(), "passed")
+    export_json(failed, Password_Account_lockout_miti, str.strip(), "failed")
     #export_result(str.strip() + "\n", t, current_time)
 
 
@@ -211,8 +210,8 @@ def User_Rights_Assignment(clist3):
     str = "\nUser Rights Assignment"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck3_miti, str.strip(), "passed")
-    export_json(failed, ck3_miti, str.strip(), "failed")
+    export_json(passed, User_Rights_Assignment_miti, str.strip(), "passed")
+    export_json(failed, User_Rights_Assignment_miti, str.strip(), "failed")
     #export_result("\n" + str + "\n", t, current_time)
 
 
@@ -436,8 +435,8 @@ def Security_Options(clist4):
     str = "\nSecurity Options"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck4_miti, str.strip(), "passed")
-    export_json(failed, ck4_miti, str.strip(), "failed")
+    export_json(passed, Security_Options_miti, str.strip(), "passed")
+    export_json(failed, Security_Options_miti, str.strip(), "failed")
     #export_result("\n" + str + "\n", t, current_time)
 
 
@@ -474,8 +473,8 @@ def Windows_Defender_Firewall(clist5):
     str = "\nWindows Defender Firewall with Advanced Security"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck5_miti, str.strip(), "passed")
-    export_json(failed, ck5_miti, str.strip(), "failed")
+    export_json(passed, Windows_Defender_Firewall_miti, str.strip(), "passed")
+    export_json(failed, Windows_Defender_Firewall_miti, str.strip(), "failed")
     # export_result("\n" + str + "\n", t, current_time)
 
 
@@ -558,8 +557,8 @@ def Audit_Policy(clist6):
     str = "\nAudit Policy"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck6_miti, str.strip(), "passed")
-    export_json(failed, ck6_miti, str.strip(), "failed")
+    export_json(passed, Audit_Policy_miti, str.strip(), "passed")
+    export_json(failed, Audit_Policy_miti, str.strip(), "failed")
     if len(clist6) == 0:
         print("NOTE: Please run as administrator to get full results")
         #export_result("\n" + str + "\n" + "NOTE: Please run as administrator to get full results\n", t, current_time)
@@ -601,8 +600,8 @@ def MS_Security_Guide(clist7):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck7_miti, str.strip(), "passed")
-    export_json(failed, ck7_miti, str.strip(), "failed")
+    export_json(passed, MS_Security_Guide_miti, str.strip(), "passed")
+    export_json(failed, MS_Security_Guide_miti, str.strip(), "failed")
 
 
 def Network_Provider(clist8):
@@ -642,8 +641,8 @@ def Network_Provider(clist8):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck8_miti, str.strip(), "passed")
-    export_json(failed, ck8_miti, str.strip(), "failed")
+    export_json(passed, Network_Provider_miti, str.strip(), "passed")
+    export_json(failed, Network_Provider_miti, str.strip(), "failed")
 
 
 def Credentials_Delegation(clist9):
@@ -663,8 +662,8 @@ def Credentials_Delegation(clist9):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck9_miti, str.strip(), "passed")
-    export_json(failed, ck9_miti, str.strip(), "failed")
+    export_json(passed, Credentials_Delegation_miti, str.strip(), "passed")
+    export_json(failed, Credentials_Delegation_miti, str.strip(), "failed")
 
 
 def Windows_Defender(clist10):
@@ -747,8 +746,8 @@ def Windows_Defender(clist10):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck10_miti, str.strip(), "passed")
-    export_json(failed, ck10_miti, str.strip(), "failed")
+    export_json(passed, Windows_Defender_miti, str.strip(), "passed")
+    export_json(failed, Windows_Defender_miti, str.strip(), "failed")
 
 
 def Remote_Desktop_Services(clist11):
@@ -862,8 +861,8 @@ def Remote_Desktop_Services(clist11):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck11_miti, str.strip(), "passed")
-    export_json(failed, ck11_miti, str.strip(), "failed")
+    export_json(passed, Remote_Desktop_Services_miti, str.strip(), "passed")
+    export_json(failed, Remote_Desktop_Services_miti, str.strip(), "failed")
 
 
 def Windows_PowerShell(clist12):
@@ -909,8 +908,8 @@ def Windows_PowerShell(clist12):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck12_miti, str.strip(), "passed")
-    export_json(failed, ck12_miti, str.strip(), "failed")
+    export_json(passed, Windows_PowerShell_miti, str.strip(), "passed")
+    export_json(failed, Windows_PowerShell_miti, str.strip(), "failed")
 
 
 def WinRM(clist13):
@@ -976,8 +975,8 @@ def WinRM(clist13):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck13_miti, str.strip(), "passed")
-    export_json(failed, ck13_miti, str.strip(), "failed")
+    export_json(passed, WinRM_miti, str.strip(), "passed")
+    export_json(failed, WinRM_miti, str.strip(), "failed")
 
 
 def Windows_Remote_Shell(clist14):
@@ -995,8 +994,8 @@ def Windows_Remote_Shell(clist14):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck14_miti, str.strip(), "passed")
-    export_json(failed, ck14_miti, str.strip(), "failed")
+    export_json(passed, Windows_Remote_Shell_miti, str.strip(), "passed")
+    export_json(failed, Windows_Remote_Shell_miti, str.strip(), "failed")
 
 
 def System_Services(clist15):
@@ -1016,8 +1015,8 @@ def System_Services(clist15):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck15_miti, str.strip(), "passed")
-    export_json(failed, ck15_miti, str.strip(), "failed")
+    export_json(passed, System_Services_miti, str.strip(), "passed")
+    export_json(failed, System_Services_miti, str.strip(), "failed")
 
 
 def Group_Policy(clist16):
@@ -1036,8 +1035,8 @@ def Group_Policy(clist16):
     print(str)
     t = result_table(passed, failed)
     #export_result("\n" + str + "\n", t, current_time)
-    export_json(passed, ck16_miti, str.strip(), "passed")
-    export_json(failed, ck16_miti, str.strip(), "failed")
+    export_json(passed, Group_Policy_miti, str.strip(), "passed")
+    export_json(failed, Group_Policy_miti, str.strip(), "failed")
 
 
 def checklist_misc(clistmisc, passed, failed, i):
@@ -1172,5 +1171,5 @@ def AD_User_Account():
     str = "\nAD user account"
     print(str)
     t = result_table(passed, failed)
-    export_json(passed, ck17_miti, str.strip(), "passed")
-    export_json(failed, ck17_miti, str.strip(), "failed")
+    export_json(passed, AD_user_account_miti, str.strip(), "passed")
+    export_json(failed, AD_user_account_miti, str.strip(), "failed")
