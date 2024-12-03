@@ -1,5 +1,7 @@
 
 # Domain Controller Monitoring Dashboard
+![Description of pic1](assets/pic1.png "Splunk Dashboard")
+
 
 ## Overview
 
