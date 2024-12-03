@@ -27,11 +27,15 @@ options:
   -os [OUTPUT_SERVICE], --output_service [OUTPUT_SERVICE]
                         Specify the output APV_Permission file
 ```
+## Introduction
+APV is designed to visualize and identify attack surfaces in Active Directory (AD) using scan results from BloodHound.py (https://github.com/dirkjanm/BloodHound.py).
 
+![workflow.jpg](misc/workflow.jpg)
 ## Install 
 ```git clone``` this repository
 ```
-git clone https://github.com/dotienduc113/APV
+git clone https://github.com/dotienduc113/3AD
+cd APV
 ```
 Requirement: Using Python3 and install all required dependencies
 ```commandline

@@ -43,6 +43,7 @@ Download the latest version of TriAD from the [Release](https://github.com/dotie
 ```git clone``` this repository
 ```
 git clone https://github.com/dotienduc113/3AD
+cd Audit
 ```
 Requirement: Using Python3 and install all required dependencies
 ```commandline
