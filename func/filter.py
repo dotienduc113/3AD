@@ -6,7 +6,7 @@ def remove_extra_spaces(text):
     return re.sub(r'\s+', ' ', text).strip()
 
 
-def filter_info_1():
+def filter_Password_Account_lockout():
     file = open(".\\logs\\result1.txt", "r")
     settings = {}
     for line in file:
@@ -18,7 +18,7 @@ def filter_info_1():
 
 
 # loc du lieu trong trong query checklist 5
-def filer_info_5():
+def filer_Windows_Defender_Firewall():
     file = open(".\\logs\\result5.txt", "r")
     profiles = {}  
     current_profile = None
@@ -44,7 +44,7 @@ def filer_info_5():
     return profiles
 
 
-def filter_info_6():
+def filter_Audit_Policy():
     file = open(".\\logs\\result6.txt", "r")
     lines = file.read().split('\n')
     settings = {}
@@ -58,7 +58,7 @@ def filter_info_6():
     return settings
 
 
-def filter_info_7():
+def filter_MS_Security_Guide():
     file = open(".\\logs\\result7.txt", "r")
     settings = {}
     for line in file:
@@ -70,7 +70,7 @@ def filter_info_7():
     return settings
 
 
-def filter_info_8():
+def filter_Network_Provider():
     file = open(".\\logs\\result8.txt", "r")
     settings = {}
     try:
@@ -85,7 +85,7 @@ def filter_info_8():
     return settings
 
 
-def filter_info_9():
+def filter_Credentials_Delegation():
     file = open(".\\logs\\result9.txt", "r")
     settings = {}
     try:
@@ -141,7 +141,7 @@ def filer_info_registry(filename):
     return settings
 
 
-def filter_info_13():
+def filter_WinRM():
     file = open(".\\logs\\result13.txt", "r")
     client_settings = []
     service_settings = []
@@ -175,7 +175,7 @@ def filter_info_13():
     return settings
 
 
-def filter_info_4():
+def filter_Security_Options():
     file = open(".\\logs\\result4.txt", "r")
     settings = {}
     try:

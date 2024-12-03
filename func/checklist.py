@@ -7,38 +7,39 @@ from func.export import *
 
 def compare_checklist():
     current_time = datetime.datetime.now().strftime('%d%m%Y_%H%M%S')
-    clist1 = filter_info_1()
+
+    clist1_2 = filter_Password_Account_lockout()
     clist3 = filter_info_secpol(".\\logs\\result3.txt")
-    clist4 = filter_info_4()
-    clist5 = filer_info_5()
-    clist6 = filter_info_6()
-    clist7 = filter_info_7()
-    clist8 = filter_info_8()
-    clist9 = filter_info_9()
+    clist4 = filter_Security_Options()
+    clist5 = filer_Windows_Defender_Firewall()
+    clist6 = filter_Audit_Policy()
+    clist7 = filter_MS_Security_Guide()
+    clist8 = filter_Network_Provider()
+    clist9 = filter_Credentials_Delegation()
     clist10 = filer_info_registry(".\\logs\\result10.txt")
     clist11 = filer_info_registry(".\\logs\\result11.txt")
     clist12 = filer_info_registry(".\\logs\\result12.txt")
-    clist13 = filter_info_13()
+    clist13 = filter_WinRM()
     clist14 = filer_info_registry(".\\logs\\result14.txt")
     clist15 = filer_info_registry(".\\logs\\result15.txt")
     clist16 = filer_info_registry(".\\logs\\result16.txt")
 
-    checklist_1(clist1, current_time)
-    checklist_3(clist3, current_time)
-    checklist_4(clist4, current_time)
-    checklist_5(clist5, current_time)
-    checklist_6(clist6, current_time)
-    checklist_7(clist7, current_time)
-    checklist_8(clist8, current_time)
-    checklist_9(clist9, current_time)
-    checklist_10(clist10, current_time)
-    checklist_11(clist11, current_time)
-    checklist_12(clist12, current_time)
-    checklist_13(clist13, current_time)
-    checklist_14(clist14, current_time)
-    checklist_15(clist15, current_time)
-    checklist_16(clist16, current_time)
-    checklist_17()
+    Password_Account_lockout(clist1_2)
+    User_Rights_Assignment(clist3)
+    Security_Options(clist4)
+    Windows_Defender_Firewall(clist5)
+    Audit_Policy(clist6)
+    MS_Security_Guide(clist7)
+    Network_Provider(clist8)
+    Credentials_Delegation(clist9)
+    Windows_Defender(clist10)
+    Remote_Desktop_Services(clist11)
+    Windows_PowerShell(clist12)
+    WinRM(clist13)
+    Windows_Remote_Shell(clist14)
+    System_Services(clist15)
+    Group_Policy(clist16)
+    AD_User_Account()
 
 
 def result_table(passed, failed, width=100):
@@ -66,7 +67,7 @@ def append_array(array, key, value):
     return
 
 
-def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so sanh
+def Password_Account_lockout(clist1):  # checklist 1 va 2 lay du lieu va so sanh
     passed = []
     failed = []
     checklist_misc(filter_info_secpol(".\\logs\\result1_56.txt"), passed, failed, 1)
@@ -122,7 +123,7 @@ def checklist_1(clist1, current_time):  # checklist 1 va 2 lay du lieu va so san
     #export_result(str.strip() + "\n", t, current_time)
 
 
-def checklist_3(clist3, current_time):
+def User_Rights_Assignment(clist3):
     passed = []
     failed = []
     if "SeNetworkLogonRight" in clist3:
@@ -215,7 +216,7 @@ def checklist_3(clist3, current_time):
     #export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_4(clist4, current_time):
+def Security_Options(clist4):
     passed = []
     failed = []
     checklist_misc(filter_info_secpol(".\\logs\\result4_22.txt"), passed, failed, 4)
@@ -440,7 +441,7 @@ def checklist_4(clist4, current_time):
     #export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_5(clist5, current_time):
+def Windows_Defender_Firewall(clist5):
     passed = []
     failed = []
     for profile, settings in clist5.items():
@@ -478,7 +479,7 @@ def checklist_5(clist5, current_time):
     # export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_6(clist6, current_time):
+def Audit_Policy(clist6):
     passed = []
     failed = []
     if "Credential Validation" in clist6 and "Kerberos Service Ticket Operations" in clist6 and "Kerberos Authentication Service" in clist6:
@@ -566,7 +567,7 @@ def checklist_6(clist6, current_time):
     #export_result("\n" + str + "\n", t, current_time)
 
 
-def checklist_7(clist7, current_time):
+def MS_Security_Guide(clist7):
     passed = []
     failed = []
     print(clist7)
@@ -604,7 +605,7 @@ def checklist_7(clist7, current_time):
     export_json(failed, ck7_miti, str.strip(), "failed")
 
 
-def checklist_8(clist8, current_time):
+def Network_Provider(clist8):
     passed = []
     failed = []
     if len(clist8) == 0:
@@ -645,7 +646,7 @@ def checklist_8(clist8, current_time):
     export_json(failed, ck8_miti, str.strip(), "failed")
 
 
-def checklist_9(clist9, current_time):
+def Credentials_Delegation(clist9):
     passed = []
     failed = []
     if len(clist9) == 0:
@@ -666,7 +667,7 @@ def checklist_9(clist9, current_time):
     export_json(failed, ck9_miti, str.strip(), "failed")
 
 
-def checklist_10(clist10, current_time):
+def Windows_Defender(clist10):
     passed = []
     failed = []
     if "DisableAntiSpyware" in clist10:
@@ -750,7 +751,7 @@ def checklist_10(clist10, current_time):
     export_json(failed, ck10_miti, str.strip(), "failed")
 
 
-def checklist_11(clist11, current_time):
+def Remote_Desktop_Services(clist11):
     passed = []
     failed = []
     if "fSingleSessionPerUser" in clist11:
@@ -865,7 +866,7 @@ def checklist_11(clist11, current_time):
     export_json(failed, ck11_miti, str.strip(), "failed")
 
 
-def checklist_12(clist12, current_time):
+def Windows_PowerShell(clist12):
     passed = []
     failed = []
     for key, value in clist12.items():
@@ -912,7 +913,7 @@ def checklist_12(clist12, current_time):
     export_json(failed, ck12_miti, str.strip(), "failed")
 
 
-def checklist_13(clist13, current_time):
+def WinRM(clist13):
     passed = []
     failed = []
     if "Client AllowBasic" in clist13:
@@ -979,7 +980,7 @@ def checklist_13(clist13, current_time):
     export_json(failed, ck13_miti, str.strip(), "failed")
 
 
-def checklist_14(clist14, current_time):
+def Windows_Remote_Shell(clist14):
     passed = []
     failed = []
     s = "Allow Remote Shell Access"
@@ -998,7 +999,7 @@ def checklist_14(clist14, current_time):
     export_json(failed, ck14_miti, str.strip(), "failed")
 
 
-def checklist_15(clist15, current_time):
+def System_Services(clist15):
     passed = []
     failed = []
     s = "Print Spooler (Spooler)"
@@ -1019,7 +1020,7 @@ def checklist_15(clist15, current_time):
     export_json(failed, ck15_miti, str.strip(), "failed")
 
 
-def checklist_16(clist16, current_time):
+def Group_Policy(clist16):
     passed = []
     failed = []
     s = "Turn off local group policy processing"
@@ -1159,7 +1160,7 @@ def checklist_17_6(passed, failed):
         append_array(failed, s, "")
 
 
-def checklist_17():
+def AD_User_Account():
     passed = []
     failed = []
     checklist_17_1(passed, failed)
