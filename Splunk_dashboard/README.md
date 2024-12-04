@@ -64,7 +64,7 @@ This dashboard is licensed under the MIT License. Feel free to modify and adapt 
 If you have any questions or feedback, feel free to reach out:
 - **Author**: HieuVu2402
 - **Email**: vuhieu.forwork@gmail.com
-- 
+  
 ---
 
 Stay informed, secure, and compliant with the **Domain Controller Monitoring Dashboard**!
