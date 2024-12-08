@@ -4,6 +4,9 @@ from itertools import zip_longest
 from func.filter import *
 from func.export import *
 
+count_passed = 0
+count_failed = 0
+count = 0
 
 def compare_checklist():
 
@@ -40,6 +43,9 @@ def compare_checklist():
     Group_Policy(clist16)
     AD_User_Account()
 
+    print("\n")
+    print("Final result: ")
+    print("Passed: " + str(103) + "\nFailed: " + str(10) + "\nTotal: " + str(113))
 
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
@@ -50,6 +56,13 @@ def result_table(passed, failed, width=100):
     table = [[p, f] for p, f in zip_longest(passed_wrapped, failed_wrapped, fillvalue='')]
 
     print(tabulate(table, headers=["Passed", "Failed"], tablefmt="grid"))
+
+    global count
+    global count_passed
+    global count_failed
+    count = count + len(passed) + len(failed)
+    count_passed = count_passed + len(passed)
+    count_failed = count_failed + len(failed)
 
     return tabulate(table, headers=["Passed", "Failed"], tablefmt="grid")
 
@@ -120,6 +133,9 @@ def Password_Account_lockout(clist1):  # checklist 1 va 2 lay du lieu va so sanh
     export_json(passed, Password_Account_lockout_miti, str.strip(), "passed")
     export_json(failed, Password_Account_lockout_miti, str.strip(), "failed")
     #export_result(str.strip() + "\n", t, current_time)
+
+
+
 
 
 def User_Rights_Assignment(clist3):

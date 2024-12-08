@@ -105,12 +105,7 @@ def check_anonymous_ftp(server_ip, csv_name, port=21, timeout=10):
         response = ftp.login(user="anonymous", passwd="anonymous@domain.com")
         print("[+] Anonymous login successful!")
         print("[+] Server Response:", response)
-        '''
-        ftp.set_pasv(False)
-        # List files in the root directory as a test
-        print("[+] Directory listing:")
-        ftp.retrlines('LIST')
-        '''
+
         export_csv_service("Anonymous FTP", "Enabled", description, mitigation, csv_name)
         # Close the connection
         ftp.quit()
@@ -126,7 +121,7 @@ def check_anonymous_ftp(server_ip, csv_name, port=21, timeout=10):
 def check_adds(csv_name):
     description = "Poor configuration leads to attacks like DCSync, Kerberoasting, and lateral movement."
     mitigation = "Enforce strong password policies, monitor privileges, and restrict replication permissions."
-    service_name = "NTDS"  # The service name for Active Directory Domain Services
+    service_name = "NTDS"
     try:
         service_status = win32serviceutil.QueryServiceStatus(service_name)
         status_code = service_status[1]

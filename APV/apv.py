@@ -15,7 +15,7 @@ def display_banner():
     fonts = pyfiglet.FigletFont.getFonts()
     rd = random.randint(0, len(fonts) - 1)
 
-    banner = pyfiglet.figlet_format("APV", font=fonts[rd])
+    banner = pyfiglet.figlet_format("TriAD APV", font=fonts[rd])
 
     if os.name == 'nt':
         os.system('color')
