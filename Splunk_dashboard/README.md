@@ -61,6 +61,10 @@ For any issues or customization requests, please contact your Splunk administrat
 
 This dashboard is licensed under the MIT License. Feel free to modify and adapt it to your needs.
 
+If you have any questions or feedback, feel free to reach out:
+- **Author**: HieuVu2402
+- **Email**: vuhieu.forwork@gmail.com
+  
 ---
 
 Stay informed, secure, and compliant with the **Domain Controller Monitoring Dashboard**!

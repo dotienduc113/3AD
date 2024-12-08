@@ -1,4 +1,4 @@
-﻿{
+{
     "dataSources": {
         "ds_pMR7Par9": {
             "type": "ds.search",
@@ -14,7 +14,7 @@
         "ds_T0vHaPfb": {
             "type": "ds.search",
             "options": {
-                "query": "index=dc1_ad\r\n| where status = \"failed\" \r\n| eval date_only=strftime(_time, \"%Y-%m-%d\")  \r\n| stats count by date_only, Severity  \r\n| eval Severity=lower(Severity)  \r\n| chart sum(count) as count over date_only by Severity  \r\n| sort - date_only  \r\n| head 7\r\n| reverse",
+                "query": "index=$Domain_name$\r\n| where status = \"failed\" \r\n| eval date_only=strftime(_time, \"%Y-%m-%d\")  \r\n| stats count by date_only, Severity  \r\n| eval Severity=lower(Severity)  \r\n| chart sum(count) as count over date_only by Severity  \r\n| sort - date_only  \r\n| head 7\r\n| reverse",
                 "queryParameters": {
                     "earliest": "0",
                     "latest": ""
@@ -69,7 +69,7 @@
         "ds_C7kiLIbb_ds_1sTm9SHG": {
             "type": "ds.search",
             "options": {
-                "query": "index=$Domain_name$\r\n| where status = \"failed\"\r\n| search Severity=$severity_token$ \"Best practices\"=*\r\n| table name,\"Best practices\", Severity, \r\n",
+                "query": "index=$Domain_name$\r\n| where status = \"failed\"\r\n| search Severity=$severity_token$ \"Best practices\"=*\r\n| table name,\"Best practices\", Severity\r\n",
                 "queryParameters": {
                     "earliest": "$tr_3W94Yr81.earliest$",
                     "latest": "$tr_3W94Yr81.latest$"
@@ -190,10 +190,10 @@
         "ds_zhrtLsDt": {
             "type": "ds.search",
             "options": {
-                "query": "index=dc1_apv\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"user\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission\r\n",
+                "query": "index=$apv$\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"user\" OR secured_object_type=\"User\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission",
                 "queryParameters": {
-                    "earliest": "-24h@h",
-                    "latest": "now"
+                    "earliest": "0",
+                    "latest": ""
                 }
             },
             "name": "Search_3"
@@ -201,10 +201,10 @@
         "ds_8gOBTwfo_ds_zhrtLsDt": {
             "type": "ds.search",
             "options": {
-                "query": "index=dc1_apv\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"group\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission",
+                "query": "index=$apv$\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"group\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission",
                 "queryParameters": {
-                    "earliest": "-24h@h",
-                    "latest": "now"
+                    "earliest": "0",
+                    "latest": ""
                 }
             },
             "name": "Search_3 copy 2"
@@ -212,10 +212,10 @@
         "ds_pUYGVK3Z_ds_8gOBTwfo_ds_zhrtLsDt": {
             "type": "ds.search",
             "options": {
-                "query": "index=dc1_apv\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"domains\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission",
+                "query": "index=$apv$\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| where secured_object_type=\"domains\"\r\n| fields secured_object, permission, secured_object_type, security_principal, security_principal_type\r\n| search  secured_object!=null AND secured_object_type!=null\r\n| table secured_object, permission, security_principal, security_principal_type\r\n| rename secured_object as \"Secure Object\", security_principal as \"Secure Principal\", security_principal_type as \"Secure Principal Type\", permission as Permission",
                 "queryParameters": {
-                    "earliest": "-24h@h",
-                    "latest": "now"
+                    "earliest": "0",
+                    "latest": ""
                 }
             },
             "name": "Search_3 copy 3"
@@ -245,7 +245,7 @@
         "ds_GkPA2jsd": {
             "type": "ds.search",
             "options": {
-                "query": "index=dc1_service\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| table Service, Status, Description, Mitigation",
+                "query": "index=$Service$\r\n| eventstats max(_time) as latest_time\r\n| where _time = latest_time\r\n| table Service, Status, Description, Mitigation\r\n| Sort by Status",
                 "queryParameters": {
                     "earliest": "0",
                     "latest": ""
@@ -278,7 +278,7 @@
         "ds_bOCKEnx1": {
             "type": "ds.search",
             "options": {
-                "query": "index=$Domain_name$\r\n| where status=\"passed\"\r\n| stats count as passed_count\r\n| eval percentage=round((passed_count / 113) * 100, 2)\r\n| eval result=case(\r\n    percentage > 70, \"✅\",\r\n    percentage > 50 AND percentage <= 70, \"⚠️\",\r\n    percentage <= 50, \"❗\"\r\n)\r\n| table result",
+                "query": "index=$Domain_name$\r\n| stats count(eval(status=\"passed\")) as passed_count count(eval(status=\"failed\")) as failed_count\r\n| eval total_count = passed_count + failed_count\r\n| eval percentage=round((passed_count / total_count) * 100, 2)\r\n| eval result=case(\r\n    percentage > 70, \"✅\",\r\n    percentage > 50 AND percentage <= 70, \"⚠️\",\r\n    percentage <= 50, \"❌\"\r\n)\r\n| table result",
                 "queryParameters": {
                     "earliest": "$tr_3W94Yr81.earliest$",
                     "latest": "$tr_3W94Yr81.latest$"
@@ -517,7 +517,8 @@
         "viz_2S6AO4Kj": {
             "type": "splunk.rectangle",
             "options": {
-                "fillColor": "#000000"
+                "fillColor": "#000000",
+                "strokeWidth": 0
             }
         },
         "viz_I3Ocn0ze": {
@@ -882,14 +883,6 @@
                 ]
             }
         },
-        "viz_XfQncnG8": {
-            "type": "splunk.rectangle",
-            "options": {
-                "fillColor": "transparent",
-                "strokeWidth": 3
-            },
-            "eventHandlers": []
-        },
         "viz_uF8rvn7d": {
             "type": "splunk.singlevalue",
             "options": {
@@ -937,14 +930,6 @@
             },
             "title": "User",
             "description": ""
-        },
-        "viz_xIl2hQ7W": {
-            "type": "splunk.rectangle",
-            "options": {
-                "fillColor": "transparent",
-                "strokeWidth": 3
-            },
-            "eventHandlers": []
         },
         "viz_21psz0dg": {
             "type": "splunk.linkgraph",
@@ -1039,11 +1024,9 @@
                     "headerColor": "#45D4BA"
                 },
                 "columnFormat": {
-                    "Risk": {
-                        "data": "> table | seriesByName(\"Risk\") | formatByType(RiskColumnFormatEditorConfig)",
-                        "rowBackgroundColors": "> table | seriesByName('Risk') | matchValue(RiskRowBackgroundColorsEditorConfig)"
-                    },
                     "Status": {
+                        "data": "> table | seriesByName(\"Status\") | formatByType(StatusColumnFormatEditorConfig)",
+                        "rowBackgroundColors": "> table | seriesByName('Status') | matchValue(StatusRowBackgroundColorsEditorConfig)",
                         "width": 60
                     },
                     "Service": {
@@ -1053,17 +1036,17 @@
             },
             "title": "Service Results",
             "context": {
-                "RiskRowBackgroundColorsEditorConfig": [
+                "StatusRowBackgroundColorsEditorConfig": [
                     {
-                        "match": "High",
+                        "match": "Disabled",
                         "value": "#D81E5B"
                     },
                     {
-                        "match": "Medium",
+                        "match": "Enabled",
                         "value": "#e3b419"
                     },
                     {
-                        "match": "Low",
+                        "match": "Running",
                         "value": "#3ac25e"
                     }
                 ]
@@ -1126,6 +1109,39 @@
                     }
                 }
             ]
+        },
+        "viz_nMeKBPc9": {
+            "type": "splunk.singlevalueicon",
+            "options": {
+                "showValue": false,
+                "icon": "splunk-enterprise-kvstore://icon-check__e29f784a-31a2-4544-813f-efce24d5be32.svg",
+                "majorColor": "#53a051",
+                "trendColor": "#53a051",
+                "iconColor": "#53a051"
+            }
+        },
+        "viz_VVSEk71w": {
+            "type": "splunk.image",
+            "options": {
+                "preserveAspectRatio": true,
+                "src": "splunk-enterprise-kvstore://674ff6eaa58d32f585043372"
+            }
+        },
+        "viz_jxrGxJdn": {
+            "type": "splunk.rectangle",
+            "options": {
+                "fillColor": "transparent",
+                "strokeWidth": 3
+            },
+            "eventHandlers": []
+        },
+        "viz_x7VvgMan": {
+            "type": "splunk.rectangle",
+            "options": {
+                "fillColor": "transparent",
+                "strokeWidth": 3
+            },
+            "eventHandlers": []
         }
     },
     "inputs": {
@@ -1207,24 +1223,64 @@
             "options": {
                 "items": [
                     {
-                        "label": "All DC",
-                        "value": "*"
-                    },
-                    {
                         "label": "Domain Controller 1",
-                        "value": "dc1_ad_fail"
+                        "value": "dc1_ad_failed"
                     },
                     {
                         "label": "Domain Controller 2",
-                        "value": "dc2_ad_fail"
+                        "value": "abc"
                     },
                     {
                         "label": "Domain Controller 3",
                         "value": "dc3_ad_fail"
                     }
                 ],
-                "defaultValue": "*",
-                "token": "Domain_fail"
+                "token": "Domain_fail",
+                "defaultValue": "dc1_ad_failed"
+            },
+            "title": "",
+            "type": "input.dropdown"
+        },
+        "input_mjcVXGod": {
+            "options": {
+                "items": [
+                    {
+                        "label": "Domain Controller 1",
+                        "value": "dc1_service"
+                    },
+                    {
+                        "label": "Domain Controller 2",
+                        "value": "dc2_service"
+                    },
+                    {
+                        "label": "Domain Controller 3",
+                        "value": "dc3_service"
+                    }
+                ],
+                "token": "Service",
+                "defaultValue": "dc1_service"
+            },
+            "title": "",
+            "type": "input.dropdown"
+        },
+        "input_j1OPf1k9": {
+            "options": {
+                "items": [
+                    {
+                        "label": "Domain Controller 1",
+                        "value": "dc1_apv"
+                    },
+                    {
+                        "label": "Domain Controller 2",
+                        "value": "dc2_apv"
+                    },
+                    {
+                        "label": "Domain Controller 3",
+                        "value": "dc3_apv"
+                    }
+                ],
+                "defaultValue": "dc1_apv",
+                "token": "apv"
             },
             "title": "",
             "type": "input.dropdown"
@@ -1260,15 +1316,15 @@
                 "position": {
                     "x": 70,
                     "y": 20,
-                    "w": 440,
-                    "h": 50
+                    "w": 370,
+                    "h": 40
                 }
             },
             {
                 "item": "viz_245xhO9X",
                 "type": "block",
                 "position": {
-                    "x": 860,
+                    "x": 850,
                     "y": 180,
                     "w": 60,
                     "h": 30
@@ -1278,7 +1334,7 @@
                 "item": "viz_ChQFnAFK",
                 "type": "block",
                 "position": {
-                    "x": 1040,
+                    "x": 1030,
                     "y": 180,
                     "w": 80,
                     "h": 30
@@ -1288,7 +1344,7 @@
                 "item": "viz_81D7tTKQ",
                 "type": "block",
                 "position": {
-                    "x": 1220,
+                    "x": 1210,
                     "y": 180,
                     "w": 60,
                     "h": 40
@@ -1308,7 +1364,7 @@
                 "item": "viz_LT17ZpIy",
                 "type": "block",
                 "position": {
-                    "x": 940,
+                    "x": 920,
                     "y": 830,
                     "w": 510,
                     "h": 220
@@ -1318,7 +1374,7 @@
                 "item": "viz_mQJkEIWx",
                 "type": "block",
                 "position": {
-                    "x": 940,
+                    "x": 920,
                     "y": 1000,
                     "w": 510,
                     "h": 220
@@ -1348,7 +1404,7 @@
                 "item": "viz_FIarHyn9",
                 "type": "block",
                 "position": {
-                    "x": 590,
+                    "x": 620,
                     "y": 160,
                     "w": 120,
                     "h": 30
@@ -1358,9 +1414,9 @@
                 "item": "viz_2S6AO4Kj",
                 "type": "block",
                 "position": {
-                    "x": 50,
+                    "x": 960,
                     "y": 1240,
-                    "w": 410,
+                    "w": 440,
                     "h": 220
                 }
             },
@@ -1368,9 +1424,9 @@
                 "item": "viz_I3Ocn0ze",
                 "type": "block",
                 "position": {
-                    "x": 240,
+                    "x": 1160,
                     "y": 1260,
-                    "w": 230,
+                    "w": 220,
                     "h": 30
                 }
             },
@@ -1378,9 +1434,9 @@
                 "item": "viz_IySVbNE8",
                 "type": "block",
                 "position": {
-                    "x": 240,
+                    "x": 1180,
                     "y": 1350,
-                    "w": 210,
+                    "w": 200,
                     "h": 30
                 }
             },
@@ -1388,9 +1444,9 @@
                 "item": "viz_EkhcHprb",
                 "type": "block",
                 "position": {
-                    "x": 1040,
+                    "x": 1070,
                     "y": 110,
-                    "w": 140,
+                    "w": 120,
                     "h": 30
                 }
             },
@@ -1398,9 +1454,9 @@
                 "item": "viz_zJdTjLMc",
                 "type": "block",
                 "position": {
-                    "x": 40,
+                    "x": 970,
                     "y": 1270,
-                    "w": 200,
+                    "w": 190,
                     "h": 150
                 }
             },
@@ -1418,9 +1474,9 @@
                 "item": "viz_VJaRnrRB",
                 "type": "block",
                 "position": {
-                    "x": 960,
+                    "x": 950,
                     "y": 390,
-                    "w": 460,
+                    "w": 470,
                     "h": 410
                 }
             },
@@ -1488,7 +1544,7 @@
                 "item": "viz_CmKKcau1",
                 "type": "block",
                 "position": {
-                    "x": 1270,
+                    "x": 1280,
                     "y": 180,
                     "w": 90,
                     "h": 30
@@ -1498,7 +1554,7 @@
                 "item": "viz_cUEp3owV",
                 "type": "block",
                 "position": {
-                    "x": 910,
+                    "x": 920,
                     "y": 180,
                     "w": 90,
                     "h": 30
@@ -1508,7 +1564,7 @@
                 "item": "viz_w9tvHTxA",
                 "type": "block",
                 "position": {
-                    "x": 1150,
+                    "x": 980,
                     "y": 100,
                     "w": 110,
                     "h": 50
@@ -1565,20 +1621,10 @@
                 }
             },
             {
-                "item": "viz_XfQncnG8",
-                "type": "block",
-                "position": {
-                    "x": 450,
-                    "y": 140,
-                    "w": 280,
-                    "h": 200
-                }
-            },
-            {
                 "item": "viz_uF8rvn7d",
                 "type": "block",
                 "position": {
-                    "x": 270,
+                    "x": 290,
                     "y": 160,
                     "w": 120,
                     "h": 30
@@ -1589,19 +1635,9 @@
                 "type": "block",
                 "position": {
                     "x": 50,
-                    "y": 1480,
+                    "y": 1730,
                     "w": 870,
-                    "h": 500
-                }
-            },
-            {
-                "item": "viz_xIl2hQ7W",
-                "type": "block",
-                "position": {
-                    "x": 120,
-                    "y": 140,
-                    "w": 280,
-                    "h": 200
+                    "h": 310
                 }
             },
             {
@@ -1609,9 +1645,9 @@
                 "type": "block",
                 "position": {
                     "x": 50,
-                    "y": 2030,
+                    "y": 2070,
                     "w": 870,
-                    "h": 620
+                    "h": 630
                 }
             },
             {
@@ -1619,7 +1655,7 @@
                 "type": "block",
                 "position": {
                     "x": 50,
-                    "y": 2700,
+                    "y": 2730,
                     "w": 870,
                     "h": 340
                 }
@@ -1629,7 +1665,7 @@
                 "type": "block",
                 "position": {
                     "x": 960,
-                    "y": 1480,
+                    "y": 1510,
                     "w": 440,
                     "h": 1560
                 }
@@ -1648,17 +1684,17 @@
                 "item": "viz_xEr1G8qG",
                 "type": "block",
                 "position": {
-                    "x": 520,
+                    "x": 50,
                     "y": 1240,
-                    "w": 880,
-                    "h": 220
+                    "w": 870,
+                    "h": 450
                 }
             },
             {
                 "item": "viz_YshKgMQv",
                 "type": "block",
                 "position": {
-                    "x": 300,
+                    "x": 1220,
                     "y": 1290,
                     "w": 70,
                     "h": 50
@@ -1678,7 +1714,7 @@
                 "item": "viz_JueLcvJx",
                 "type": "block",
                 "position": {
-                    "x": 300,
+                    "x": 1220,
                     "y": 1380,
                     "w": 80,
                     "h": 60
@@ -1698,7 +1734,7 @@
                 "item": "viz_l9ycngnL",
                 "type": "block",
                 "position": {
-                    "x": 410,
+                    "x": 420,
                     "y": 10,
                     "w": 90,
                     "h": 60
@@ -1720,8 +1756,68 @@
                 "position": {
                     "x": 1160,
                     "y": 30,
-                    "w": 240,
+                    "w": 260,
                     "h": 30
+                }
+            },
+            {
+                "item": "viz_nMeKBPc9",
+                "type": "block",
+                "position": {
+                    "x": 230,
+                    "y": 170,
+                    "w": 30,
+                    "h": 20
+                }
+            },
+            {
+                "item": "viz_VVSEk71w",
+                "type": "block",
+                "position": {
+                    "x": 540,
+                    "y": 160,
+                    "w": 60,
+                    "h": 40
+                }
+            },
+            {
+                "item": "viz_jxrGxJdn",
+                "type": "block",
+                "position": {
+                    "x": 450,
+                    "y": 140,
+                    "w": 280,
+                    "h": 200
+                }
+            },
+            {
+                "item": "viz_x7VvgMan",
+                "type": "block",
+                "position": {
+                    "x": 120,
+                    "y": 140,
+                    "w": 280,
+                    "h": 200
+                }
+            },
+            {
+                "item": "input_mjcVXGod",
+                "type": "input",
+                "position": {
+                    "x": 720,
+                    "y": 1210,
+                    "w": 198,
+                    "h": 82
+                }
+            },
+            {
+                "item": "input_j1OPf1k9",
+                "type": "input",
+                "position": {
+                    "x": 700,
+                    "y": 1700,
+                    "w": 198,
+                    "h": 82
                 }
             }
         ],
