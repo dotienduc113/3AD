@@ -84,7 +84,12 @@ def wmic_query_sep(i):
 
 
 def compare_sid(v, sids):
-    # sids = get_sid()
+    for user, sid in sids.items():
+        if sid == v:
+            return user
+
+
+def compare_sid_group(v, sids):
     for user, sid in sids.items():
         if sid in v:
             return user
@@ -119,7 +124,41 @@ def get_sid_domain(result):
     return dic
 
 
-def extract_ace_data(user, data, permission, sids):
+sid_user = get_sid(str(wmic_query_sep(0)))
+sid_group = get_sid(str(wmic_query_sep(1)))
+sid_domain = get_sid_domain(str(wmic_query_sep(2)))
+
+
+def extract_ace_data(user, data, permission):
+    arr0 = []
+    arr1 = []
+    arr2 = []
+    dic = {}
+    for key, value in data.items():
+        for item in value:
+            if 'Aces' in item and 'Properties' in item:
+                s = item["Properties"]["name"]
+                s1 = s.split("@")
+                if user == s1[0]:
+                    for ace in item['Aces']:
+                        if ace['RightName'] == permission:
+                            value = ace["PrincipalSID"]
+                            user0 = compare_sid(value, sid_user)
+                            user1 = compare_sid_group(value, sid_group)
+                            user2 = compare_sid(value, sid_domain)
+                            if user0 not in arr0 and user0 is not None:
+                                arr0.append(user0)
+                                dic["user"] = arr0
+                            if user1 not in arr1 and user1 is not None:
+                                arr1.append(user1)
+                                dic["group"] = arr1
+                            if user2 not in arr2 and user2 is not None:
+                                arr2.append(user2)
+                                dic["domain"] = arr2
+    return dic
+
+
+def extract_ace_data_domain(user, data, permission):
     arr0 = []
     arr1 = []
     arr2 = []
@@ -133,16 +172,16 @@ def extract_ace_data(user, data, permission, sids):
                     for ace in item['Aces']:
                         if ace['RightName'] == permission:
                             value = ace["PrincipalSID"]
-                            user0 = compare_sid(value, get_sid(str(wmic_query_sep(0))))
-                            user1 = compare_sid(value, get_sid(str(wmic_query_sep(1))))
-                            user2 = compare_sid(value, sids)
+                            user0 = compare_sid(value, sid_user)
+                            user1 = compare_sid_group(value, sid_group)
+                            user2 = compare_sid(value, sid_domain)
                             if user0 not in arr0 and user0 is not None:
                                 arr0.append(user0)
                                 dic["user"] = arr0
-                            elif user1 not in arr1 and user1 is not None:
+                            if user1 not in arr1 and user1 is not None:
                                 arr1.append(user1)
                                 dic["group"] = arr1
-                            elif user2 not in arr2 and user2 is not None:
+                            if user2 not in arr2 and user2 is not None:
                                 arr2.append(user2)
                                 dic["domain"] = arr2
     return dic
@@ -222,90 +261,94 @@ def apv_permission(domain, username, password, csv_name):
     run_bloodhound(domain, username, password)
 
     # users
-    sids = get_sid(str(wmic_query_sep(0)))
     data = read_json("_users.json")
     count = 0
     print("\n")
     secured_object_type = "user"
-    for name, sid in sids.items():
+    for name, sid in sid_user.items():
         count = count + 1
         print(str(count) + "." + name)
 
-        dic = extract_ace_data(name.upper(), data, "ForceChangePassword", sids)
+        dic = extract_ace_data(name.upper(), data, "ForceChangePassword")
         execute(dic, "ForceChangePassword", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GenericAll", sids)
+        dic = extract_ace_data(name.upper(), data, "GenericAll")
         execute(dic, "GenericAll", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GenericWrite", sids)
+        dic = extract_ace_data(name.upper(), data, "GenericWrite")
         execute(dic, "GenericWrite", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "WriteDACL", sids)
-        execute(dic, "WriteDACL", name, secured_object_type)
+        dic = extract_ace_data(name.upper(), data, "WriteDacl")
+        execute(dic, "WriteDacl", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "WriteOwner", sids)
+        dic = extract_ace_data(name.upper(), data, "WriteOwner")
         execute(dic, "WriteOwner", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "AllExtendedRights", sids)
+        dic = extract_ace_data(name.upper(), data, "AllExtendedRights")
         execute(dic, "AllExtendedRights", name, secured_object_type)
 
     export_csv_table(csv_name)
 
     # groups
-    sids = get_sid(str(wmic_query_sep(1)))
+
     data = read_json("_groups.json")
     count = 0
     print("\n")
     secured_object_type = "group"
 
-    for name, sid in sids.items():
+    for name, sid in sid_group.items():
         count = count + 1
         print(str(count) + "." + name)
 
-        dic = extract_ace_data(name.upper(), data, "GenericAll", sids)
+        dic = extract_ace_data(name.upper(), data, "GenericAll")
         execute(dic, "GenericAll", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GenericWrite", sids)
+        dic = extract_ace_data(name.upper(), data, "GenericWrite")
         execute(dic, "GenericWrite", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "WriteDACL", sids)
-        execute(dic, "WriteDACL", name, secured_object_type)
+        dic = extract_ace_data(name.upper(), data, "WriteDacl")
+        execute(dic, "WriteDacl", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "WriteOwner", sids)
+        dic = extract_ace_data(name.upper(), data, "WriteOwner")
         execute(dic, "WriteOwner", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "AllExtendedRights", sids)
+        dic = extract_ace_data(name.upper(), data, "AllExtendedRights")
         execute(dic, "AllExtendedRights", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "AddMember", sids)
+        dic = extract_ace_data(name.upper(), data, "AddMember")
         execute(dic, "AddMember", name, secured_object_type)
 
     export_csv_table(csv_name)
 
     # domains
-    sids = get_sid_domain(str(wmic_query_sep(2)))
     data = read_json("_domains.json")
     count = 0
     print("\n")
     secured_object_type = "domains"
-    for name, sid in sids.items():
+    for name, sid in sid_domain.items():
         count = count + 1
         print(str(count) + "." + name)
 
-        dic = extract_ace_data(name.upper(), data, "GetChanges", sids)
+        dic = extract_ace_data_domain(name.upper(), data, "GetChanges")
         execute(dic, "GetChanges", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GetChangesAll", sids)
+        dic = extract_ace_data_domain(name.upper(), data, "GetChangesAll")
         execute(dic, "GetChangesAll", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GetChangesInFilteredSet", sids)
+        dic = extract_ace_data_domain(name.upper(), data, "GetChangesInFilteredSet")
         execute(dic, "GetChangesInFilteredSet", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "AllExtendedRights", sids)
+        dic = extract_ace_data_domain(name.upper(), data, "AllExtendedRights")
         execute(dic, "AllExtendedRights", name, secured_object_type)
 
-        dic = extract_ace_data(name.upper(), data, "GenericAll", sids)
+        dic = extract_ace_data_domain(name.upper(), data, "GenericAll")
         execute(dic, "GenericAll", name, secured_object_type)
+
+        dic = extract_ace_data_domain(name.upper(), data, "WriteDacl")
+        execute(dic, "WriteDacl", name, secured_object_type)
+
+        dic = extract_ace_data_domain(name.upper(), data, "WriteOwner")
+        execute(dic, "WriteOwner", name, secured_object_type)
 
     export_csv_table(csv_name)
 
@@ -342,8 +385,10 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--ipaddress', required=True, help='IP address to use')
     parser.add_argument('-per', '--permission', action='store_true', help='Running APV-Permission')
     parser.add_argument('-ser', '--service', action='store_true', help='Running APV-Service')
-    parser.add_argument('-op', '--output_permission', nargs='?', default=None, help='Specify the output APV_Permission file')
-    parser.add_argument('-os', '--output_service', nargs='?', default=None, help='Specify the output APV_Permission file')
+    parser.add_argument('-op', '--output_permission', nargs='?', default=None,
+                        help='Specify the output APV_Permission file')
+    parser.add_argument('-os', '--output_service', nargs='?', default=None,
+                        help='Specify the output APV_Permission file')
     args = parser.parse_args()
 
     new_path = ".\\logs"

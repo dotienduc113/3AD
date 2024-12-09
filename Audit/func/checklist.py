@@ -47,6 +47,7 @@ def compare_checklist():
     print("Final result: ")
     print("Passed: " + str(103) + "\nFailed: " + str(10) + "\nTotal: " + str(113))
 
+
 def result_table(passed, failed, width=100):
     # Wrap text in each column to the specified width
     passed_wrapped = [fill(item, width=width) if item else '' for item in passed]
