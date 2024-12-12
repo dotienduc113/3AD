@@ -45,7 +45,7 @@ def compare_checklist():
 
     print("\n")
     print("Final result: ")
-    print("Passed: " + str(103) + "\nFailed: " + str(10) + "\nTotal: " + str(113))
+    print("Passed: " + str(count_passed) + "\nFailed: " + str(count_failed) + "\nTotal: " + str(113))
 
 
 def result_table(passed, failed, width=100):
