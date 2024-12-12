@@ -661,14 +661,19 @@ def Network_Provider(clist8):
     export_json(passed, Network_Provider_miti, str.strip(), "passed")
     export_json(failed, Network_Provider_miti, str.strip(), "failed")
 
-
+# clist9 = filter_Credentials_Delegation()
 def Credentials_Delegation(clist9):
+    # tao mang passed va failed
     passed = []
     failed = []
+    # kiem tra neu khong cau hinh policy -> failed
     if len(clist9) == 0:
         append_array(failed, "Encryption Oracle Remediation", "Default - Not configured")
+    # vong lap k-v cua dictionary clist
     for key, value in clist9.items():
+        # kiem tra key = gia tri registry
         if key == "AllowEncryptionOracle":
+            # so sanh gia tri value doi voi yeu cau cua checklist
             if value == "0x0":
                 append_array(passed, "Encryption Oracle Remediation", "Enabled Force Updated Clients")
             elif value == "0x1":
@@ -678,7 +683,8 @@ def Credentials_Delegation(clist9):
     str = "\nCredentials Delegation"
     print(str)
     t = result_table(passed, failed)
-    #export_result("\n" + str + "\n", t, current_time)
+    # export_result("\n" + str + "\n", t, current_time)
+    # xuat ra json passed va failed array
     export_json(passed, Credentials_Delegation_miti, str.strip(), "passed")
     export_json(failed, Credentials_Delegation_miti, str.strip(), "failed")
 

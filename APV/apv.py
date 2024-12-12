@@ -96,15 +96,17 @@ def compare_sid_group(v, sids):
 
 
 def get_sid(result):
+    # doc ket qua result tu ham wmic_query_sep
     lines = result.split("\n")
     dic = {}
-    # list = ["Print Operators", "Backup Operators", "Replicator", "Remote Desktop Users", "Network Configuration Operators", "Performance Monitor Users", "Performance Log Users", "Distributed COM Users", "IIS_IUSRS", "Cryptographic Operators", "Event Log Readers", "Certificate Service DCOM Access", "RDS Remote Access Servers", "RDS Endpoint Servers", "RDS Management Servers", "Hyper-V Administrators", "Access Control Assistance Operators", "Remote Management Users", "Server Operators", "Account Operators", "Pre-Windows 2000 Compatible Access", "Incoming Forest Trust Builders", "Windows Authorization Access Group", "Terminal Server License Servers", "Cert Publishers", "RAS and IAS Servers", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group"]
+    # black list = ["Print Operators", "Backup Operators", "Replicator", "Remote Desktop Users"] "Network Configuration Operators", "Performance Monitor Users", "Performance Log Users", "Distributed COM Users", "IIS_IUSRS", "Cryptographic Operators", "Event Log Readers", "Certificate Service DCOM Access", "RDS Remote Access Servers", "RDS Endpoint Servers", "RDS Management Servers", "Hyper-V Administrators", "Access Control Assistance Operators", "Remote Management Users", "Server Operators", "Account Operators", "Pre-Windows 2000 Compatible Access", "Incoming Forest Trust Builders", "Windows Authorization Access Group", "Terminal Server License Servers", "Cert Publishers", "RAS and IAS Servers", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group"]
     list = []
     for line in lines[1:]:
         if line.strip():
             parts = line.split()
             sid = parts[-1]
             user = " ".join(parts[0:-1])
+            # tao ra 1 dictionary k-v tuong ung user va sid
             if user not in list:
                 dic[user] = sid
     return dic
@@ -129,20 +131,22 @@ sid_group = get_sid(str(wmic_query_sep(1)))
 sid_domain = get_sid_domain(str(wmic_query_sep(2)))
 
 
-def extract_ace_data(user, data, permission):
-    arr0 = []
-    arr1 = []
-    arr2 = []
+def extract_ace_data(user, data, permission):  # str user, dictionary data, str permission
+    arr0 = [], arr1 = [], arr2 = []
     dic = {}
     for key, value in data.items():
         for item in value:
             if 'Aces' in item and 'Properties' in item:
+                # gan gia tri s voi name trong json: s = administrator@easybank.com
                 s = item["Properties"]["name"]
                 s1 = s.split("@")
+                # so sanh gia tri user dau vao voi user trong du lieu bloodhound
                 if user == s1[0]:
+                    # kiem tra ACE va permission dau vao
                     for ace in item['Aces']:
                         if ace['RightName'] == permission:
                             value = ace["PrincipalSID"]
+                            # map gia tri value (sid) voi user tuong ung
                             user0 = compare_sid(value, sid_user)
                             user1 = compare_sid_group(value, sid_group)
                             user2 = compare_sid(value, sid_domain)
@@ -235,22 +239,19 @@ def export_result(current_time, str, table):
 def execute(dic, permission, name, secured_object_type):
     if len(dic) != 0:
         try:
-            arr0 = dic.get('user')
-            # export_result(current_time, str(count) + "." + user + ":\n", result_table(arr0, "GenericAll") + "\n")
-            result_table(arr0, permission)
-            export_json(arr0, permission, name, secured_object_type, 'user')
+            arr0 = dic.get('user') # lay mang tu value dic['user']
+            result_table(arr0, permission) # xuat ra terminal
+            export_json(arr0, permission, name, secured_object_type, 'user') # xuat ra json
         except:
             pass
         try:
             arr1 = dic.get('group')
-            # export_result(current_time, "", result_table(arr1, "GenericAll") + "\n")
             result_table(arr1, permission)
             export_json(arr1, permission, name, secured_object_type, 'group')
         except:
             pass
         try:
             arr2 = dic.get('domain')
-            # export_result(current_time, "", result_table(arr1, "GenericAll") + "\n")
             result_table(arr2, permission)
             export_json(arr2, permission, name, secured_object_type, 'domain')
         except:
@@ -408,7 +409,3 @@ if __name__ == '__main__':
     else:
         apv_permission(args.domain, args.username, args.password, args.output_permission)
         apv_service(args.domain, args.username, args.password, args.ipaddress, args.output_service)
-
-
-
-

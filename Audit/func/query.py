@@ -27,7 +27,7 @@ powershell.exe "Get-ADUser krbtgt -Properties pwdLastSet | Select-Object Name, @
 """
 
 
-# chay lenh cmd va output ra 1 file result.txt o thu muc logs
+# chay lenh cmd va output ra cac file result.txt o thu muc logs
 
 def run_query():
     count = 0

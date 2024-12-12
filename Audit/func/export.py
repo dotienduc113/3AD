@@ -709,10 +709,14 @@ def file_name(csv_table_name=None):
 
 
 def export_json(arr, ck_mitigation, checklist_name, status):
+    # bien cuc bo id
     global id
+    # arr dau vao passed, failed array
     for i in arr:
+        # thu vien miti neu khoa trong miti in i thi lay value cua miti vao cac gia tri json can thiet
         for v in ck_mitigation.keys():
             if v in i:
+                # array mitigation gom [reference, best practices, severity]
                 mitigation = ck_mitigation.get(v)
                 id = id + 1
                 result.append(

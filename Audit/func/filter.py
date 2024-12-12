@@ -86,13 +86,16 @@ def filter_Network_Provider():
 
 
 def filter_Credentials_Delegation():
+    # mo file ket qua result9
     file = open(".\\logs\\result9.txt", "r")
     settings = {}
     try:
         for line in file:
+            # xoa khoan trang va cat ghep chuoi
             line = remove_extra_spaces(line.strip())
             parts = line.split()
             key = parts[0]
+            # gan k-v dictionary
             settings[key] = parts[-1]
     except:
         pass
