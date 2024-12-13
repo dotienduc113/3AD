@@ -1,1 +1,2 @@
 # Automated AD Security and Compliance Framework Using Continuous Monitoring & Attack Path Validation 
+TriAD is written in Python and contains two core modules, Policy Audit and Recommendation (PAR) and Attack Path Validation (APV).

@@ -1,4 +1,4 @@
-# APV
+# TriAD APV
 ``` 
     ___    ____ _    __
    /   |  / __ \ |  / /
@@ -29,7 +29,7 @@ options:
                         Specify the output APV_Permission file
 ```
 ## Introduction
-APV is designed to visualize and identify attack surfaces in Active Directory (AD) using scan results from BloodHound.py (https://github.com/dirkjanm/BloodHound.py).
+TriAD APV module is designed to visualize and identify attack surfaces in Active Directory (AD) using scan results from BloodHound.py (https://github.com/dirkjanm/BloodHound.py).
 
 ![workflow.jpg](misc/workflow.jpg)
 ## Install 
