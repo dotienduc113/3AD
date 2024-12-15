@@ -62,8 +62,8 @@ def result_table(passed, failed, width=100):
     global count_passed
     global count_failed
     count = count + len(passed) + len(failed)
-    count_passed = count_passed + len(passed)
-    count_failed = count_failed + len(failed)
+    count_passed = len(passed)
+    count_failed = len(failed)
 
     return tabulate(table, headers=["Passed", "Failed"], tablefmt="grid")
 

@@ -132,7 +132,9 @@ sid_domain = get_sid_domain(str(wmic_query_sep(2)))
 
 
 def extract_ace_data(user, data, permission):  # str user, dictionary data, str permission
-    arr0 = [], arr1 = [], arr2 = []
+    arr0 = []
+    arr1 = []
+    arr2 = []
     dic = {}
     for key, value in data.items():
         for item in value:
