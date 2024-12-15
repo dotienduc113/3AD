@@ -30,7 +30,7 @@ Follow the steps below to set up the application locally:
 
 3. Start the server. For example, using Python:
    ```bash
-   cd <Audit Tracking file location>
+   cd <"Audit Tracking file location">
    start /min "Flask App" python app.py
    ```
 
