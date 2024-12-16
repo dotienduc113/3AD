@@ -43,9 +43,9 @@ def compare_checklist():
     Group_Policy(clist16)
     AD_User_Account()
 
-    print("\n")
-    print("Final result: ")
-    print("Passed: " + str(count_passed) + "\nFailed: " + str(count_failed) + "\nTotal: " + str(113))
+    # print("\n")
+    # print("Final result: ")
+    # print("Passed: " + str(count_passed) + "\nFailed: " + str(count_failed) + "\nTotal: " + str(113))
 
 
 def result_table(passed, failed, width=100):
