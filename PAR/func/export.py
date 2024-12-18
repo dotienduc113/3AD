@@ -740,8 +740,7 @@ def export_csv_table(csv_table_name=None):
         csv_table_name = f"3AD_result.csv"
     with open(f'.\\results\\{json_name}', 'r') as f:
         data = json.load(f)
-    fieldnames = ['timestamp', 'ID', 'ip_address', 'Name', 'Checklist', 'status', 'Reference', 'Best practices',
-                  'Severity']
+    fieldnames = ['timestamp', 'ID', 'Name', 'Checklist', 'status', 'Reference', 'Best practices', 'Severity']
     file_exists = os.path.isfile(f".\\results\\{csv_table_name}")
     with open(f".\\results\\{csv_table_name}", 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
